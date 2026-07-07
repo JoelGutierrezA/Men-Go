@@ -1,0 +1,19 @@
+.layout-shell {
+  min-height: 100dvh;
+  background: transparent;
+}
+
+.layout-sidebar {
+  width: min(18rem, 88vw);
+  border-right: 1px solid var(--mg-border);
+  background: transparent;
+}
+
+.layout-content {
+  min-height: 100dvh;
+  background: transparent;
+}
+
+.layout-main {
+  padding: 0 0 2rem;
+}

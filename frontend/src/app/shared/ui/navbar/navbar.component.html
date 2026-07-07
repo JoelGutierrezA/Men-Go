@@ -1,0 +1,27 @@
+<mat-toolbar class="navbar">
+  <div class="navbar__left">
+    @if (showMenuButton()) {
+      <button
+        mat-icon-button
+        type="button"
+        aria-label="Abrir navegación"
+        (click)="menuRequested.emit()"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+    }
+
+    <a class="navbar__brand" routerLink="/admin/dashboard">
+      <span class="navbar__brand-mark">M</span>
+      <span class="navbar__brand-copy">
+        <strong>MenúGo</strong>
+        <small>Admin SaaS</small>
+      </span>
+    </a>
+  </div>
+
+  <div class="navbar__actions">
+    <a mat-button routerLink="/">Landing</a>
+    <a mat-flat-button routerLink="/login">Login</a>
+  </div>
+</mat-toolbar>

@@ -1,0 +1,50 @@
+<section class="page-shell landing-page">
+  <div class="landing-page__hero">
+    <div class="landing-page__copy">
+      <span class="landing-page__eyebrow">SaaS para gastronomía</span>
+      <h1>
+        MenúGo convierte la carta física en una plataforma digital lista para
+        crecer.
+      </h1>
+      <p>
+        Esta primera fase deja preparada la base del producto: frontend en
+        Angular, backend en NestJS y una arquitectura modular orientada a un
+        SaaS real.
+      </p>
+
+      <mat-chip-set class="landing-page__chips">
+        @for (highlight of highlights; track highlight) {
+          <mat-chip>{{ highlight }}</mat-chip>
+        }
+      </mat-chip-set>
+
+      <div class="landing-page__actions">
+        <a mat-flat-button routerLink="/login">Ingresar</a>
+        <a mat-stroked-button routerLink="/admin/dashboard">
+          Ver dashboard temporal
+        </a>
+      </div>
+    </div>
+
+    <div class="landing-page__panel">
+      <span>Fase 1</span>
+      <strong>Base profesional lista</strong>
+      <p>
+        Sin mocks complejos, sin persistencia y sin lógica de negocio adelantada.
+      </p>
+    </div>
+  </div>
+
+  <div class="landing-page__grid">
+    @for (pillar of pillars; track pillar.title) {
+      <mat-card appearance="outlined" class="landing-page__card">
+        <mat-card-header>
+          <mat-card-title>{{ pillar.title }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ pillar.description }}</p>
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+</section>

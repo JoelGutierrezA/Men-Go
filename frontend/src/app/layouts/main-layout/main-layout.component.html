@@ -1,0 +1,24 @@
+<mat-sidenav-container class="layout-shell">
+  <mat-sidenav
+    class="layout-sidebar"
+    [mode]="sidenavMode()"
+    [opened]="sidenavOpened()"
+    (closedStart)="closeSidebar()"
+  >
+    <app-admin-sidebar
+      [items]="navigationItems"
+      (navigate)="closeSidebar()"
+    ></app-admin-sidebar>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="layout-content">
+    <app-navbar
+      [showMenuButton]="isMobile()"
+      (menuRequested)="toggleSidebar()"
+    ></app-navbar>
+
+    <main class="layout-main">
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

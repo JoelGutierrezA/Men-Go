@@ -1,0 +1,29 @@
+<section class="page-shell login-page">
+  <mat-card appearance="outlined" class="login-page__card">
+    <div class="login-page__intro">
+      <span>Acceso temporal</span>
+      <h1>Inicio de sesión preparado para la siguiente fase.</h1>
+      <p>
+        La autenticación JWT del backend ya quedó preparada. En este sprint solo
+        dejamos el flujo visual y la estructura del módulo.
+      </p>
+      <a mat-button routerLink="/">Volver a la landing</a>
+    </div>
+
+    <form class="login-page__form">
+      <mat-form-field appearance="outline">
+        <mat-label>Correo de trabajo</mat-label>
+        <input matInput type="email" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" />
+      </mat-form-field>
+
+      <button mat-flat-button type="button" disabled>
+        Disponible en la siguiente fase
+      </button>
+    </form>
+  </mat-card>
+</section>

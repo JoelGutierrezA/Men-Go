@@ -1,0 +1,24 @@
+<section class="page-shell dashboard-page">
+  <header class="dashboard-page__header">
+    <span>Panel temporal</span>
+    <h1>Arquitectura preparada para el SaaS MenúGo.</h1>
+    <p>
+      Este dashboard no consume datos todavía. Su objetivo es dejar lista la
+      navegación, la experiencia visual y la separación por dominios.
+    </p>
+  </header>
+
+  <div class="dashboard-page__grid">
+    @for (section of sections; track section.title) {
+      <mat-card appearance="outlined" class="dashboard-page__card">
+        <mat-card-header>
+          <mat-card-title>{{ section.title }}</mat-card-title>
+          <mat-card-subtitle>Base lista para crecer</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ section.description }}</p>
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+</section>
