@@ -1,0 +1,76 @@
+<section class="page-shell page-shell--marketing public-page">
+  <app-marketing-header />
+
+  <div class="public-page__hero">
+    <span>Valores</span>
+    <h1>Valores que ordenan como queremos construir MenuGo.</h1>
+    <p>
+      Antes de sumar mas funcionalidades, conviene dejar claro el criterio que
+      guiara el producto y la arquitectura sprint a sprint.
+    </p>
+  </div>
+
+  <section class="public-page__section">
+    <div class="public-page__grid public-page__grid--3">
+      @for (pillar of pillars; track pillar.title) {
+        <mat-card class="public-page__card values-page__pillar">
+          <mat-card-header>
+            <mat-card-title>{{ pillar.title }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{ pillar.description }}</p>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  </section>
+
+  <section class="public-page__section">
+    <div class="public-page__section-header">
+      <span>Como se traduce</span>
+      <h2>Estos valores impactan tanto en la experiencia del usuario como en la base tecnica.</h2>
+    </div>
+
+    <div class="public-page__split">
+      <mat-card class="public-page__card">
+        <mat-card-header>
+          <mat-card-title>En producto</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ul class="public-page__list">
+            @for (item of productPrinciples; track item) {
+              <li>{{ item }}</li>
+            }
+          </ul>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="public-page__card">
+        <mat-card-header>
+          <mat-card-title>En arquitectura</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ul class="public-page__list">
+            @for (item of engineeringPrinciples; track item) {
+              <li>{{ item }}</li>
+            }
+          </ul>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </section>
+
+  <div class="public-page__cta">
+    <span>Base del proyecto</span>
+    <p>
+      Esta pagina deja documentado el criterio del producto mientras seguimos
+      construyendo una plataforma profesional lista para produccion.
+    </p>
+    <div class="public-page__actions">
+      <a mat-flat-button routerLink="/register">Crear cuenta</a>
+      <a mat-button routerLink="/">Ir al inicio</a>
+    </div>
+  </div>
+</section>
+
+<app-marketing-footer />

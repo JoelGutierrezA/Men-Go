@@ -1,15 +1,16 @@
-<section class="page-shell landing-page">
+<section class="page-shell page-shell--marketing landing-page">
+  <app-marketing-header />
+
   <div class="landing-page__hero">
     <div class="landing-page__copy">
-      <span class="landing-page__eyebrow">SaaS para gastronomía</span>
       <h1>
-        MenúGo convierte la carta física en una plataforma digital lista para
-        crecer.
+        MenuGo ayuda a publicar menus digitales profesionales para negocios
+        gastronomicos.
       </h1>
       <p>
-        Esta primera fase deja preparada la base del producto: frontend en
-        Angular, backend en NestJS y una arquitectura modular orientada a un
-        SaaS real.
+        La plataforma esta pensada para restaurantes, bares, pubs y cafeterias
+        que quieren mostrar su carta por QR, administrar productos y construir
+        una presencia digital moderna.
       </p>
 
       <mat-chip-set class="landing-page__chips">
@@ -19,32 +20,100 @@
       </mat-chip-set>
 
       <div class="landing-page__actions">
-        <a mat-flat-button routerLink="/login">Ingresar</a>
-        <a mat-stroked-button routerLink="/admin/dashboard">
-          Ver dashboard temporal
-        </a>
+        <a mat-flat-button routerLink="/register">Registrarse</a>
+        <a mat-stroked-button routerLink="/login">Ingresar</a>
       </div>
     </div>
 
     <div class="landing-page__panel">
-      <span>Fase 1</span>
-      <strong>Base profesional lista</strong>
+      <span>Estado actual</span>
+      <strong>Home publica, acceso temporal y base admin</strong>
       <p>
-        Sin mocks complejos, sin persistencia y sin lógica de negocio adelantada.
+        Esta version deja clara la propuesta del producto mientras seguimos
+        sumando autenticacion real, menus y gestion completa del negocio.
       </p>
+      <a class="landing-page__panel-link" routerLink="/admin/dashboard">
+        Ver dashboard temporal
+      </a>
     </div>
   </div>
 
-  <div class="landing-page__grid">
-    @for (pillar of pillars; track pillar.title) {
-      <mat-card appearance="outlined" class="landing-page__card">
+  <div class="landing-page__grid" id="funciones">
+    @for (feature of features; track feature.title) {
+      <mat-card class="landing-page__card">
         <mat-card-header>
-          <mat-card-title>{{ pillar.title }}</mat-card-title>
+          <div mat-card-avatar class="landing-page__icon">
+            <mat-icon>{{ feature.icon }}</mat-icon>
+          </div>
+          <mat-card-title>{{ feature.title }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <p>{{ pillar.description }}</p>
+          <p>{{ feature.description }}</p>
         </mat-card-content>
       </mat-card>
     }
   </div>
+
+  <div class="landing-page__values" id="valores">
+    <div class="landing-page__section-copy">
+      <span>Valores</span>
+      <h2>La plataforma se esta construyendo con foco en claridad, velocidad y crecimiento.</h2>
+    </div>
+
+    <div class="landing-page__values-grid">
+      @for (value of values; track value.title) {
+        <article class="landing-page__value-item">
+          <h3>{{ value.title }}</h3>
+          <p>{{ value.description }}</p>
+        </article>
+      }
+    </div>
+  </div>
+
+  <div class="landing-page__info-grid" id="plataforma">
+    <mat-card class="landing-page__list-card">
+      <mat-card-header>
+        <mat-card-title>Para quienes esta pensado</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ul>
+          @for (audience of audiences; track audience) {
+            <li>{{ audience }}</li>
+          }
+        </ul>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="landing-page__list-card">
+      <mat-card-header>
+        <mat-card-title>Que incluye esta base</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ul>
+          @for (block of platformBlocks; track block) {
+            <li>{{ block }}</li>
+          }
+        </ul>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="landing-page__bottom-cta">
+    <div>
+      <span>Empieza a preparar tu negocio</span>
+      <h2>Convierte tu menu en una experiencia digital lista para crecer.</h2>
+      <p>
+        Ya existe una base profesional para seguir agregando registro,
+        autenticacion, menus, imagenes, promociones y administracion por
+        negocio.
+      </p>
+    </div>
+
+    <div class="landing-page__bottom-actions">
+      <a mat-flat-button routerLink="/register">Crear cuenta</a>
+      <a mat-button routerLink="/login">Ya tengo acceso</a>
+    </div>
+  </div>
 </section>
+
+<app-marketing-footer />

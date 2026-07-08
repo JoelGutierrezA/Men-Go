@@ -1,0 +1,54 @@
+<header class="marketing-header">
+  <a class="marketing-header__brand" routerLink="/">
+    <span class="marketing-header__brand-mark">M</span>
+    <span class="marketing-header__brand-copy">
+      <strong>MenuGo</strong>
+      <small>Menus digitales QR</small>
+    </span>
+  </a>
+
+  <nav class="marketing-header__nav" aria-label="Navegacion principal">
+    <a
+      class="marketing-header__link"
+      routerLink="/"
+      routerLinkActive="marketing-header__link--active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      Home
+    </a>
+    <a
+      class="marketing-header__link"
+      routerLink="/funciones"
+      routerLinkActive="marketing-header__link--active"
+    >
+      Funciones
+    </a>
+    <a
+      class="marketing-header__link"
+      routerLink="/valores"
+      routerLinkActive="marketing-header__link--active"
+    >
+      Valores
+    </a>
+    <a
+      class="marketing-header__link"
+      routerLink="/plataforma"
+      routerLinkActive="marketing-header__link--active"
+    >
+      Plataforma
+    </a>
+    <a
+      class="marketing-header__register"
+      routerLink="/register"
+      routerLinkActive="marketing-header__register--active"
+    >
+      Registro
+    </a>
+  </nav>
+
+  <div class="marketing-header__actions">
+    <a class="marketing-header__login" mat-flat-button routerLink="/login">
+      Ingresar
+    </a>
+  </div>
+</header>

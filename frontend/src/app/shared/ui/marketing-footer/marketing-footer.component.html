@@ -1,0 +1,57 @@
+<footer class="marketing-footer">
+  <div class="marketing-footer__shell">
+    <div class="marketing-footer__brand-block">
+      <a class="marketing-footer__brand" routerLink="/">
+        <span class="marketing-footer__brand-mark">M</span>
+        <span class="marketing-footer__brand-copy">
+          <strong>MenuGo</strong>
+          <small>Menus digitales QR</small>
+        </span>
+      </a>
+
+      <p>
+        MenuGo prepara una base profesional para publicar menus digitales,
+        administrar contenido y hacer crecer la presencia QR de cada negocio.
+      </p>
+
+      <div class="marketing-footer__socials" aria-label="Redes sociales">
+        @for (social of socialLinks; track social.label) {
+          <a
+            class="marketing-footer__social-link"
+            [href]="social.href"
+            target="_blank"
+            rel="noreferrer"
+            [attr.aria-label]="social.label"
+            [title]="social.label"
+          >
+            {{ social.shortLabel }}
+          </a>
+        }
+      </div>
+    </div>
+
+    <div class="marketing-footer__links">
+      <div class="marketing-footer__column">
+        <h3>Plataforma</h3>
+        <nav>
+          @for (link of platformLinks; track link.route) {
+            <a routerLink="{{ link.route }}">{{ link.label }}</a>
+          }
+        </nav>
+      </div>
+
+      <div class="marketing-footer__column">
+        <h3>Legal y acceso</h3>
+        <nav>
+          @for (link of legalLinks; track link.route) {
+            <a routerLink="{{ link.route }}">{{ link.label }}</a>
+          }
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <div class="marketing-footer__bottom">
+    <span>&copy; {{ currentYear }} MenuGo. Todos los derechos reservados.</span>
+  </div>
+</footer>

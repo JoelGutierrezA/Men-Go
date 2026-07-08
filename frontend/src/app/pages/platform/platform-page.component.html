@@ -1,0 +1,79 @@
+<section class="page-shell page-shell--marketing public-page">
+  <app-marketing-header />
+
+  <div class="public-page__hero">
+    <span>Plataforma</span>
+    <h1>Una base ordenada para convertir MenuGo en un SaaS real.</h1>
+    <p>
+      Esta primera fase prioriza estructura, consistencia y espacio para crecer
+      sin adelantar implementaciones que todavia no corresponden.
+    </p>
+  </div>
+
+  <section class="public-page__section">
+    <div class="public-page__grid public-page__grid--2">
+      @for (item of modules; track item.title) {
+        <mat-card class="public-page__card">
+          <mat-card-header>
+            <div mat-card-avatar class="public-page__icon">
+              <mat-icon>{{ item.icon }}</mat-icon>
+            </div>
+            <mat-card-title>{{ item.title }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{ item.description }}</p>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  </section>
+
+  <section class="public-page__section">
+    <div class="public-page__section-header">
+      <span>Estado de la fase</span>
+      <h2>La plataforma ya tiene una direccion tecnica clara, aunque todavia no activa toda su capacidad.</h2>
+    </div>
+
+    <div class="public-page__split platform-page__status">
+      <mat-card class="public-page__card">
+        <mat-card-header>
+          <mat-card-title>Lo que ya esta definido</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ul class="public-page__list">
+            @for (item of currentPhase; track item) {
+              <li>{{ item }}</li>
+            }
+          </ul>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="public-page__card">
+        <mat-card-header>
+          <mat-card-title>Capas previstas para seguir</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ul class="public-page__list">
+            @for (item of nextLayers; track item) {
+              <li>{{ item }}</li>
+            }
+          </ul>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </section>
+
+  <div class="public-page__cta">
+    <span>Direccion del producto</span>
+    <p>
+      MenuGo ya tiene una base profesional para seguir creciendo por fases, sin
+      quemar pasos ni acoplar decisiones que deberian llegar despues.
+    </p>
+    <div class="public-page__actions">
+      <a mat-flat-button routerLink="/register">Sumarme al registro</a>
+      <a mat-button routerLink="/">Volver al home</a>
+    </div>
+  </div>
+</section>
+
+<app-marketing-footer />

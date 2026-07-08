@@ -1,0 +1,39 @@
+<section class="page-shell register-page">
+  <mat-card appearance="outlined" class="register-page__card">
+    <div class="register-page__intro">
+      <span>Registro temporal</span>
+      <h1>Crea tu cuenta y prepara tu negocio para MenuGo.</h1>
+      <p>
+        Esta vista deja listo el flujo base para el futuro registro de
+        restaurantes, bares, pubs y cafeterias dentro de la plataforma.
+      </p>
+      <a mat-button routerLink="/">Volver al inicio</a>
+    </div>
+
+    <form class="register-page__form">
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre del negocio</mat-label>
+        <input matInput type="text" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre del responsable</mat-label>
+        <input matInput type="text" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Correo</mat-label>
+        <input matInput type="email" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Contrasena</mat-label>
+        <input matInput type="password" />
+      </mat-form-field>
+
+      <button mat-flat-button type="button" disabled>
+        Registro disponible en la siguiente fase
+      </button>
+    </form>
+  </mat-card>
+</section>

@@ -8,10 +8,10 @@
   min-height: 4.5rem;
   padding: 0 1rem;
   color: var(--mg-text);
-  background: rgba(8, 17, 15, 0.78);
+  background: rgba(255, 255, 255, 0.84);
   border-bottom: 1px solid var(--mg-border);
   backdrop-filter: blur(16px);
-  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 12px 24px rgba(26, 44, 36, 0.06);
 }
 
 .navbar__left,
@@ -36,8 +36,8 @@
   font-family: 'Space Grotesk', sans-serif;
   font-size: 1.05rem;
   font-weight: 700;
-  color: #0c180f;
-  background: linear-gradient(135deg, var(--mg-primary), #d8ff9e);
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--mg-primary), #62d89c);
 }
 
 .navbar__brand-copy {
@@ -52,6 +52,11 @@
 
 .navbar__brand-copy small {
   color: var(--mg-muted);
+}
+
+.navbar .mat-mdc-unelevated-button:not(:disabled) {
+  color: #ffffff;
+  background: var(--mg-primary);
 }
 
 @media (max-width: 640px) {
