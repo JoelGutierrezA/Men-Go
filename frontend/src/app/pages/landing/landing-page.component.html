@@ -40,34 +40,100 @@
     />
   </div>
 
-  <div class="landing-page__grid" id="funciones">
-    @for (feature of features; track feature.title) {
-      <mat-card class="landing-page__card">
-        <mat-card-header>
-          <div mat-card-avatar class="landing-page__icon">
-            <mat-icon>{{ feature.icon }}</mat-icon>
-          </div>
-          <mat-card-title>{{ feature.title }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p>{{ feature.description }}</p>
-        </mat-card-content>
-      </mat-card>
-    }
-  </div>
-
-  <div class="landing-page__values" id="valores">
-    <div class="landing-page__section-copy">
-      <span>Valores</span>
-      <h2>La plataforma se esta construyendo con foco en claridad, velocidad y crecimiento.</h2>
+  <section class="landing-page__feature-section" id="funciones">
+    <div class="landing-page__section-copy landing-page__section-copy--feature">
+      <span>Funciones</span>
+      <h2>Todo lo que necesitas para administrar tu carta digital.</h2>
+      <p>
+        Publica tu carta digital, administra tus productos y ofrece una mejor
+        experiencia a tus clientes desde una sola plataforma.
+      </p>
     </div>
 
-    <div class="landing-page__values-grid">
-      @for (value of values; track value.title) {
-        <article class="landing-page__value-item">
-          <h3>{{ value.title }}</h3>
-          <p>{{ value.description }}</p>
-        </article>
+    <div class="landing-page__grid landing-page__grid--features">
+      @for (feature of features; track feature.title) {
+        <mat-card class="landing-page__card landing-page__card--feature">
+          <mat-card-header>
+            <div mat-card-avatar class="landing-page__icon">
+              <mat-icon>{{ feature.icon }}</mat-icon>
+            </div>
+            <div class="landing-page__card-copy">
+              <div class="landing-page__card-heading">
+                <mat-card-title>{{ feature.title }}</mat-card-title>
+
+                @if (feature.badge) {
+                  <span class="landing-page__card-badge">{{ feature.badge }}</span>
+                }
+              </div>
+            </div>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{ feature.description }}</p>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  </section>
+
+  <div class="landing-page__values" id="planes">
+    <div class="landing-page__section-copy">
+      <span>Planes</span>
+      <h2>Comienza con una prueba gratuita y elige el plan ideal para la etapa de tu negocio.</h2>
+      <p>
+        Desde un local que parte con su primera carta digital hasta una
+        operacion con varias sucursales y mas control.
+      </p>
+    </div>
+
+    <div class="landing-page__plans">
+      @for (plan of plans; track plan.name) {
+        <mat-card
+          class="landing-page__plan-card"
+          [class.landing-page__plan-card--trial]="plan.tone === 'trial'"
+          [class.landing-page__plan-card--featured]="plan.tone === 'featured'"
+          [class.landing-page__plan-card--premium]="plan.tone === 'premium'"
+        >
+          @if (plan.badge) {
+            <span class="landing-page__plan-badge">{{ plan.badge }}</span>
+          }
+
+          <mat-card-content class="landing-page__plan-content">
+            <header class="landing-page__plan-header">
+              <div class="landing-page__plan-copy">
+                <h3>{{ plan.name }}</h3>
+                <p>{{ plan.description }}</p>
+              </div>
+
+              <div class="landing-page__plan-price">
+                <strong>{{ plan.price }}</strong>
+                <span>{{ plan.period }}</span>
+              </div>
+            </header>
+
+            <ul class="landing-page__plan-features">
+              @for (feature of plan.features; track feature) {
+                <li>
+                  <mat-icon aria-hidden="true">check_circle</mat-icon>
+                  <span>{{ feature }}</span>
+                </li>
+              }
+            </ul>
+
+            @if (plan.tone === 'trial' || plan.tone === 'neutral') {
+              <a
+                mat-stroked-button
+                class="landing-page__plan-action landing-page__plan-action--neutral"
+                routerLink="/register"
+              >
+                {{ plan.ctaLabel }}
+              </a>
+            } @else {
+              <a mat-flat-button class="landing-page__plan-action" routerLink="/register">
+                {{ plan.ctaLabel }}
+              </a>
+            }
+          </mat-card-content>
+        </mat-card>
       }
     </div>
   </div>

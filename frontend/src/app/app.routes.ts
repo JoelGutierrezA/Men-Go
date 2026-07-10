@@ -26,9 +26,13 @@ export const routes: Routes = [
     title: 'MenuGo | Funciones',
   },
   {
-    path: 'valores',
+    path: 'planes',
     component: ValuesPageComponent,
-    title: 'MenuGo | Valores',
+    title: 'MenuGo | Planes',
+  },
+  {
+    path: 'valores',
+    redirectTo: 'planes',
   },
   {
     path: 'plataforma',

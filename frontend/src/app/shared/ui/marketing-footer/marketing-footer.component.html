@@ -24,7 +24,14 @@
             [attr.aria-label]="social.label"
             [title]="social.label"
           >
-            {{ social.shortLabel }}
+            <svg
+              class="marketing-footer__social-icon"
+              [attr.viewBox]="social.iconViewBox"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path [attr.d]="social.iconPath"></path>
+            </svg>
           </a>
         }
       </div>

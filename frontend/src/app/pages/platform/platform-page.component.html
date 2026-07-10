@@ -1,65 +1,133 @@
 <section class="page-shell page-shell--marketing public-page">
   <app-marketing-header />
 
-  <div class="public-page__hero">
+  <div class="public-page__hero public-page__hero--compact public-page__hero--wide">
     <span>Plataforma</span>
     <h1>Una base ordenada para convertir MenuGo en un SaaS real.</h1>
-    <p>
-      Esta primera fase prioriza estructura, consistencia y espacio para crecer
-      sin adelantar implementaciones que todavia no corresponden.
-    </p>
   </div>
 
   <section class="public-page__section">
-    <div class="public-page__grid public-page__grid--2">
-      @for (item of modules; track item.title) {
-        <mat-card class="public-page__card">
-          <mat-card-header>
-            <div mat-card-avatar class="public-page__icon">
-              <mat-icon>{{ item.icon }}</mat-icon>
-            </div>
-            <mat-card-title>{{ item.title }}</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p>{{ item.description }}</p>
-          </mat-card-content>
-        </mat-card>
-      }
-    </div>
-  </section>
-
-  <section class="public-page__section">
     <div class="public-page__section-header">
-      <span>Estado de la fase</span>
-      <h2>La plataforma ya tiene una direccion tecnica clara, aunque todavia no activa toda su capacidad.</h2>
+      <span>Vista del panel</span>
+      <h2>Ejemplo visual de como se ve la interfaz cuando un negocio empieza a armar su menu.</h2>
     </div>
 
-    <div class="public-page__split platform-page__status">
-      <mat-card class="public-page__card">
-        <mat-card-header>
-          <mat-card-title>Lo que ya esta definido</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ul class="public-page__list">
-            @for (item of currentPhase; track item) {
-              <li>{{ item }}</li>
-            }
-          </ul>
-        </mat-card-content>
-      </mat-card>
+    <div class="platform-page__builder">
+      <div class="platform-page__builder-steps">
+        @for (step of builderSteps; track step.title) {
+          <article class="platform-page__builder-step">
+            <strong>{{ step.title }}</strong>
+            <p>{{ step.description }}</p>
+          </article>
+        }
+      </div>
 
-      <mat-card class="public-page__card">
-        <mat-card-header>
-          <mat-card-title>Capas previstas para seguir</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ul class="public-page__list">
-            @for (item of nextLayers; track item) {
-              <li>{{ item }}</li>
-            }
-          </ul>
-        </mat-card-content>
-      </mat-card>
+      <div class="platform-page__builder-preview" aria-label="Mockup del panel de construccion de menu">
+        <div class="platform-page__builder-shell">
+          <div class="platform-page__builder-toolbar">
+            <div class="platform-page__builder-dots">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+
+            <div class="platform-page__builder-search">menugo.app/panel/menu/identidad</div>
+
+            <div class="platform-page__builder-status">
+              <span>Guardado</span>
+            </div>
+          </div>
+
+          <div class="platform-page__builder-body">
+            <aside class="platform-page__builder-sidebar">
+              <div class="platform-page__builder-brand">
+                <span>M</span>
+                <div>
+                  <strong>MenuGo</strong>
+                  <small>Constructor</small>
+                </div>
+              </div>
+
+              <div class="platform-page__builder-nav">
+                <span class="platform-page__builder-nav-item platform-page__builder-nav-item--active">
+                  Identidad
+                </span>
+                <span class="platform-page__builder-nav-item">Estilo</span>
+                <span class="platform-page__builder-nav-item">Productos</span>
+                <span class="platform-page__builder-nav-item">Promociones</span>
+              </div>
+            </aside>
+
+            <div class="platform-page__builder-main">
+              <section class="platform-page__builder-editor">
+                <div class="platform-page__builder-heading">
+                  <span>Etapa 1</span>
+                  <h3>Arma la base de tu menu</h3>
+                  <p>Configura el negocio, crea categorias y revisa la estructura antes de publicar.</p>
+                </div>
+
+                <div class="platform-page__builder-fields">
+                  <div class="platform-page__builder-field">
+                    <label>Titulo del menu</label>
+                    <div>Cafe Aurora</div>
+                  </div>
+
+                  <div class="platform-page__builder-field">
+                    <label>Nueva categoria</label>
+                    <div>Platos del dia</div>
+                  </div>
+                </div>
+
+                <div class="platform-page__builder-chip-group">
+                  @for (category of builderCategories; track category) {
+                    <span class="platform-page__builder-chip">{{ category }}</span>
+                  }
+                </div>
+
+                <div class="platform-page__builder-actions">
+                  <span class="platform-page__builder-button platform-page__builder-button--primary">
+                    Guardar base
+                  </span>
+                  <span class="platform-page__builder-button">Siguiente paso</span>
+                </div>
+              </section>
+
+              <section class="platform-page__builder-phone-panel">
+                <div class="platform-page__builder-phone">
+                  <div class="platform-page__builder-notch"></div>
+
+                  <div class="platform-page__builder-screen">
+                    <div class="platform-page__builder-menu">
+                      <div class="platform-page__builder-menu-head">
+                        <div class="platform-page__builder-menu-logo">C</div>
+                        <div>
+                          <strong>Cafe Aurora</strong>
+                          <small>4 categorias creadas</small>
+                        </div>
+                      </div>
+
+                      <div class="platform-page__builder-menu-sections">
+                        @for (category of builderCategories; track category) {
+                          <article class="platform-page__builder-menu-card">
+                            <strong>{{ category }}</strong>
+                            <span>Productos listos para editar</span>
+                          </article>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="platform-page__builder-floating">
+                  <span>Vista previa</span>
+                  <strong>Menu actualizado</strong>
+                  <small>Listo para revisar</small>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 

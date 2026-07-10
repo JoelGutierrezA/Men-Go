@@ -91,6 +91,12 @@
     color 160ms ease;
 }
 
+.marketing-footer__social-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: currentColor;
+}
+
 .marketing-footer__social-link:hover {
   color: var(--mg-text);
   background: rgba(255, 255, 255, 0.92);

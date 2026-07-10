@@ -1,9 +1,21 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { MarketingFooterComponent } from '@shared/ui/marketing-footer/marketing-footer.component';
 import { MarketingHeaderComponent } from '@shared/ui/marketing-header/marketing-header.component';
+
+interface SubscriptionPlan {
+  name: string;
+  price: string;
+  period: string;
+  description: string;
+  ctaLabel: string;
+  tone: 'neutral' | 'featured' | 'premium';
+  badge?: string;
+  features: string[];
+}
 
 @Component({
   selector: 'app-values-page',
@@ -12,6 +24,7 @@ import { MarketingHeaderComponent } from '@shared/ui/marketing-header/marketing-
     MarketingHeaderComponent,
     MatButtonModule,
     MatCardModule,
+    MatIconModule,
     RouterLink,
   ],
   templateUrl: './values-page.component.html',
@@ -19,33 +32,70 @@ import { MarketingHeaderComponent } from '@shared/ui/marketing-header/marketing-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ValuesPageComponent {
-  protected readonly pillars = [
+  protected readonly plans: SubscriptionPlan[] = [
     {
-      title: 'Simplicidad operativa',
+      name: 'Emprende',
+      price: '$9.990',
+      period: 'al mes',
       description:
-        'Cada decision del producto busca reducir friccion para que administrar un menu digital sea algo rapido y natural.',
+        'Para pequeños negocios que quieren reemplazar su menu PDF por una carta digital profesional.',
+      ctaLabel: 'Comenzar',
+      tone: 'neutral',
+      features: [
+        '1 restaurante',
+        'Codigo QR personalizado',
+        'Hasta 50 productos',
+        'Hasta 10 categorias',
+        'Logo y colores personalizados',
+        'Imagenes de productos',
+        'Menu responsive',
+        'Actualizaciones ilimitadas',
+        'Activar o desactivar productos',
+      ],
     },
     {
-      title: 'Velocidad con sentido',
+      name: 'Crece',
+      price: '$16.990',
+      period: 'al mes',
       description:
-        'Cambiar una carta, un precio o una promocion debe ser un proceso corto, entendible y repetible.',
+        'Para negocios que actualizan su carta con frecuencia y quieren destacar promociones y productos.',
+      ctaLabel: 'Elegir Crece',
+      tone: 'featured',
+      badge: 'Mas popular',
+      features: [
+        'Todo lo incluido en Emprende',
+        'Productos ilimitados',
+        'Categorias ilimitadas',
+        'Productos destacados',
+        'Banner principal',
+        'Promociones',
+        'Etiquetas para productos',
+        'Temas estacionales',
+        'Estadisticas basicas de visitas',
+        'Soporte prioritario',
+      ],
     },
     {
-      title: 'Escalabilidad sin rehacer',
+      name: 'Premium',
+      price: '$19.990',
+      period: 'al mes',
       description:
-        'La base actual se esta ordenando para crecer por modulos sin tener que reconstruir la plataforma en cada fase.',
+        'Para restaurantes que necesitan mas control, administracion y herramientas avanzadas.',
+      ctaLabel: 'Elegir Premium',
+      tone: 'premium',
+      badge: 'Mejor valor',
+      features: [
+        'Todo lo incluido en Crece',
+        'Hasta 5 sucursales',
+        'Multiples administradores',
+        'Roles y permisos',
+        'Programacion de promociones',
+        'Programacion de disponibilidad',
+        'Analiticas avanzadas',
+        'Historial de cambios',
+        'Acceso anticipado a nuevas funciones',
+        'Soporte premium',
+      ],
     },
-  ];
-
-  protected readonly productPrinciples = [
-    'Interfaces claras y mobile first para negocio y cliente final.',
-    'Navegacion simple, sin pasos innecesarios ni dependencias ocultas.',
-    'Prioridad en tareas frecuentes como actualizar productos, categorias y destacados.',
-  ];
-
-  protected readonly engineeringPrinciples = [
-    'Arquitectura modular con responsabilidades bien separadas.',
-    'Servicios desacoplados y listos para integrar persistencia real mas adelante.',
-    'Base preparada para autenticacion, imagenes y futuras reglas de negocio.',
   ];
 }

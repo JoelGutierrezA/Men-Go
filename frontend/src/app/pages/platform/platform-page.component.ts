@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { MarketingFooterComponent } from '@shared/ui/marketing-footer/marketing-footer.component';
 import { MarketingHeaderComponent } from '@shared/ui/marketing-header/marketing-header.component';
@@ -12,8 +10,6 @@ import { MarketingHeaderComponent } from '@shared/ui/marketing-header/marketing-
     MarketingFooterComponent,
     MarketingHeaderComponent,
     MatButtonModule,
-    MatCardModule,
-    MatIconModule,
     RouterLink,
   ],
   templateUrl: './platform-page.component.html',
@@ -21,42 +17,28 @@ import { MarketingHeaderComponent } from '@shared/ui/marketing-header/marketing-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlatformPageComponent {
-  protected readonly modules = [
+  protected readonly builderSteps = [
     {
-      icon: 'web',
-      title: 'Frontend Angular',
+      title: 'Identidad del negocio',
       description:
-        'Base con standalone components, Angular Material, routing y una experiencia responsive orientada a mobile first.',
+        'El usuario define nombre, logo y base visual antes de empezar a cargar el menu.',
     },
     {
-      icon: 'hub',
-      title: 'Backend NestJS',
+      title: 'Categorias principales',
       description:
-        'Estructura modular preparada para auth, usuarios, restaurantes, categorias, productos, promociones y temas.',
+        'Puede ordenar entradas, platos, bebidas y postres para estructurar la experiencia.',
     },
     {
-      icon: 'account_tree',
-      title: 'Servicios desacoplados',
+      title: 'Previsualizacion en vivo',
       description:
-        'La logica esta pensada para crecer con interfaces y servicios que luego podran conectarse a persistencia real.',
-    },
-    {
-      icon: 'cloud_sync',
-      title: 'Integraciones futuras',
-      description:
-        'La plataforma queda lista para sumar JWT, Cloudinary y repositorios reales sin mezclar etapas prematuramente.',
+        'Mientras edita, ve como quedara el menu digital para sus clientes.',
     },
   ];
 
-  protected readonly currentPhase = [
-    'Sin persistencia implementada en esta etapa inicial.',
-    'Base abierta para integrar MySQL con TypeORM o Prisma despues.',
-    'Separacion clara entre presentacion, servicios y futura capa de datos.',
-  ];
-
-  protected readonly nextLayers = [
-    'Autenticacion y acceso por negocio.',
-    'Gestion de categorias, productos y promociones.',
-    'Carga de imagenes, temas visuales y administracion completa del menu.',
+  protected readonly builderCategories = [
+    'Entradas',
+    'Platos del dia',
+    'Bebidas',
+    'Postres',
   ];
 }

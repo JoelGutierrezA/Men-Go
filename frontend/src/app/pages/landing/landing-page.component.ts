@@ -11,6 +11,17 @@ import {
 } from '@shared/ui/landing-hero-carousel/landing-hero-carousel.component';
 import { MarketingHeaderComponent } from '@shared/ui/marketing-header/marketing-header.component';
 
+interface HomePlan {
+  readonly name: string;
+  readonly price: string;
+  readonly period: string;
+  readonly description: string;
+  readonly ctaLabel: string;
+  readonly tone: 'trial' | 'neutral' | 'featured' | 'premium';
+  readonly badge?: string;
+  readonly features: readonly string[];
+}
+
 @Component({
   selector: 'app-landing-page',
   imports: [
@@ -43,8 +54,8 @@ export class LandingPageComponent {
       eyebrow: 'Marca propia',
       title: 'Refleja la identidad de tu negocio',
       description: 'Personaliza colores, logotipo y apariencia del menu.',
-      ctaLabel: 'Valores',
-      ctaTarget: 'valores',
+      ctaLabel: 'Planes',
+      ctaTarget: 'planes',
       imageAlt: 'Escena de un cliente escaneando un codigo QR en un restaurante',
       mockType: 'qr',
     },
@@ -62,21 +73,27 @@ export class LandingPageComponent {
   protected readonly features = [
     {
       icon: 'qr_code_2',
-      title: 'Menus digitales por QR',
+      title: 'Menus digitales',
       description:
-        'Publica cartas digitales para que tus clientes accedan rapido desde un codigo QR sin instalar ninguna app.',
+        'Tus clientes solo necesitan escanear un codigo QR para consultar la carta desde cualquier celular.',
     },
     {
       icon: 'devices',
-      title: 'Panel simple para administrar',
+      title: 'Actualiza al instante',
       description:
-        'Organiza categorias, productos, promociones y apariencia del menu desde una interfaz pensada para crecer.',
+        'Modifica precios, productos o promociones en segundos, sin volver a imprimir cartas ni editar archivos PDF.',
     },
     {
-      icon: 'storefront',
-      title: 'Pensado para negocios reales',
+      icon: 'palette',
+      title: 'Personaliza tu marca',
       description:
-        'MenuGo se esta construyendo para restaurantes, bares, pubs y cafeterias que necesitan actualizar su menu con agilidad.',
+        'Haz que tu carta refleje la identidad de tu restaurante utilizando tu logotipo, colores, imagenes y banners.',
+    },
+    {
+      icon: 'query_stats',
+      title: 'Preparado para crecer',
+      description:
+        'La plataforma evoluciona junto a tu negocio con nuevas funciones, promociones, estadisticas y futuras integraciones.',
     },
   ];
 
@@ -92,21 +109,69 @@ export class LandingPageComponent {
     'Base preparada para autenticacion, imagenes y futura persistencia',
   ];
 
-  protected readonly values = [
+  protected readonly plans: readonly HomePlan[] = [
     {
-      title: 'Simplicidad real',
+      name: 'Prueba gratis',
+      price: '15 dias',
+      period: 'sin costo',
       description:
-        'La experiencia debe ser facil tanto para el negocio que administra como para el cliente que escanea el QR.',
+        'Empieza con una prueba real para explorar MenuGo antes de elegir un plan.',
+      ctaLabel: 'Probar gratis',
+      tone: 'trial',
+      badge: 'Nuevo',
+      features: [
+        'Constructor completo del menu',
+        'Logo y colores personalizados',
+        'QR listo para compartir',
+        'Sin tarjeta al comenzar',
+      ],
     },
     {
-      title: 'Velocidad para operar',
+      name: 'Emprende',
+      price: '$9.990',
+      period: 'al mes',
       description:
-        'Cambiar productos, precios o promociones debe tomar minutos, no depender de procesos lentos o rediseños completos.',
+        'Ideal para negocios que quieren pasar de un PDF a una carta digital profesional.',
+      ctaLabel: 'Elegir Emprende',
+      tone: 'neutral',
+      features: [
+        '1 restaurante',
+        'Hasta 50 productos',
+        'QR personalizado',
+        'Logo y colores propios',
+      ],
     },
     {
-      title: 'Base lista para crecer',
+      name: 'Crece',
+      price: '$16.990',
+      period: 'al mes',
       description:
-        'Cada modulo se esta preparando para evolucionar hacia un SaaS robusto sin rehacer la arquitectura en cada fase.',
+        'Pensado para locales que actualizan su carta seguido y quieren destacar promociones.',
+      ctaLabel: 'Elegir Crece',
+      tone: 'featured',
+      badge: 'Mas popular',
+      features: [
+        'Productos ilimitados',
+        'Promociones y banner principal',
+        'Etiquetas para productos',
+        'Soporte prioritario',
+      ],
+    },
+    {
+      name: 'Premium',
+      price: '$19.990',
+      period: 'al mes',
+      description:
+        'Para restaurantes que necesitan mas control, sucursales y herramientas avanzadas.',
+      ctaLabel: 'Elegir Premium',
+      tone: 'premium',
+      badge: 'Mejor valor',
+      features: [
+        'Hasta 5 sucursales',
+        'Multiples administradores',
+        'Analiticas avanzadas',
+        'Programacion de promociones',
+      ],
     },
   ];
 
