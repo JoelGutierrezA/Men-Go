@@ -1,10 +1,14 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { MarketingFooterComponent } from '@shared/ui/marketing-footer/marketing-footer.component';
+import {
+  LandingHeroCarouselComponent,
+  type LandingHeroSlide,
+} from '@shared/ui/landing-hero-carousel/landing-hero-carousel.component';
 import { MarketingHeaderComponent } from '@shared/ui/marketing-header/marketing-header.component';
 
 @Component({
@@ -12,9 +16,9 @@ import { MarketingHeaderComponent } from '@shared/ui/marketing-header/marketing-
   imports: [
     MarketingFooterComponent,
     MarketingHeaderComponent,
+    LandingHeroCarouselComponent,
     MatButtonModule,
     MatCardModule,
-    MatChipsModule,
     MatIconModule,
     RouterLink,
   ],
@@ -23,10 +27,36 @@ import { MarketingHeaderComponent } from '@shared/ui/marketing-header/marketing-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LandingPageComponent {
-  protected readonly highlights = [
-    'Menus QR',
-    'Panel web responsive',
-    'Gestion centralizada',
+  private readonly document = inject(DOCUMENT);
+
+  protected readonly heroSlides: readonly LandingHeroSlide[] = [
+    {
+      eyebrow: 'Experiencia visual',
+      title: 'Crea tu carta digital',
+      description: 'Organiza categorias, productos e imagenes facilmente.',
+      ctaLabel: 'Funciones',
+      ctaTarget: 'funciones',
+      imageAlt: 'Mockup de una carta digital en un telefono',
+      mockType: 'menu',
+    },
+    {
+      eyebrow: 'Marca propia',
+      title: 'Refleja la identidad de tu negocio',
+      description: 'Personaliza colores, logotipo y apariencia del menu.',
+      ctaLabel: 'Valores',
+      ctaTarget: 'valores',
+      imageAlt: 'Escena de un cliente escaneando un codigo QR en un restaurante',
+      mockType: 'qr',
+    },
+    {
+      eyebrow: 'Gestion centralizada',
+      title: 'Todo desde una plataforma',
+      description: 'Administra tu restaurante desde cualquier dispositivo.',
+      ctaLabel: 'Plataforma',
+      ctaTarget: 'plataforma',
+      imageAlt: 'Panel administrativo de MenuGo mostrando productos y estados',
+      mockType: 'dashboard',
+    },
   ];
 
   protected readonly features = [
@@ -79,4 +109,21 @@ export class LandingPageComponent {
         'Cada modulo se esta preparando para evolucionar hacia un SaaS robusto sin rehacer la arquitectura en cada fase.',
     },
   ];
+
+  protected scrollToSection(sectionId: string): void {
+    const targetElement = this.document.getElementById(sectionId);
+    const windowRef = this.document.defaultView;
+
+    if (!targetElement || !windowRef) {
+      return;
+    }
+
+    const headerOffset = 96;
+    const top = targetElement.getBoundingClientRect().top + windowRef.scrollY - headerOffset;
+
+    windowRef.scrollTo({
+      top,
+      behavior: 'smooth',
+    });
+  }
 }

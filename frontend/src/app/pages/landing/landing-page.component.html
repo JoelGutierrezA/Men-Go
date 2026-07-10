@@ -3,39 +3,41 @@
 
   <div class="landing-page__hero">
     <div class="landing-page__copy">
-      <h1>
-        MenuGo ayuda a publicar menus digitales profesionales para negocios
-        gastronomicos.
-      </h1>
+      <span class="landing-page__eyebrow">MenuGo</span>
+      <h1>Men&uacute;s digitales que potencian la experiencia de tus clientes.</h1>
       <p>
-        La plataforma esta pensada para restaurantes, bares, pubs y cafeterias
-        que quieren mostrar su carta por QR, administrar productos y construir
-        una presencia digital moderna.
+        Crea cartas digitales profesionales, personaliza tu marca y administra
+        tus productos desde una sola plataforma.
       </p>
 
-      <mat-chip-set class="landing-page__chips">
-        @for (highlight of highlights; track highlight) {
-          <mat-chip>{{ highlight }}</mat-chip>
-        }
-      </mat-chip-set>
-
       <div class="landing-page__actions">
-        <a mat-flat-button routerLink="/register">Registrarse</a>
-        <a mat-stroked-button routerLink="/login">Ingresar</a>
+        <a mat-flat-button routerLink="/register">Comenzar ahora</a>
+        <button mat-stroked-button type="button" (click)="scrollToSection('funciones')">
+          Conocer funciones
+        </button>
+      </div>
+
+      <div class="landing-page__badges" aria-label="Pilares del hero">
+        <span class="landing-page__badge">
+          <span aria-hidden="true">&#10003;</span>
+          C&oacute;digo QR
+        </span>
+        <span class="landing-page__badge">
+          <span aria-hidden="true">&#10003;</span>
+          Administraci&oacute;n Web
+        </span>
+        <span class="landing-page__badge">
+          <span aria-hidden="true">&#10003;</span>
+          Personalizaci&oacute;n
+        </span>
       </div>
     </div>
 
-    <div class="landing-page__panel">
-      <span>Estado actual</span>
-      <strong>Home publica, acceso temporal y base admin</strong>
-      <p>
-        Esta version deja clara la propuesta del producto mientras seguimos
-        sumando autenticacion real, menus y gestion completa del negocio.
-      </p>
-      <a class="landing-page__panel-link" routerLink="/panel/menu">
-        Ver panel temporal
-      </a>
-    </div>
+    <app-landing-hero-carousel
+      class="landing-page__carousel"
+      [slides]="heroSlides"
+      (sectionRequested)="scrollToSection($event)"
+    />
   </div>
 
   <div class="landing-page__grid" id="funciones">

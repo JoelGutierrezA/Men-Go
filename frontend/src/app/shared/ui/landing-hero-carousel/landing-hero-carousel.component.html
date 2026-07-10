@@ -1,0 +1,166 @@
+<section
+  class="hero-carousel"
+  aria-label="Beneficios principales de MenuGo"
+  aria-roledescription="carousel"
+  (mouseenter)="pauseAutoplay()"
+  (mouseleave)="resumeAutoplay()"
+  (focusin)="pauseAutoplay()"
+  (focusout)="handleFocusOut($event)"
+>
+  <div class="hero-carousel__stage">
+    @for (slide of slides(); track slide.title; let index = $index) {
+      <article
+        class="hero-carousel__slide"
+        [class.hero-carousel__slide--active]="index === activeIndex()"
+        [attr.aria-hidden]="index === activeIndex() ? 'false' : 'true'"
+      >
+        <div class="hero-carousel__visual" [attr.data-mock]="slide.mockType">
+          @if (slide.imageUrl) {
+            <img
+              class="hero-carousel__image"
+              [src]="slide.imageUrl"
+              [alt]="slide.imageAlt"
+            />
+          } @else {
+            @switch (slide.mockType) {
+              @case ('menu') {
+                <div class="hero-carousel__mock hero-carousel__mock--menu" aria-hidden="true">
+                  <div class="hero-carousel__phone">
+                    <div class="hero-carousel__phone-top"></div>
+                    <div class="hero-carousel__phone-lines">
+                      <span></span>
+                      <span></span>
+                    </div>
+                    <div class="hero-carousel__phone-tags">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
+                    <div class="hero-carousel__phone-card hero-carousel__phone-card--primary"></div>
+                    <div class="hero-carousel__phone-card"></div>
+                    <div class="hero-carousel__phone-card"></div>
+                  </div>
+
+                  <div class="hero-carousel__floating hero-carousel__floating--menu">
+                    <span></span>
+                    <strong></strong>
+                    <small></small>
+                  </div>
+                </div>
+              }
+              @case ('qr') {
+                <div class="hero-carousel__mock hero-carousel__mock--qr" aria-hidden="true">
+                  <div class="hero-carousel__scene">
+                    <div class="hero-carousel__scene-surface"></div>
+                    <div class="hero-carousel__scene-person"></div>
+                    <div class="hero-carousel__scene-phone"></div>
+                    <div class="hero-carousel__scene-qr"></div>
+                  </div>
+
+                  <div class="hero-carousel__floating hero-carousel__floating--qr">
+                    <span></span>
+                    <strong></strong>
+                    <small></small>
+                  </div>
+                </div>
+              }
+              @case ('dashboard') {
+                <div class="hero-carousel__mock hero-carousel__mock--dashboard" aria-hidden="true">
+                  <div class="hero-carousel__browser">
+                    <div class="hero-carousel__browser-top">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
+
+                    <div class="hero-carousel__browser-body">
+                      <aside class="hero-carousel__browser-sidebar">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </aside>
+
+                      <div class="hero-carousel__browser-main">
+                        <div class="hero-carousel__browser-hero"></div>
+
+                        <div class="hero-carousel__browser-cards">
+                          <span></span>
+                          <span></span>
+                        </div>
+
+                        <div class="hero-carousel__browser-list">
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="hero-carousel__floating hero-carousel__floating--dashboard">
+                    <span></span>
+                    <strong></strong>
+                    <small></small>
+                  </div>
+                </div>
+              }
+            }
+          }
+        </div>
+
+        <div class="hero-carousel__content">
+          <span class="hero-carousel__eyebrow">{{ slide.eyebrow }}</span>
+          <h3>{{ slide.title }}</h3>
+          <p>{{ slide.description }}</p>
+          <button
+            mat-stroked-button
+            type="button"
+            class="hero-carousel__cta"
+            (click)="requestSection(slide.ctaTarget)"
+          >
+            {{ slide.ctaLabel }}
+          </button>
+        </div>
+      </article>
+    }
+  </div>
+
+  <div class="hero-carousel__navigation">
+    <div class="hero-carousel__indicators" aria-label="Indicadores del carrusel">
+      @for (slide of slides(); track slide.title; let index = $index) {
+        <button
+          type="button"
+          class="hero-carousel__indicator"
+          [class.hero-carousel__indicator--active]="index === activeIndex()"
+          [attr.aria-label]="'Ir al slide ' + (index + 1)"
+          [attr.aria-current]="index === activeIndex() ? 'true' : null"
+          (click)="showSlide(index)"
+        ></button>
+      }
+    </div>
+
+    <div class="hero-carousel__arrows">
+      <button
+        mat-icon-button
+        type="button"
+        class="hero-carousel__arrow"
+        aria-label="Slide anterior"
+        (click)="previousSlide()"
+      >
+        <mat-icon>west</mat-icon>
+      </button>
+
+      <button
+        mat-icon-button
+        type="button"
+        class="hero-carousel__arrow"
+        aria-label="Slide siguiente"
+        (click)="nextSlide()"
+      >
+        <mat-icon>east</mat-icon>
+      </button>
+    </div>
+  </div>
+</section>
