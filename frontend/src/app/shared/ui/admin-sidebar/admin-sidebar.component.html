@@ -8,13 +8,47 @@
   <mat-divider></mat-divider>
 
   <nav class="sidebar__nav" mat-nav-list>
-    @for (item of items(); track item.route) {
+    @for (item of items(); track item.route ?? item.label) {
       @if (item.disabled) {
         <button mat-list-item type="button" disabled>
           <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
           <span matListItemTitle>{{ item.label }}</span>
           <span matListItemMeta>Proximamente</span>
         </button>
+      } @else if (item.children?.length) {
+        <div class="sidebar__group">
+          <button
+            class="sidebar__group-toggle"
+            type="button"
+            [class.sidebar__group-toggle--open]="isExpanded(item)"
+            [class.sidebar__group-toggle--active]="hasActiveChild(item)"
+            (click)="toggleGroup(item.label)"
+          >
+            <span class="sidebar__group-main">
+              <mat-icon>{{ item.icon }}</mat-icon>
+              <span>{{ item.label }}</span>
+            </span>
+            <mat-icon class="sidebar__group-arrow">expand_more</mat-icon>
+          </button>
+
+          @if (isExpanded(item)) {
+            <div class="sidebar__children">
+              @for (child of item.children; track child.route ?? child.label) {
+                <a
+                  mat-list-item
+                  class="sidebar__child-link"
+                  [routerLink]="child.route"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="navigate.emit()"
+                >
+                  <mat-icon matListItemIcon>{{ child.icon }}</mat-icon>
+                  <span matListItemTitle>{{ child.label }}</span>
+                </a>
+              }
+            </div>
+          }
+        </div>
       } @else {
         <a
           mat-list-item

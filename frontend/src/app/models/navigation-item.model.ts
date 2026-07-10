@@ -1,6 +1,7 @@
 export interface NavigationItem {
   label: string;
-  route: string;
   icon: string;
+  route?: string;
   disabled?: boolean;
+  children?: NavigationItem[];
 }

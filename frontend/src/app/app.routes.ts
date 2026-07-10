@@ -70,7 +70,7 @@ export const routes: Routes = [
         footerLabel: 'Acceso usuario',
         footerText:
           'Base visual lista para categorias, productos, QR y publicacion.',
-        brandRoute: '/panel/menu',
+        brandRoute: '/panel/menu/identidad',
         brandSubtitle: 'Panel del negocio',
       },
     },
@@ -78,17 +78,33 @@ export const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'menu',
+        redirectTo: 'menu/identidad',
       },
       {
         path: 'dashboard',
         pathMatch: 'full',
-        redirectTo: 'menu',
+        redirectTo: 'menu/identidad',
       },
       {
         path: 'menu',
+        pathMatch: 'full',
+        redirectTo: 'menu/identidad',
+      },
+      {
+        path: 'menu/identidad',
         component: DashboardPageComponent,
         title: 'MenuGo | Creacion de menu',
+        data: {
+          step: 1,
+        },
+      },
+      {
+        path: 'menu/estilo',
+        component: DashboardPageComponent,
+        title: 'MenuGo | Estilo visual',
+        data: {
+          step: 2,
+        },
       },
     ],
   },

@@ -1,24 +1,320 @@
 <section class="page-shell dashboard-page">
-  <header class="dashboard-page__header">
-    <span>Plataforma de usuario</span>
-    <h1>Dashboard de creacion de menu para {{ currentAlias() }}.</h1>
-    <p>
-      Esta vista temporal ya separa la experiencia del negocio respecto del
-      admin y deja lista la base para construir la gestion completa del menu.
-    </p>
-  </header>
+  <div class="dashboard-page__workspace">
+    <mat-card class="dashboard-page__card dashboard-page__card--editor">
+      <mat-card-header>
+        <mat-card-title>{{ editorTitle() }}</mat-card-title>
+      </mat-card-header>
 
-  <div class="dashboard-page__grid">
-    @for (section of sections; track section.title) {
-      <mat-card class="dashboard-page__card">
-        <mat-card-header>
-          <mat-card-title>{{ section.title }}</mat-card-title>
-          <mat-card-subtitle>Preparado para la siguiente fase</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          <p>{{ section.description }}</p>
-        </mat-card-content>
-      </mat-card>
-    }
+      <mat-card-content class="dashboard-page__editor">
+        @if (currentStep() === 1) {
+          <div class="dashboard-page__step-content">
+            <div class="dashboard-page__step-copy">
+              <span>Primera etapa</span>
+              <h2>Dinos el nombre de tu restaurante, bar, pub o cafeteria.</h2>
+              <p>
+                Agrega la identidad base del negocio y define las categorias
+                principales del menu antes de pasar al estilo visual.
+              </p>
+            </div>
+
+            <div class="dashboard-page__logo-area">
+              <div class="dashboard-page__logo-preview">
+                @if (draft().logoDataUrl) {
+                  <img [src]="draft().logoDataUrl" alt="Logo del negocio" />
+                } @else {
+                  <span>{{ previewInitial() }}</span>
+                }
+              </div>
+
+              <div class="dashboard-page__logo-actions">
+                <input
+                  #logoInput
+                  class="dashboard-page__logo-input"
+                  type="file"
+                  accept="image/*"
+                  (change)="handleLogoSelection($event)"
+                />
+                <button
+                  mat-stroked-button
+                  type="button"
+                  (click)="logoInput.click()"
+                >
+                  <mat-icon>upload</mat-icon>
+                  Cargar logo
+                </button>
+                @if (draft().logoDataUrl) {
+                  <button mat-button type="button" (click)="removeLogo()">
+                    Quitar logo
+                  </button>
+                }
+                <small>Formatos permitidos: imagen, maximo 2 MB.</small>
+                @if (logoError()) {
+                  <p class="dashboard-page__error">{{ logoError() }}</p>
+                }
+              </div>
+            </div>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Titulo del menu</mat-label>
+              <input
+                matInput
+                [value]="draft().businessTitle"
+                (input)="updateTitle($any($event.target).value)"
+                placeholder="Ej: Bar Central, Cafe Aurora, Pub Norte"
+              />
+            </mat-form-field>
+
+            <div class="dashboard-page__category-entry">
+              <mat-form-field appearance="outline" class="dashboard-page__category-field">
+                <mat-label>Nueva categoria</mat-label>
+                <input
+                  matInput
+                  [value]="categoryName()"
+                  (input)="updateCategoryName($any($event.target).value)"
+                  (keydown.enter)="$event.preventDefault(); addCategory()"
+                  placeholder="Ej: Entradas, Bebidas, Postres"
+                />
+              </mat-form-field>
+
+              <button mat-flat-button type="button" (click)="addCategory()">
+                Agregar
+              </button>
+            </div>
+
+            @if (categoryError()) {
+              <p class="dashboard-page__error">{{ categoryError() }}</p>
+            }
+
+            <div class="dashboard-page__categories">
+              <div class="dashboard-page__section-heading">
+                <strong>Categorias principales</strong>
+                <span>{{ categoriesSummary() }}</span>
+              </div>
+
+              @if (draft().categories.length > 0) {
+                <div class="dashboard-page__category-list">
+                  @for (category of draft().categories; track category.id) {
+                    <div class="dashboard-page__category-chip">
+                      <span>{{ category.name }}</span>
+                      <button
+                        mat-icon-button
+                        type="button"
+                        aria-label="Quitar categoria"
+                        (click)="removeCategory(category.id)"
+                      >
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </div>
+                  }
+                </div>
+              } @else {
+                <p class="dashboard-page__empty">
+                  Agrega categorias para empezar a estructurar tu menu digital.
+                </p>
+              }
+            </div>
+
+            @if (stepError()) {
+              <p class="dashboard-page__error">{{ stepError() }}</p>
+            }
+
+            <div class="dashboard-page__step-actions">
+              <button mat-flat-button type="button" (click)="goToStep(2)">
+                Siguiente
+              </button>
+            </div>
+          </div>
+        }
+
+        @if (currentStep() === 2) {
+          <div class="dashboard-page__step-content">
+            <div class="dashboard-page__step-copy">
+              <span>Segunda etapa</span>
+              <h2>Define el estilo visual del primer esqueleto del menu.</h2>
+              <p>
+                Elige colores, tipografia y estilo del titulo para generar una
+                primera previsualizacion del menu digital.
+              </p>
+            </div>
+
+            <div class="dashboard-page__theme-grid">
+              <label class="dashboard-page__color-field">
+                <span>Color de fondo</span>
+                <input
+                  type="color"
+                  [value]="draft().theme.backgroundColor"
+                  (input)="updateThemeColor('backgroundColor', $any($event.target).value)"
+                />
+              </label>
+
+              <label class="dashboard-page__color-field">
+                <span>Color de categorias</span>
+                <input
+                  type="color"
+                  [value]="draft().theme.categoryColor"
+                  (input)="updateThemeColor('categoryColor', $any($event.target).value)"
+                />
+              </label>
+
+              <label class="dashboard-page__color-field">
+                <span>Color del titulo</span>
+                <input
+                  type="color"
+                  [value]="draft().theme.titleColor"
+                  (input)="updateThemeColor('titleColor', $any($event.target).value)"
+                />
+              </label>
+
+              <label class="dashboard-page__color-field">
+                <span>Color del texto</span>
+                <input
+                  type="color"
+                  [value]="draft().theme.textColor"
+                  (input)="updateThemeColor('textColor', $any($event.target).value)"
+                />
+              </label>
+            </div>
+
+            <div class="dashboard-page__type-grid">
+              <mat-form-field appearance="outline">
+                <mat-label>Fuente principal</mat-label>
+                <mat-select
+                  [value]="draft().theme.fontFamily"
+                  (valueChange)="updateFontFamily($event)"
+                >
+                  @for (option of fontOptions; track option.value) {
+                    <mat-option [value]="option.value">{{ option.label }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Tamano del titulo</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  min="24"
+                  max="56"
+                  [value]="draft().theme.titleFontSize"
+                  (input)="updateThemeNumber('titleFontSize', $any($event.target).value)"
+                />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Tamano del texto</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  min="14"
+                  max="24"
+                  [value]="draft().theme.bodyFontSize"
+                  (input)="updateThemeNumber('bodyFontSize', $any($event.target).value)"
+                />
+              </mat-form-field>
+            </div>
+
+            <div class="dashboard-page__style-toggles">
+              <button
+                mat-stroked-button
+                type="button"
+                [class.dashboard-page__toggle--active]="draft().theme.titleBold"
+                (click)="toggleTitleBold()"
+              >
+                Negrita
+              </button>
+
+              <button
+                mat-stroked-button
+                type="button"
+                [class.dashboard-page__toggle--active]="draft().theme.titleItalic"
+                (click)="toggleTitleItalic()"
+              >
+                Cursiva
+              </button>
+            </div>
+
+            <div class="dashboard-page__step-actions">
+              <button mat-button type="button" (click)="goToStep(1)">
+                Volver
+              </button>
+            </div>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="dashboard-page__card dashboard-page__card--preview">
+      <mat-card-header class="dashboard-page__preview-header-copy">
+        <mat-card-title>Previsualizacion del menu</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content class="dashboard-page__preview">
+        <div class="dashboard-page__phone-frame" aria-label="Vista previa movil del menu">
+          <div class="dashboard-page__phone-notch"></div>
+          <div class="dashboard-page__phone-screen">
+            <div
+              class="dashboard-page__menu-preview"
+              [style.background]="draft().theme.backgroundColor"
+              [style.color]="draft().theme.textColor"
+              [style.font-family]="draft().theme.fontFamily"
+              [style.font-size.px]="draft().theme.bodyFontSize"
+            >
+              <div class="dashboard-page__menu-preview-header">
+                <div class="dashboard-page__preview-logo">
+                  @if (draft().logoDataUrl) {
+                    <img [src]="draft().logoDataUrl" alt="Logo cargado" />
+                  } @else {
+                    <span>{{ previewInitial() }}</span>
+                  }
+                </div>
+
+                <div class="dashboard-page__preview-copy">
+                  <h2
+                    [style.color]="draft().theme.titleColor"
+                    [style.font-size.px]="draft().theme.titleFontSize"
+                    [style.font-weight]="draft().theme.titleBold ? 700 : 500"
+                    [style.font-style]="draft().theme.titleItalic ? 'italic' : 'normal'"
+                  >
+                    {{ draft().businessTitle || 'Titulo de tu menu' }}
+                  </h2>
+                  <p>{{ categoriesSummary() }}</p>
+                </div>
+              </div>
+
+              @if (draft().categories.length > 0) {
+                <div class="dashboard-page__menu-sections">
+                  @for (category of draft().categories; track category.id) {
+                    <article class="dashboard-page__menu-section">
+                      <div
+                        class="dashboard-page__menu-category"
+                        [style.background]="draft().theme.categoryColor"
+                        [style.color]="categoryTextColor()"
+                      >
+                        {{ category.name }}
+                      </div>
+                      <div class="dashboard-page__menu-placeholder">
+                        <p>Aqui apareceran los productos de esta categoria.</p>
+                      </div>
+                    </article>
+                  }
+                </div>
+              } @else {
+                <p class="dashboard-page__empty">
+                  Todavia no hay categorias para construir el esqueleto del menu.
+                </p>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-page__preview-block">
+          <span>Estado del constructor</span>
+          <p>
+            Ya tienes una base visual para seguir con productos, precios e
+            imagenes en la siguiente fase del panel.
+          </p>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </div>
 </section>

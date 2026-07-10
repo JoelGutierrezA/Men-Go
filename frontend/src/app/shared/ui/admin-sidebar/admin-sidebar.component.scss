@@ -31,6 +31,62 @@
   padding-top: 0.75rem;
 }
 
+.sidebar__group {
+  display: grid;
+  gap: 0.45rem;
+  margin-bottom: 0.4rem;
+}
+
+.sidebar__group-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.95rem 1rem;
+  border: 0;
+  border-radius: 1rem;
+  color: var(--mg-text);
+  text-align: left;
+  cursor: pointer;
+  background: rgba(43, 182, 115, 0.08);
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.sidebar__group-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-weight: 600;
+}
+
+.sidebar__group-toggle--active,
+.sidebar__group-toggle:hover {
+  color: var(--mg-accent);
+  background: rgba(43, 182, 115, 0.14);
+}
+
+.sidebar__group-arrow {
+  transition: transform 0.2s ease;
+}
+
+.sidebar__group-toggle--open .sidebar__group-arrow {
+  transform: rotate(180deg);
+}
+
+.sidebar__children {
+  display: grid;
+  gap: 0.3rem;
+  padding-left: 0.55rem;
+}
+
+.sidebar__child-link {
+  padding-left: 0.35rem;
+}
+
 .sidebar__nav .active {
   border-radius: 0.9rem;
   color: var(--mg-accent);
