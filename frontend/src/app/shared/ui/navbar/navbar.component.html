@@ -4,24 +4,29 @@
       <button
         mat-icon-button
         type="button"
-        aria-label="Abrir navegación"
+        aria-label="Abrir navegacion"
         (click)="menuRequested.emit()"
       >
         <mat-icon>menu</mat-icon>
       </button>
     }
 
-    <a class="navbar__brand" routerLink="/admin/dashboard">
+    <a class="navbar__brand" [routerLink]="brandRoute()">
       <span class="navbar__brand-mark">M</span>
       <span class="navbar__brand-copy">
-        <strong>MenúGo</strong>
-        <small>Admin SaaS</small>
+        <strong>MenuGo</strong>
+        <small>{{ brandSubtitle() }}</small>
       </span>
     </a>
   </div>
 
   <div class="navbar__actions">
-    <a mat-button routerLink="/">Landing</a>
-    <a mat-flat-button routerLink="/login">Login</a>
+    @if (sessionEmail()) {
+      <span class="navbar__session">{{ sessionEmail() }}</span>
+    }
+    <a mat-button [routerLink]="homeRoute()">{{ homeLabel() }}</a>
+    <button mat-flat-button type="button" (click)="logout()">
+      Cerrar sesion
+    </button>
   </div>
 </mat-toolbar>

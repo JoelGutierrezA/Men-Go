@@ -21,6 +21,11 @@
   gap: 0.75rem;
 }
 
+.navbar__actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
 .navbar__brand {
   display: flex;
   align-items: center;
@@ -54,13 +59,20 @@
   color: var(--mg-muted);
 }
 
+.navbar__session {
+  color: var(--mg-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
 .navbar .mat-mdc-unelevated-button:not(:disabled) {
   color: #ffffff;
   background: var(--mg-primary);
 }
 
 @media (max-width: 640px) {
-  .navbar__actions a:first-child {
+  .navbar__session,
+  .navbar__actions a:first-of-type {
     display: none;
   }
 }

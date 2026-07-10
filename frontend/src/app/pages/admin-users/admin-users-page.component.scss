@@ -1,0 +1,53 @@
+.admin-users-page {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.admin-users-page__header {
+  display: grid;
+  gap: 0.65rem;
+  padding: 1.5rem;
+  border: 1px solid var(--mg-border);
+  border-radius: 1.7rem;
+  background: var(--mg-surface);
+  box-shadow: var(--mg-shadow);
+}
+
+.admin-users-page__header span {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mg-primary);
+}
+
+.admin-users-page__header h1 {
+  font-size: clamp(2rem, 5vw, 3.3rem);
+  line-height: 0.98;
+}
+
+.admin-users-page__card {
+  border-radius: 1.5rem;
+  border: 1px solid var(--mg-border);
+  background: var(--mg-surface);
+  box-shadow: var(--mg-shadow);
+}
+
+.admin-users-page__table-wrap {
+  overflow-x: auto;
+}
+
+.admin-users-page__table {
+  width: 100%;
+  background: transparent;
+}
+
+.admin-users-page__table th {
+  color: var(--mg-muted);
+  font-weight: 700;
+}
+
+.admin-users-page__table td,
+.admin-users-page__table th {
+  padding-block: 0.9rem;
+}

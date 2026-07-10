@@ -7,6 +7,11 @@
   >
     <app-admin-sidebar
       [items]="navigationItems"
+      [eyebrow]="sidebarEyebrow"
+      [title]="sidebarTitle"
+      [description]="sidebarDescription"
+      [footerLabel]="footerLabel"
+      [footerText]="footerText"
       (navigate)="closeSidebar()"
     ></app-admin-sidebar>
   </mat-sidenav>
@@ -14,6 +19,11 @@
   <mat-sidenav-content class="layout-content">
     <app-navbar
       [showMenuButton]="isMobile()"
+      [brandRoute]="brandRoute"
+      [brandSubtitle]="brandSubtitle"
+      [homeRoute]="landingRoute"
+      [homeLabel]="'Landing'"
+      [sessionEmail]="currentUser()?.email ?? null"
       (menuRequested)="toggleSidebar()"
     ></app-navbar>
 

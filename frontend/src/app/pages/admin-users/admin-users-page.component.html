@@ -1,0 +1,51 @@
+<section class="page-shell admin-users-page">
+  <header class="admin-users-page__header">
+    <span>Panel administrador</span>
+    <h1>Usuarios inscritos en MenuGo.</h1>
+    <p>
+      Esta vista temporal concentra los accesos predefinidos disponibles para
+      probar la plataforma mientras seguimos sin persistencia real.
+    </p>
+  </header>
+
+  <mat-card class="admin-users-page__card">
+    <mat-card-header>
+      <mat-card-title>Lista de usuarios</mat-card-title>
+      <mat-card-subtitle>
+        {{ users.length }} accesos temporales activos
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="admin-users-page__table-wrap">
+        <table
+          mat-table
+          [dataSource]="users"
+          class="admin-users-page__table"
+        >
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>Correo</th>
+            <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef>Perfil</th>
+            <td mat-cell *matCellDef="let user">
+              <mat-chip>{{ getRoleLabel(user.role) }}</mat-chip>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="access">
+            <th mat-header-cell *matHeaderCellDef>Destino</th>
+            <td mat-cell *matCellDef="let user">
+              {{ getAccessLabel(user.role) }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</section>

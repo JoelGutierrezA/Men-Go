@@ -21,6 +21,19 @@
   gap: 0.7rem;
 }
 
+.login-page__credentials {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem 1.1rem;
+  border-radius: 1.15rem;
+  background: rgba(43, 182, 115, 0.1);
+}
+
+.login-page__credentials strong,
+.login-page__credentials span {
+  color: var(--mg-text);
+}
+
 .login-page__intro span {
   font-size: 0.78rem;
   font-weight: 700;
@@ -37,6 +50,12 @@
 .login-page__form {
   display: grid;
   gap: 1rem;
+}
+
+.login-page__error {
+  color: #c62828;
+  font-size: 0.92rem;
+  font-weight: 600;
 }
 
 @media (min-width: 900px) {

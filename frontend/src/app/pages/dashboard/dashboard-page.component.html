@@ -1,19 +1,19 @@
 <section class="page-shell dashboard-page">
   <header class="dashboard-page__header">
-    <span>Panel temporal</span>
-    <h1>Arquitectura preparada para el SaaS MenúGo.</h1>
+    <span>Plataforma de usuario</span>
+    <h1>Dashboard de creacion de menu para {{ currentAlias() }}.</h1>
     <p>
-      Este dashboard no consume datos todavía. Su objetivo es dejar lista la
-      navegación, la experiencia visual y la separación por dominios.
+      Esta vista temporal ya separa la experiencia del negocio respecto del
+      admin y deja lista la base para construir la gestion completa del menu.
     </p>
   </header>
 
   <div class="dashboard-page__grid">
     @for (section of sections; track section.title) {
-      <mat-card appearance="outlined" class="dashboard-page__card">
+      <mat-card class="dashboard-page__card">
         <mat-card-header>
           <mat-card-title>{{ section.title }}</mat-card-title>
-          <mat-card-subtitle>Base lista para crecer</mat-card-subtitle>
+          <mat-card-subtitle>Preparado para la siguiente fase</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
           <p>{{ section.description }}</p>

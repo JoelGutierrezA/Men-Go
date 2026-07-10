@@ -1,29 +1,64 @@
 <section class="page-shell login-page">
   <mat-card appearance="outlined" class="login-page__card">
     <div class="login-page__intro">
-      <span>Acceso temporal</span>
-      <h1>Inicio de sesión preparado para la siguiente fase.</h1>
+      <span>Acceso temporal activo</span>
+      <h1>Ingresa a MenuGo segun el perfil disponible.</h1>
       <p>
-        La autenticación JWT del backend ya quedó preparada. En este sprint solo
-        dejamos el flujo visual y la estructura del módulo.
+        En esta fase dejamos dos accesos temporales para probar la separacion
+        entre la plataforma de usuario y la interfaz admin.
       </p>
+      <div class="login-page__credentials">
+        <strong>Usuarios disponibles</strong>
+        <p><span>Usuario:</span> jgutiale@gmail.com / admin123</p>
+        <p><span>Admin:</span> admin@menugo.com / admin123</p>
+      </div>
       <a mat-button routerLink="/">Volver a la landing</a>
     </div>
 
-    <form class="login-page__form">
+    <form class="login-page__form" [formGroup]="loginForm" (ngSubmit)="submit()">
       <mat-form-field appearance="outline">
         <mat-label>Correo de trabajo</mat-label>
-        <input matInput type="email" />
+        <input matInput type="email" formControlName="email" />
+        @if (loginForm.controls.email.hasError('required')) {
+          <mat-error>Ingresa un correo.</mat-error>
+        }
+        @if (
+          loginForm.controls.email.hasError('email') &&
+          !loginForm.controls.email.hasError('required')
+        ) {
+          <mat-error>Ingresa un correo valido.</mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Contraseña</mat-label>
-        <input matInput type="password" />
+        <mat-label>Contrasena</mat-label>
+        <input
+          matInput
+          [type]="showPassword() ? 'text' : 'password'"
+          formControlName="password"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          [attr.aria-label]="
+            showPassword() ? 'Ocultar contrasena' : 'Mostrar contrasena'
+          "
+          [attr.aria-pressed]="showPassword()"
+          (click)="togglePasswordVisibility()"
+        >
+          <mat-icon>{{ showPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (loginForm.controls.password.hasError('required')) {
+          <mat-error>Ingresa una contrasena.</mat-error>
+        }
       </mat-form-field>
 
-      <button mat-flat-button type="button" disabled>
-        Disponible en la siguiente fase
-      </button>
+      @if (errorMessage()) {
+        <p class="login-page__error">{{ errorMessage() }}</p>
+      }
+
+      <button mat-flat-button type="submit">Ingresar a la plataforma</button>
     </form>
   </mat-card>
 </section>

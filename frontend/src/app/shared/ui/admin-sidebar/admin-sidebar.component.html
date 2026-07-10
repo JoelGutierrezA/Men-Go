@@ -1,11 +1,8 @@
 <aside class="sidebar">
   <header class="sidebar__header">
-    <span class="sidebar__eyebrow">Administración</span>
-    <h2>Base del panel</h2>
-    <p>
-      Estructura preparada para crecer por módulos sin mezclar UI, acceso y
-      dominio.
-    </p>
+    <span class="sidebar__eyebrow">{{ eyebrow() }}</span>
+    <h2>{{ title() }}</h2>
+    <p>{{ description() }}</p>
   </header>
 
   <mat-divider></mat-divider>
@@ -16,7 +13,7 @@
         <button mat-list-item type="button" disabled>
           <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
           <span matListItemTitle>{{ item.label }}</span>
-          <span matListItemMeta>Próximamente</span>
+          <span matListItemMeta>Proximamente</span>
         </button>
       } @else {
         <a
@@ -34,7 +31,7 @@
   </nav>
 
   <div class="sidebar__footer">
-    <span>Fase 1</span>
-    <p>Sin persistencia ni lógica de negocio aún.</p>
+    <span>{{ footerLabel() }}</span>
+    <p>{{ footerText() }}</p>
   </div>
 </aside>

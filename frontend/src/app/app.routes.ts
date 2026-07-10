@@ -1,6 +1,9 @@
 import { Routes } from '@angular/router';
+import { adminNavigation } from '@core/navigation/admin-navigation';
+import { userNavigation } from '@core/navigation/user-navigation';
 import { authGuard } from '@guards/auth.guard';
 import { MainLayoutComponent } from '@layouts/main-layout/main-layout.component';
+import { AdminUsersPageComponent } from '@pages/admin-users/admin-users-page.component';
 import { DataProtectionPageComponent } from '@pages/data-protection/data-protection-page.component';
 import { DashboardPageComponent } from '@pages/dashboard/dashboard-page.component';
 import { FeaturesPageComponent } from '@pages/features/features-page.component';
@@ -53,19 +56,75 @@ export const routes: Routes = [
     title: 'MenuGo | Registro',
   },
   {
-    path: 'admin',
+    path: 'panel',
     component: MainLayoutComponent,
     canActivate: [authGuard],
+    data: {
+      roles: ['user'],
+      layoutConfig: {
+        navigationItems: userNavigation,
+        sidebarEyebrow: 'Tu plataforma',
+        sidebarTitle: 'Creacion de menu',
+        sidebarDescription:
+          'Espacio temporal para preparar la experiencia de administracion del menu digital del negocio.',
+        footerLabel: 'Acceso usuario',
+        footerText:
+          'Base visual lista para categorias, productos, QR y publicacion.',
+        brandRoute: '/panel/menu',
+        brandSubtitle: 'Panel del negocio',
+      },
+    },
     children: [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'dashboard',
+        redirectTo: 'menu',
       },
       {
         path: 'dashboard',
+        pathMatch: 'full',
+        redirectTo: 'menu',
+      },
+      {
+        path: 'menu',
         component: DashboardPageComponent,
-        title: 'MenuGo | Dashboard',
+        title: 'MenuGo | Creacion de menu',
+      },
+    ],
+  },
+  {
+    path: 'admin',
+    component: MainLayoutComponent,
+    canActivate: [authGuard],
+    data: {
+      roles: ['admin'],
+      layoutConfig: {
+        navigationItems: adminNavigation,
+        sidebarEyebrow: 'Administracion',
+        sidebarTitle: 'Usuarios inscritos',
+        sidebarDescription:
+          'Interfaz temporal para revisar quienes ya tienen acceso a MenuGo en esta fase inicial.',
+        footerLabel: 'Acceso admin',
+        footerText: 'Solo se muestra la lista de usuarios definidos para prueba.',
+        brandRoute: '/admin/users',
+        brandSubtitle: 'Interfaz admin',
+      },
+    },
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'users',
+      },
+      {
+        path: 'dashboard',
+        pathMatch: 'full',
+        redirectTo: 'users',
+      },
+      {
+        path: 'users',
+        component: AdminUsersPageComponent,
+        title: 'MenuGo | Usuarios inscritos',
       },
     ],
   },

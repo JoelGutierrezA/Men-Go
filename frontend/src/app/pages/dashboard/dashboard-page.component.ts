@@ -1,5 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+import { AuthService } from '@services/auth.service';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -9,26 +15,34 @@ import { MatCardModule } from '@angular/material/card';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardPageComponent {
+  private readonly authService = inject(AuthService);
+
+  protected readonly currentUser = this.authService.currentUser;
+  protected readonly currentAlias = computed(() => {
+    const currentUser = this.currentUser();
+    return currentUser ? this.authService.getUserAlias(currentUser.email) : '';
+  });
+
   protected readonly sections = [
     {
-      title: 'Restaurantes',
+      title: 'Estructura del menu',
       description:
-        'Preparado para alojar la configuración principal de cada negocio y sus futuras sucursales.',
+        'Este espacio queda listo para organizar la carta principal del negocio y definir como se mostrara al cliente.',
     },
     {
-      title: 'Categorías y productos',
+      title: 'Categorias y productos',
       description:
-        'Base lista para estructurar menús digitales, precios, descripciones e imágenes.',
+        'La base visual ya esta preparada para cargar secciones, platos, precios, descripciones e imagenes.',
     },
     {
-      title: 'Promociones',
+      title: 'Vista QR del menu',
       description:
-        'Espacio reservado para campañas, destacados y activaciones comerciales.',
+        'Aqui seguiremos con la experiencia publica que recibira el cliente al escanear el codigo QR.',
     },
     {
-      title: 'Temas visuales',
+      title: 'Publicacion y ajustes',
       description:
-        'Módulo pensado para personalizar la presentación del menú por marca o local.',
+        'La arquitectura ya contempla temas visuales, promociones y configuracion por negocio para las siguientes fases.',
     },
   ];
 }
