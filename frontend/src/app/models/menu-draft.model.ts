@@ -1,6 +1,15 @@
+export interface MenuProductDraft {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  imageDataUrl: string | null;
+}
+
 export interface MenuCategoryDraft {
   id: string;
   name: string;
+  products: MenuProductDraft[];
 }
 
 export interface MenuThemeDraft {
@@ -13,6 +22,13 @@ export interface MenuThemeDraft {
   bodyFontSize: number;
   titleBold: boolean;
   titleItalic: boolean;
+  productFontFamily: string;
+  productFontSize: number;
+  productNameColor: string;
+  productDescriptionColor: string;
+  productPriceColor: string;
+  productNameBold: boolean;
+  productNameItalic: boolean;
 }
 
 export interface MenuDraft {
@@ -32,6 +48,13 @@ export const createDefaultMenuTheme = (): MenuThemeDraft => ({
   bodyFontSize: 16,
   titleBold: true,
   titleItalic: false,
+  productFontFamily: 'Manrope, sans-serif',
+  productFontSize: 16,
+  productNameColor: '#1c1c1c',
+  productDescriptionColor: '#5f6f7b',
+  productPriceColor: '#138a55',
+  productNameBold: true,
+  productNameItalic: false,
 });
 
 export const createEmptyMenuDraft = (): MenuDraft => ({

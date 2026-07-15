@@ -110,6 +110,14 @@ export const routes: Routes = [
           step: 2,
         },
       },
+      {
+        path: 'menu/productos',
+        component: DashboardPageComponent,
+        title: 'MenuGo | Productos',
+        data: {
+          step: 3,
+        },
+      },
     ],
   },
   {

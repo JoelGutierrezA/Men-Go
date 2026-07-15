@@ -9,11 +9,9 @@
         @if (currentStep() === 1) {
           <div class="dashboard-page__step-content">
             <div class="dashboard-page__step-copy">
-              <span>Primera etapa</span>
-              <h2>Dinos el nombre de tu restaurante, bar, pub o cafeteria.</h2>
+              <h2>Identidad del menu</h2>
               <p>
-                Agrega la identidad base del negocio y define las categorias
-                principales del menu antes de pasar al estilo visual.
+                Agrega el logo, nombre del negocio y categorias principales.
               </p>
             </div>
 
@@ -129,11 +127,9 @@
         @if (currentStep() === 2) {
           <div class="dashboard-page__step-content">
             <div class="dashboard-page__step-copy">
-              <span>Segunda etapa</span>
-              <h2>Define el estilo visual del primer esqueleto del menu.</h2>
+              <h2>Estilo visual</h2>
               <p>
-                Elige colores, tipografia y estilo del titulo para generar una
-                primera previsualizacion del menu digital.
+                Elige colores, tipografia y estilo del titulo del menu.
               </p>
             </div>
 
@@ -237,7 +233,259 @@
               <button mat-button type="button" (click)="goToStep(1)">
                 Volver
               </button>
+              <button mat-flat-button type="button" (click)="goToStep(3)">
+                Siguiente
+              </button>
             </div>
+          </div>
+        }
+
+        @if (currentStep() === 3) {
+          <div class="dashboard-page__step-content">
+            <div class="dashboard-page__step-copy">
+              <h2>Agrega productos</h2>
+              <p>
+                Completa nombre, descripcion, valor e imagen por categoria.
+              </p>
+            </div>
+
+            @if (draft().categories.length > 0) {
+              <div class="dashboard-page__product-entry">
+                <mat-form-field appearance="outline">
+                  <mat-label>Categoria</mat-label>
+                  <mat-select
+                    [value]="selectedCategoryId()"
+                    (valueChange)="updateSelectedCategory($event)"
+                  >
+                    @for (category of draft().categories; track category.id) {
+                      <mat-option [value]="category.id">{{ category.name }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Nombre del producto</mat-label>
+                  <input
+                    matInput
+                    [value]="productName()"
+                    (input)="updateProductName($any($event.target).value)"
+                    placeholder="Ej: Pizza margarita"
+                  />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Valor</mat-label>
+                  <input
+                    matInput
+                    [value]="productPrice()"
+                    (input)="updateProductPrice($any($event.target).value)"
+                    placeholder="Ej: $8.990"
+                  />
+                </mat-form-field>
+              </div>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Descripcion</mat-label>
+                <textarea
+                  matInput
+                  rows="3"
+                  [value]="productDescription()"
+                  (input)="updateProductDescription($any($event.target).value)"
+                  placeholder="Ingredientes, preparacion o detalle relevante"
+                ></textarea>
+              </mat-form-field>
+
+              <div class="dashboard-page__product-image-area">
+                <div class="dashboard-page__product-image-preview">
+                  @if (productImageDataUrl()) {
+                    <img [src]="productImageDataUrl()" alt="Imagen del producto" />
+                  } @else {
+                    <mat-icon>add_photo_alternate</mat-icon>
+                  }
+                </div>
+
+                <div class="dashboard-page__logo-actions">
+                  <input
+                    #productImageInput
+                    class="dashboard-page__logo-input"
+                    type="file"
+                    accept="image/*"
+                    (change)="handleProductImageSelection($event)"
+                  />
+                  <button
+                    mat-stroked-button
+                    type="button"
+                    (click)="productImageInput.click()"
+                  >
+                    <mat-icon>upload</mat-icon>
+                    Adjuntar imagen
+                  </button>
+                  @if (productImageDataUrl()) {
+                    <button
+                      mat-button
+                      type="button"
+                      (click)="removePendingProductImage()"
+                    >
+                      Quitar imagen
+                    </button>
+                  }
+                  <small>Formatos permitidos: imagen, maximo 2 MB.</small>
+                  @if (productImageError()) {
+                    <p class="dashboard-page__error">{{ productImageError() }}</p>
+                  }
+                </div>
+              </div>
+
+              <div class="dashboard-page__type-grid">
+                <mat-form-field appearance="outline">
+                  <mat-label>Fuente de productos</mat-label>
+                  <mat-select
+                    [value]="draft().theme.productFontFamily"
+                    (valueChange)="updateProductFontFamily($event)"
+                  >
+                    @for (option of fontOptions; track option.value) {
+                      <mat-option [value]="option.value">{{ option.label }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Tamano de letra</mat-label>
+                  <input
+                    matInput
+                    type="number"
+                    min="13"
+                    max="24"
+                    [value]="draft().theme.productFontSize"
+                    (input)="updateThemeNumber('productFontSize', $any($event.target).value)"
+                  />
+                </mat-form-field>
+              </div>
+
+              <div class="dashboard-page__theme-grid">
+                <label class="dashboard-page__color-field">
+                  <span>Color del nombre</span>
+                  <input
+                    type="color"
+                    [value]="draft().theme.productNameColor"
+                    (input)="updateThemeColor('productNameColor', $any($event.target).value)"
+                  />
+                </label>
+
+                <label class="dashboard-page__color-field">
+                  <span>Color de descripcion</span>
+                  <input
+                    type="color"
+                    [value]="draft().theme.productDescriptionColor"
+                    (input)="updateThemeColor('productDescriptionColor', $any($event.target).value)"
+                  />
+                </label>
+
+                <label class="dashboard-page__color-field">
+                  <span>Color del valor</span>
+                  <input
+                    type="color"
+                    [value]="draft().theme.productPriceColor"
+                    (input)="updateThemeColor('productPriceColor', $any($event.target).value)"
+                  />
+                </label>
+              </div>
+
+              <div class="dashboard-page__style-toggles">
+                <button
+                  mat-stroked-button
+                  type="button"
+                  [class.dashboard-page__toggle--active]="draft().theme.productNameBold"
+                  (click)="toggleProductNameBold()"
+                >
+                  Negrita
+                </button>
+
+                <button
+                  mat-stroked-button
+                  type="button"
+                  [class.dashboard-page__toggle--active]="draft().theme.productNameItalic"
+                  (click)="toggleProductNameItalic()"
+                >
+                  Cursiva
+                </button>
+              </div>
+
+              @if (productError()) {
+                <p class="dashboard-page__error">{{ productError() }}</p>
+              }
+
+              <div class="dashboard-page__step-actions">
+                <button mat-flat-button type="button" (click)="addProduct()">
+                  Agregar producto
+                </button>
+                <button mat-button type="button" (click)="goToStep(2)">
+                  Volver
+                </button>
+              </div>
+
+              <div class="dashboard-page__products">
+                <div class="dashboard-page__section-heading">
+                  <strong>Productos por categoria</strong>
+                  <span>{{ productsSummary() }}</span>
+                </div>
+
+                @for (category of draft().categories; track category.id) {
+                  <article class="dashboard-page__products-category">
+                    <div class="dashboard-page__products-category-heading">
+                      <strong>{{ category.name }}</strong>
+                      <span>
+                        {{ category.products.length }}
+                        {{ category.products.length === 1 ? 'producto' : 'productos' }}
+                      </span>
+                    </div>
+
+                    @if (category.products.length > 0) {
+                      <div class="dashboard-page__product-list">
+                        @for (product of category.products; track product.id) {
+                          <div class="dashboard-page__product-item">
+                            <div class="dashboard-page__product-thumb">
+                              @if (product.imageDataUrl) {
+                                <img [src]="product.imageDataUrl" alt="Imagen de producto" />
+                              } @else {
+                                <mat-icon>restaurant</mat-icon>
+                              }
+                            </div>
+
+                            <div class="dashboard-page__product-copy">
+                              <div class="dashboard-page__product-title-row">
+                                <strong>{{ product.name }}</strong>
+                                <span>{{ product.price }}</span>
+                              </div>
+                              @if (product.description) {
+                                <p>{{ product.description }}</p>
+                              }
+                            </div>
+
+                            <button
+                              mat-icon-button
+                              type="button"
+                              aria-label="Quitar producto"
+                              (click)="removeProduct(category.id, product.id)"
+                            >
+                              <mat-icon>close</mat-icon>
+                            </button>
+                          </div>
+                        }
+                      </div>
+                    } @else {
+                      <p class="dashboard-page__empty">
+                        Esta categoria aun no tiene productos.
+                      </p>
+                    }
+                  </article>
+                }
+              </div>
+            } @else {
+              <p class="dashboard-page__empty">
+                Agrega categorias en la etapa 1 para cargar productos.
+              </p>
+            }
           </div>
         }
       </mat-card-content>
@@ -293,7 +541,54 @@
                         {{ category.name }}
                       </div>
                       <div class="dashboard-page__menu-placeholder">
-                        <p>Aqui apareceran los productos de esta categoria.</p>
+                        @if (category.products.length > 0) {
+                          <div class="dashboard-page__menu-products">
+                            @for (product of category.products; track product.id) {
+                              <article class="dashboard-page__menu-product">
+                                <div class="dashboard-page__menu-product-image">
+                                  @if (product.imageDataUrl) {
+                                    <img [src]="product.imageDataUrl" alt="Producto del menu" />
+                                  } @else {
+                                    <mat-icon>restaurant</mat-icon>
+                                  }
+                                </div>
+
+                                <div
+                                  class="dashboard-page__menu-product-copy"
+                                  [style.font-family]="draft().theme.productFontFamily"
+                                >
+                                  <div class="dashboard-page__menu-product-heading">
+                                    <h3
+                                      [style.color]="draft().theme.productNameColor"
+                                      [style.font-size.px]="draft().theme.productFontSize"
+                                      [style.font-weight]="draft().theme.productNameBold ? 700 : 500"
+                                      [style.font-style]="draft().theme.productNameItalic ? 'italic' : 'normal'"
+                                    >
+                                      {{ product.name }}
+                                    </h3>
+                                    <strong
+                                      [style.color]="draft().theme.productPriceColor"
+                                      [style.font-size.px]="draft().theme.productFontSize"
+                                    >
+                                      {{ product.price }}
+                                    </strong>
+                                  </div>
+
+                                  @if (product.description) {
+                                    <p
+                                      [style.color]="draft().theme.productDescriptionColor"
+                                      [style.font-size.px]="draft().theme.productFontSize - 2"
+                                    >
+                                      {{ product.description }}
+                                    </p>
+                                  }
+                                </div>
+                              </article>
+                            }
+                          </div>
+                        } @else {
+                          <p>Aqui apareceran los productos de esta categoria.</p>
+                        }
                       </div>
                     </article>
                   }
@@ -310,8 +605,8 @@
         <div class="dashboard-page__preview-block">
           <span>Estado del constructor</span>
           <p>
-            Ya tienes una base visual para seguir con productos, precios e
-            imagenes en la siguiente fase del panel.
+            {{ productsSummary() }} para completar la primera version del menu
+            digital.
           </p>
         </div>
       </mat-card-content>

@@ -6,14 +6,19 @@ export const userNavigation: NavigationItem[] = [
     icon: 'restaurant_menu',
     children: [
       {
-        label: 'Etapa 1 - Identidad y categorias',
+        label: 'Identidad',
         route: '/panel/menu/identidad',
         icon: 'looks_one',
       },
       {
-        label: 'Etapa 2 - Estilo visual',
+        label: 'Estilo',
         route: '/panel/menu/estilo',
-        icon: 'palette',
+        icon: 'looks_two',
+      },
+      {
+        label: 'Productos',
+        route: '/panel/menu/productos',
+        icon: 'looks_3',
       },
     ],
   },

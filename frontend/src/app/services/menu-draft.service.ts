@@ -9,7 +9,9 @@ import {
 import {
   createDefaultMenuTheme,
   createEmptyMenuDraft,
+  MenuCategoryDraft,
   MenuDraft,
+  MenuProductDraft,
   MenuThemeDraft,
 } from '@models/menu-draft.model';
 import { AuthService } from '@services/auth.service';
@@ -29,6 +31,12 @@ export class MenuDraftService {
 
   readonly draft = this.draftState.asReadonly();
   readonly categoriesCount = computed(() => this.draftState().categories.length);
+  readonly productsCount = computed(() =>
+    this.draftState().categories.reduce(
+      (total, category) => total + category.products.length,
+      0,
+    ),
+  );
 
   constructor() {
     effect(() => {
@@ -94,6 +102,7 @@ export class MenuDraftService {
         {
           id: this.createCategoryId(),
           name: normalizedName,
+          products: [],
         },
       ],
     }));
@@ -118,6 +127,63 @@ export class MenuDraftService {
     }));
   }
 
+  addProduct(
+    categoryId: string,
+    product: Omit<MenuProductDraft, 'id'>,
+  ): { success: boolean; reason?: 'category' | 'name' | 'price' } {
+    const normalizedName = product.name.trim();
+    const normalizedPrice = product.price.trim();
+
+    if (!categoryId || !this.draftState().categories.some((category) => category.id === categoryId)) {
+      return { success: false, reason: 'category' };
+    }
+
+    if (!normalizedName) {
+      return { success: false, reason: 'name' };
+    }
+
+    if (!normalizedPrice) {
+      return { success: false, reason: 'price' };
+    }
+
+    this.draftState.update((draft) => ({
+      ...draft,
+      categories: draft.categories.map((category) =>
+        category.id === categoryId
+          ? {
+              ...category,
+              products: [
+                ...category.products,
+                {
+                  id: this.createProductId(),
+                  name: normalizedName,
+                  description: product.description.trim(),
+                  price: normalizedPrice,
+                  imageDataUrl: product.imageDataUrl,
+                },
+              ],
+            }
+          : category,
+      ),
+    }));
+
+    return { success: true };
+  }
+
+  removeProduct(categoryId: string, productId: string): void {
+    this.draftState.update((draft) => ({
+      ...draft,
+      categories: draft.categories.map((category) =>
+        category.id === categoryId
+          ? {
+              ...category,
+              products: category.products.filter((product) => product.id !== productId),
+            }
+          : category,
+      ),
+    }));
+  }
+
   private restoreDraft(storageKey: string): MenuDraft {
     const storedDraft = localStorage.getItem(storageKey);
 
@@ -126,16 +192,41 @@ export class MenuDraftService {
     }
 
     try {
-      const parsedDraft = JSON.parse(storedDraft) as Partial<MenuDraft>;
+      const parsedDraft = JSON.parse(storedDraft) as Partial<
+        Omit<MenuDraft, 'categories'>
+      > & {
+        categories?: Array<
+          Partial<Omit<MenuCategoryDraft, 'products'>> & {
+            products?: Array<Partial<MenuProductDraft>>;
+          }
+        >;
+      };
       const defaultTheme = createDefaultMenuTheme();
       return {
         businessTitle: parsedDraft.businessTitle ?? '',
         logoDataUrl: parsedDraft.logoDataUrl ?? null,
         categories: Array.isArray(parsedDraft.categories)
-          ? parsedDraft.categories.filter(
-              (category): category is { id: string; name: string } =>
-                Boolean(category?.id) && Boolean(category?.name),
-            )
+          ? parsedDraft.categories
+              .filter(
+                (category) => Boolean(category?.id) && Boolean(category?.name),
+              )
+              .map((category) => ({
+                id: category.id ?? this.createCategoryId(),
+                name: category.name ?? '',
+                products: Array.isArray(category.products)
+                  ? category.products
+                      .filter(
+                        (product) => Boolean(product?.id) && Boolean(product?.name),
+                      )
+                      .map((product) => ({
+                        id: product.id ?? this.createProductId(),
+                        name: product.name ?? '',
+                        description: product.description ?? '',
+                        price: product.price ?? '',
+                        imageDataUrl: product.imageDataUrl ?? null,
+                      }))
+                  : [],
+              }))
           : [],
         theme: {
           ...defaultTheme,
@@ -149,5 +240,9 @@ export class MenuDraftService {
 
   private createCategoryId(): string {
     return `cat-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  }
+
+  private createProductId(): string {
+    return `prod-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   }
 }

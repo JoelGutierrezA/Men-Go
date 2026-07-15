@@ -35,15 +35,14 @@
             <div class="sidebar__children">
               @for (child of item.children; track child.route ?? child.label) {
                 <a
-                  mat-list-item
                   class="sidebar__child-link"
                   [routerLink]="child.route"
                   routerLinkActive="active"
                   [routerLinkActiveOptions]="{ exact: true }"
                   (click)="navigate.emit()"
                 >
-                  <mat-icon matListItemIcon>{{ child.icon }}</mat-icon>
-                  <span matListItemTitle>{{ child.label }}</span>
+                  <mat-icon>{{ child.icon }}</mat-icon>
+                  <span>{{ child.label }}</span>
                 </a>
               }
             </div>

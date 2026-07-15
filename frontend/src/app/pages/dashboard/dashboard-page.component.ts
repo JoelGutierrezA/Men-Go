@@ -17,6 +17,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuDraftService } from '@services/menu-draft.service';
 
+type MenuStep = 1 | 2 | 3;
+
 @Component({
   selector: 'app-dashboard-page',
   imports: [
@@ -42,16 +44,29 @@ export class DashboardPageComponent {
 
   protected readonly draft = this.menuDraftService.draft;
   protected readonly categoriesCount = this.menuDraftService.categoriesCount;
-  protected readonly currentStep = signal<1 | 2>(1);
+  protected readonly productsCount = this.menuDraftService.productsCount;
+  protected readonly currentStep = signal<MenuStep>(1);
   protected readonly categoryName = signal('');
+  protected readonly selectedCategoryId = signal('');
+  protected readonly productName = signal('');
+  protected readonly productDescription = signal('');
+  protected readonly productPrice = signal('');
+  protected readonly productImageDataUrl = signal<string | null>(null);
   protected readonly categoryError = signal('');
   protected readonly logoError = signal('');
+  protected readonly productError = signal('');
+  protected readonly productImageError = signal('');
   protected readonly stepError = signal('');
-  protected readonly editorTitle = computed(() =>
-    this.currentStep() === 1
-      ? 'Etapa 1 - Identidad y categorias'
-      : 'Etapa 2 - Estilo visual',
-  );
+  protected readonly editorTitle = computed(() => {
+    switch (this.currentStep()) {
+      case 1:
+        return '1 Identidad';
+      case 2:
+        return '2 Estilo';
+      case 3:
+        return '3 Productos';
+    }
+  });
   protected readonly fontOptions = [
     { label: 'Manrope', value: 'Manrope, sans-serif' },
     { label: 'Space Grotesk', value: '"Space Grotesk", sans-serif' },
@@ -68,6 +83,17 @@ export class DashboardPageComponent {
       ? 'Sin categorias creadas aun'
       : `${total} ${total === 1 ? 'categoria creada' : 'categorias creadas'}`;
   });
+  protected readonly productsSummary = computed(() => {
+    const total = this.productsCount();
+    return total === 0
+      ? 'Sin productos agregados aun'
+      : `${total} ${total === 1 ? 'producto agregado' : 'productos agregados'}`;
+  });
+  protected readonly selectedCategory = computed(() =>
+    this.draft().categories.find(
+      (category) => category.id === this.selectedCategoryId(),
+    ),
+  );
   protected readonly canContinueToStyle = computed(() => {
     const draft = this.draft();
     return draft.businessTitle.trim().length > 0 && draft.categories.length > 0;
@@ -78,9 +104,9 @@ export class DashboardPageComponent {
 
   constructor() {
     effect(() => {
-      const routeStep = (this.routeData()['step'] as 1 | 2 | undefined) ?? 1;
+      const routeStep = (this.routeData()['step'] as MenuStep | undefined) ?? 1;
 
-      if (routeStep === 2 && !this.canContinueToStyle()) {
+      if (routeStep !== 1 && !this.canContinueToStyle()) {
         this.currentStep.set(1);
         this.stepError.set(
           'Primero agrega el nombre del negocio y al menos una categoria principal.',
@@ -92,6 +118,22 @@ export class DashboardPageComponent {
       }
 
       this.currentStep.set(routeStep);
+    });
+
+    effect(() => {
+      const categories = this.draft().categories;
+
+      if (categories.length === 0) {
+        this.selectedCategoryId.set('');
+        return;
+      }
+
+      const selectedId = this.selectedCategoryId();
+      const selectedExists = categories.some((category) => category.id === selectedId);
+
+      if (!selectedId || !selectedExists) {
+        this.selectedCategoryId.set(categories[0].id);
+      }
     });
   }
 
@@ -124,6 +166,25 @@ export class DashboardPageComponent {
 
   protected removeCategory(categoryId: string): void {
     this.menuDraftService.removeCategory(categoryId);
+  }
+
+  protected updateSelectedCategory(categoryId: string): void {
+    this.selectedCategoryId.set(categoryId);
+    this.productError.set('');
+  }
+
+  protected updateProductName(value: string): void {
+    this.productName.set(value);
+    this.productError.set('');
+  }
+
+  protected updateProductDescription(value: string): void {
+    this.productDescription.set(value);
+  }
+
+  protected updateProductPrice(value: string): void {
+    this.productPrice.set(value);
+    this.productError.set('');
   }
 
   protected removeLogo(): void {
@@ -164,8 +225,76 @@ export class DashboardPageComponent {
     input.value = '';
   }
 
-  protected goToStep(step: 1 | 2): void {
-    if (step === 2 && !this.canContinueToStyle()) {
+  protected handleProductImageSelection(event: Event): void {
+    const input = event.target as HTMLInputElement | null;
+    const selectedFile = input?.files?.[0];
+
+    if (!selectedFile) {
+      return;
+    }
+
+    if (!selectedFile.type.startsWith('image/')) {
+      this.productImageError.set('Selecciona una imagen valida para el producto.');
+      input.value = '';
+      return;
+    }
+
+    if (selectedFile.size > 2 * 1024 * 1024) {
+      this.productImageError.set('La imagen del producto no debe superar 2 MB.');
+      input.value = '';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result;
+
+      if (typeof result === 'string') {
+        this.productImageDataUrl.set(result);
+        this.productImageError.set('');
+      }
+    };
+    reader.readAsDataURL(selectedFile);
+    input.value = '';
+  }
+
+  protected removePendingProductImage(): void {
+    this.productImageDataUrl.set(null);
+    this.productImageError.set('');
+  }
+
+  protected addProduct(): void {
+    const result = this.menuDraftService.addProduct(this.selectedCategoryId(), {
+      name: this.productName(),
+      description: this.productDescription(),
+      price: this.productPrice(),
+      imageDataUrl: this.productImageDataUrl(),
+    });
+
+    if (!result.success) {
+      const errors = {
+        category: 'Selecciona una categoria para este producto.',
+        name: 'Ingresa el nombre del producto.',
+        price: 'Ingresa el valor del producto.',
+      };
+      this.productError.set(errors[result.reason ?? 'name']);
+      return;
+    }
+
+    this.productName.set('');
+    this.productDescription.set('');
+    this.productPrice.set('');
+    this.productImageDataUrl.set(null);
+    this.productError.set('');
+    this.productImageError.set('');
+  }
+
+  protected removeProduct(categoryId: string, productId: string): void {
+    this.menuDraftService.removeProduct(categoryId, productId);
+  }
+
+  protected goToStep(step: MenuStep): void {
+    if (step !== 1 && !this.canContinueToStyle()) {
       this.stepError.set(
         'Primero agrega el nombre del negocio y al menos una categoria principal.',
       );
@@ -173,20 +302,30 @@ export class DashboardPageComponent {
     }
 
     this.stepError.set('');
-    void this.router.navigate([
-      step === 1 ? '/panel/menu/identidad' : '/panel/menu/estilo',
-    ]);
+    const stepRoutes: Record<MenuStep, string> = {
+      1: '/panel/menu/identidad',
+      2: '/panel/menu/estilo',
+      3: '/panel/menu/productos',
+    };
+    void this.router.navigate([stepRoutes[step]]);
   }
 
   protected updateThemeColor(
-    key: 'backgroundColor' | 'categoryColor' | 'titleColor' | 'textColor',
+    key:
+      | 'backgroundColor'
+      | 'categoryColor'
+      | 'titleColor'
+      | 'textColor'
+      | 'productNameColor'
+      | 'productDescriptionColor'
+      | 'productPriceColor',
     value: string,
   ): void {
     this.menuDraftService.updateTheme({ [key]: value });
   }
 
   protected updateThemeNumber(
-    key: 'titleFontSize' | 'bodyFontSize',
+    key: 'titleFontSize' | 'bodyFontSize' | 'productFontSize',
     value: string,
   ): void {
     const parsedValue = Number(value);
@@ -202,6 +341,10 @@ export class DashboardPageComponent {
     this.menuDraftService.updateTheme({ fontFamily: value });
   }
 
+  protected updateProductFontFamily(value: string): void {
+    this.menuDraftService.updateTheme({ productFontFamily: value });
+  }
+
   protected toggleTitleBold(): void {
     this.menuDraftService.updateTheme({
       titleBold: !this.draft().theme.titleBold,
@@ -211,6 +354,18 @@ export class DashboardPageComponent {
   protected toggleTitleItalic(): void {
     this.menuDraftService.updateTheme({
       titleItalic: !this.draft().theme.titleItalic,
+    });
+  }
+
+  protected toggleProductNameBold(): void {
+    this.menuDraftService.updateTheme({
+      productNameBold: !this.draft().theme.productNameBold,
+    });
+  }
+
+  protected toggleProductNameItalic(): void {
+    this.menuDraftService.updateTheme({
+      productNameItalic: !this.draft().theme.productNameItalic,
     });
   }
 
