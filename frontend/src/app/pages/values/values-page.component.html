@@ -15,6 +15,7 @@
       @for (plan of plans; track plan.name) {
         <mat-card
           class="public-page__card values-page__plan-card"
+          [class.values-page__plan-card--trial]="plan.tone === 'trial'"
           [class.values-page__plan-card--featured]="plan.tone === 'featured'"
           [class.values-page__plan-card--premium]="plan.tone === 'premium'"
           [class.values-page__plan-card--neutral]="plan.tone === 'neutral'"
@@ -47,7 +48,7 @@
               }
             </ul>
 
-            @if (plan.tone === 'neutral') {
+            @if (plan.tone === 'neutral' || plan.tone === 'trial') {
               <a
                 mat-stroked-button
                 class="values-page__action values-page__action--neutral"

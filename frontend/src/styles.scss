@@ -642,10 +642,19 @@ app-landing-page {
   .landing-page__plan-card {
     position: relative;
     overflow: hidden;
-    border: 1px solid rgba(51, 51, 51, 0.06);
+    height: 100%;
+    border: 1px solid rgba(51, 51, 51, 0.05);
     border-radius: 1.45rem;
-    background: rgba(255, 255, 255, 0.72);
-    box-shadow: 0 18px 42px rgba(26, 41, 34, 0.05);
+    background: rgba(255, 255, 255, 0.82);
+    box-shadow: 0 14px 34px rgba(26, 41, 34, 0.04);
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  .landing-page__plan-card:hover {
+    transform: translateY(-0.18rem);
+    box-shadow: 0 22px 46px rgba(26, 41, 34, 0.08);
   }
 
   .landing-page__plan-card::before {
@@ -658,10 +667,11 @@ app-landing-page {
   }
 
   .landing-page__plan-card--trial {
-    border-color: rgba(43, 182, 115, 0.22);
+    border-color: rgba(43, 182, 115, 0.36);
     background:
-      radial-gradient(circle at top right, rgba(43, 182, 115, 0.12), transparent 30%),
-      rgba(255, 255, 255, 0.84);
+      radial-gradient(circle at top right, rgba(43, 182, 115, 0.24), transparent 34%),
+      linear-gradient(180deg, rgba(237, 252, 244, 0.98), rgba(255, 255, 255, 0.9));
+    box-shadow: 0 22px 52px rgba(43, 182, 115, 0.12);
   }
 
   .landing-page__plan-card--trial::before,
@@ -670,21 +680,48 @@ app-landing-page {
   }
 
   .landing-page__plan-card--featured {
-    border-color: rgba(43, 182, 115, 0.26);
+    border-color: rgba(43, 182, 115, 0.48);
     background:
-      radial-gradient(circle at top right, rgba(43, 182, 115, 0.14), transparent 34%),
-      rgba(255, 255, 255, 0.86);
+      radial-gradient(circle at top right, rgba(43, 182, 115, 0.3), transparent 34%),
+      linear-gradient(180deg, rgba(222, 248, 233, 0.98), rgba(246, 255, 250, 0.92));
+    box-shadow: 0 28px 58px rgba(43, 182, 115, 0.18);
   }
 
   .landing-page__plan-card--premium {
-    border-color: rgba(43, 182, 115, 0.14);
+    color: #ffffff;
+    border-color: rgba(117, 225, 166, 0.36);
     background:
-      linear-gradient(180deg, rgba(236, 249, 242, 0.9), rgba(255, 255, 255, 0.8)),
-      rgba(255, 255, 255, 0.84);
+      radial-gradient(circle at top right, rgba(101, 220, 154, 0.28), transparent 34%),
+      linear-gradient(155deg, #174832 0%, #0d2e22 54%, #071b15 100%);
+    box-shadow: 0 32px 68px rgba(8, 34, 24, 0.24);
   }
 
   .landing-page__plan-card--premium::before {
-    background: linear-gradient(90deg, rgba(43, 182, 115, 0.52), rgba(43, 182, 115, 0.12));
+    background: linear-gradient(90deg, #7be2ad, rgba(123, 226, 173, 0.2));
+  }
+
+  .landing-page__plan-card--premium :is(h3, .landing-page__plan-price strong) {
+    color: #ffffff;
+  }
+
+  .landing-page__plan-card--premium :is(p, .landing-page__plan-price span, .landing-page__plan-features li) {
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  .landing-page__plan-card--premium .landing-page__plan-features mat-icon {
+    color: #7be2ad;
+  }
+
+  .landing-page__plan-card--premium .landing-page__plan-badge {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+  }
+
+  .landing-page__plan-card--premium .landing-page__plan-action:not(:disabled) {
+    color: #0d2e22;
+    background: #ffffff;
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.18);
   }
 
   .landing-page__plan-badge {
@@ -719,10 +756,10 @@ app-landing-page {
   .landing-page__plan-copy {
     display: grid;
     gap: 0.55rem;
-    padding-right: 4.7rem;
   }
 
   .landing-page__plan-copy h3 {
+    padding-right: 4.7rem;
     font-size: 1.35rem;
     line-height: 1;
   }
@@ -776,6 +813,19 @@ app-landing-page {
     background: rgba(255, 255, 255, 0.84);
   }
 
+  .landing-page__plan-card--trial .landing-page__plan-action--neutral:not(:disabled) {
+    color: #ffffff;
+    border-color: var(--mg-primary);
+    background: var(--mg-primary);
+    box-shadow: 0 14px 30px rgba(43, 182, 115, 0.2);
+  }
+
+  .landing-page__plan-card--premium .landing-page__plan-action.mat-mdc-unelevated-button:not(:disabled) {
+    color: #0d2e22;
+    background: #ffffff;
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.18);
+  }
+
   @media (min-width: 900px) {
     .landing-page__plans {
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -796,6 +846,10 @@ app-landing-page {
     }
 
     .landing-page__plan-copy {
+      padding-right: 0;
+    }
+
+    .landing-page__plan-copy h3 {
       padding-right: 0;
     }
   }

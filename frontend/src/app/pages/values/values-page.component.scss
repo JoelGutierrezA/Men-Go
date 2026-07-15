@@ -14,9 +14,19 @@
 .values-page__plan-card {
   position: relative;
   min-height: 100%;
+  height: 100%;
   overflow: hidden;
-  border: 1px solid rgba(51, 51, 51, 0.06);
-  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(51, 51, 51, 0.05);
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 14px 34px rgba(26, 41, 34, 0.04);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.values-page__plan-card:hover {
+  transform: translateY(-0.18rem);
+  box-shadow: 0 22px 46px rgba(26, 41, 34, 0.08);
 }
 
 .values-page__plan-card::before {
@@ -32,12 +42,24 @@
   border-color: rgba(51, 51, 51, 0.08);
 }
 
-.values-page__plan-card--featured {
-  border-color: rgba(43, 182, 115, 0.28);
+.values-page__plan-card--trial {
+  border-color: rgba(43, 182, 115, 0.36);
   background:
-    radial-gradient(circle at top right, rgba(43, 182, 115, 0.12), transparent 34%),
-    rgba(255, 255, 255, 0.86);
-  box-shadow: 0 26px 54px rgba(43, 182, 115, 0.14);
+    radial-gradient(circle at top right, rgba(43, 182, 115, 0.24), transparent 34%),
+    linear-gradient(180deg, rgba(237, 252, 244, 0.98), rgba(255, 255, 255, 0.9));
+  box-shadow: 0 22px 52px rgba(43, 182, 115, 0.12);
+}
+
+.values-page__plan-card--trial::before {
+  background: linear-gradient(90deg, var(--mg-primary), #79d6a5);
+}
+
+.values-page__plan-card--featured {
+  border-color: rgba(43, 182, 115, 0.48);
+  background:
+    radial-gradient(circle at top right, rgba(43, 182, 115, 0.3), transparent 34%),
+    linear-gradient(180deg, rgba(222, 248, 233, 0.98), rgba(246, 255, 250, 0.92));
+  box-shadow: 0 28px 58px rgba(43, 182, 115, 0.18);
 }
 
 .values-page__plan-card--featured::before {
@@ -45,14 +67,38 @@
 }
 
 .values-page__plan-card--premium {
-  border-color: rgba(43, 182, 115, 0.18);
+  color: #ffffff;
+  border-color: rgba(117, 225, 166, 0.36);
   background:
-    linear-gradient(180deg, rgba(233, 248, 240, 0.95), rgba(255, 255, 255, 0.84)),
-    rgba(255, 255, 255, 0.84);
+    radial-gradient(circle at top right, rgba(101, 220, 154, 0.28), transparent 34%),
+    linear-gradient(155deg, #174832 0%, #0d2e22 54%, #071b15 100%);
+  box-shadow: 0 32px 68px rgba(8, 34, 24, 0.24);
 }
 
 .values-page__plan-card--premium::before {
-  background: linear-gradient(90deg, rgba(43, 182, 115, 0.5), rgba(43, 182, 115, 0.14));
+  background: linear-gradient(90deg, #7be2ad, rgba(123, 226, 173, 0.2));
+}
+
+.values-page__plan-card--premium :is(h2, .values-page__price-block strong) {
+  color: #ffffff;
+}
+
+.values-page__plan-card--premium :is(p, .values-page__price-block span, .values-page__feature-list li) {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.values-page__plan-card--premium .values-page__feature-list mat-icon {
+  color: #7be2ad;
+}
+
+.values-page__plan-card--premium .values-page__separator {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.values-page__plan-card--premium .values-page__badge {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
 }
 
 .values-page__badge {
@@ -88,10 +134,10 @@
 .values-page__plan-copy {
   display: grid;
   gap: 0.7rem;
-  padding-right: 5rem;
 }
 
 .values-page__plan-copy h2 {
+  padding-right: 5rem;
   font-size: 1.55rem;
   line-height: 1;
 }
@@ -154,6 +200,19 @@
   background: rgba(255, 255, 255, 0.84);
 }
 
+.values-page__plan-card--trial .values-page__action--neutral:not(:disabled) {
+  color: #ffffff;
+  border-color: var(--mg-primary);
+  background: var(--mg-primary);
+  box-shadow: 0 14px 30px rgba(43, 182, 115, 0.2);
+}
+
+.values-page__plan-card--premium .values-page__action.mat-mdc-unelevated-button:not(:disabled) {
+  color: #0d2e22;
+  background: #ffffff;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.18);
+}
+
 .values-page__cta {
   padding-top: 0.75rem;
 }
@@ -166,11 +225,13 @@
 
 @media (min-width: 1080px) {
   .values-page__plans {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     align-items: stretch;
   }
+}
 
-  .values-page__plan-card--featured {
-    transform: translateY(-0.5rem);
+@media (max-width: 640px) {
+  .values-page__plan-copy h2 {
+    padding-right: 0;
   }
 }

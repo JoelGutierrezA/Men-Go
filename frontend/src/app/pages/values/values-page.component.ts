@@ -12,7 +12,7 @@ interface SubscriptionPlan {
   period: string;
   description: string;
   ctaLabel: string;
-  tone: 'neutral' | 'featured' | 'premium';
+  tone: 'trial' | 'neutral' | 'featured' | 'premium';
   badge?: string;
   features: string[];
 }
@@ -33,6 +33,22 @@ interface SubscriptionPlan {
 })
 export class ValuesPageComponent {
   protected readonly plans: SubscriptionPlan[] = [
+    {
+      name: 'Prueba gratis',
+      price: '15 dias',
+      period: 'sin costo',
+      description:
+        'Empieza con una prueba real para explorar MenuGo antes de elegir un plan.',
+      ctaLabel: 'Probar gratis',
+      tone: 'trial',
+      badge: 'Nuevo',
+      features: [
+        'Constructor completo del menu',
+        'Logo y colores personalizados',
+        'QR listo para compartir',
+        'Sin tarjeta al comenzar',
+      ],
+    },
     {
       name: 'Emprende',
       price: '$9.990',
