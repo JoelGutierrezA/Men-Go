@@ -1,0 +1,130 @@
+<section class="builder-step">
+  <header class="builder-step__header">
+    <span class="builder-step__eyebrow">
+      <mat-icon aria-hidden="true">{{ stepConfig.icon }}</mat-icon>
+      {{ stepConfig.label }}
+    </span>
+    <h2>{{ stepConfig.title }}</h2>
+    <p>{{ stepConfig.description }}</p>
+  </header>
+
+  <div class="builder-panel builder-panel--dense">
+    <div class="builder-row">
+      <mat-form-field appearance="outline" class="builder-grow">
+        <mat-label>Nueva categoría</mat-label>
+        <input
+          matInput
+          [value]="categoryName()"
+          (input)="updateCategoryName($any($event.target).value)"
+          (keydown.enter)="$event.preventDefault(); addCategory()"
+          placeholder="Ej: Entradas, Bebidas, Postres"
+        />
+      </mat-form-field>
+
+      <button mat-flat-button type="button" (click)="addCategory()">
+        Agregar
+      </button>
+    </div>
+
+    @if (categoryError()) {
+      <p class="builder-error">{{ categoryError() }}</p>
+    }
+  </div>
+
+  <div class="builder-list" cdkDropList (cdkDropListDropped)="dropCategory($event)">
+    @if (draft().categories.length > 0) {
+      @for (category of draft().categories; track category.id) {
+        <article
+          class="builder-item"
+          [class.builder-item--muted]="!category.visible"
+          cdkDrag
+        >
+          <div class="builder-item__heading">
+            <div class="builder-row">
+              <button
+                mat-icon-button
+                type="button"
+                cdkDragHandle
+                aria-label="Reordenar categoría"
+              >
+                <mat-icon aria-hidden="true">drag_indicator</mat-icon>
+              </button>
+
+              <div class="builder-item__copy">
+                @if (editingCategoryId() === category.id) {
+                  <mat-form-field appearance="outline">
+                    <mat-label>Nombre de la categoría</mat-label>
+                    <input
+                      matInput
+                      [value]="editingCategoryName()"
+                      (input)="updateEditingName($any($event.target).value)"
+                    />
+                  </mat-form-field>
+                } @else {
+                  <h3>{{ category.name }}</h3>
+                  <p class="builder-meta">
+                    {{ category.products.length }}
+                    {{ category.products.length === 1 ? 'producto' : 'productos' }}
+                  </p>
+                }
+              </div>
+            </div>
+
+            <div class="builder-inline-actions">
+              @if (category.products.length === 0) {
+                <span class="builder-badge builder-badge--warning">Vacía</span>
+              }
+              <span class="builder-badge">
+                {{ category.visible ? 'Visible' : 'Oculta' }}
+              </span>
+            </div>
+          </div>
+
+          <div class="builder-inline-actions">
+            @if (editingCategoryId() === category.id) {
+              <button mat-flat-button type="button" (click)="saveEditing(category.id)">
+                Guardar
+              </button>
+              <button mat-button type="button" (click)="cancelEditing()">
+                Cancelar
+              </button>
+            } @else {
+              <button mat-button type="button" (click)="startEditing(category.id, category.name)">
+                Editar
+              </button>
+              <button mat-button type="button" (click)="toggleVisibility(category.id)">
+                {{ category.visible ? 'Ocultar' : 'Mostrar' }}
+              </button>
+              <button mat-button type="button" (click)="removeCategory(category.id)">
+                Eliminar
+              </button>
+            }
+          </div>
+        </article>
+      }
+    } @else {
+      <p class="builder-empty">
+        Crea tu primera categoría para ordenar la carta.
+      </p>
+    }
+  </div>
+
+  <div class="builder-actions">
+    <button
+      mat-button
+      class="builder-nav-button builder-nav-button--back"
+      type="button"
+      (click)="backRequested.emit()"
+    >
+      Atrás
+    </button>
+    <button
+      mat-flat-button
+      class="builder-nav-button builder-nav-button--next"
+      type="button"
+      (click)="continueRequested.emit()"
+    >
+      Guardar y continuar
+    </button>
+  </div>
+</section>

@@ -36,12 +36,14 @@
               @for (child of item.children; track child.route ?? child.label) {
                 <a
                   class="sidebar__child-link"
+                  [class.sidebar__child-link--complete]="childStatus(child) === 'complete'"
+                  [class.sidebar__child-link--error]="childStatus(child) === 'error'"
                   [routerLink]="child.route"
                   routerLinkActive="active"
                   [routerLinkActiveOptions]="{ exact: true }"
                   (click)="navigate.emit()"
                 >
-                  <mat-icon>{{ child.icon }}</mat-icon>
+                  <mat-icon>{{ childStatusIcon(child) }}</mat-icon>
                   <span>{{ child.label }}</span>
                 </a>
               }

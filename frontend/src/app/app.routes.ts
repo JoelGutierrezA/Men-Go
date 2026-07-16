@@ -5,7 +5,6 @@ import { authGuard } from '@guards/auth.guard';
 import { MainLayoutComponent } from '@layouts/main-layout/main-layout.component';
 import { AdminUsersPageComponent } from '@pages/admin-users/admin-users-page.component';
 import { DataProtectionPageComponent } from '@pages/data-protection/data-protection-page.component';
-import { DashboardPageComponent } from '@pages/dashboard/dashboard-page.component';
 import { FeaturesPageComponent } from '@pages/features/features-page.component';
 import { LandingPageComponent } from '@pages/landing/landing-page.component';
 import { LoginPageComponent } from '@pages/login/login-page.component';
@@ -68,13 +67,13 @@ export const routes: Routes = [
       layoutConfig: {
         navigationItems: userNavigation,
         sidebarEyebrow: 'Tu plataforma',
-        sidebarTitle: 'Creacion de menu',
+        sidebarTitle: 'Creación del menú',
         sidebarDescription:
-          'Espacio temporal para preparar la experiencia de administracion del menu digital del negocio.',
+          'Asistente para crear, revisar y publicar el menú digital del negocio.',
         footerLabel: 'Acceso usuario',
         footerText:
-          'Base visual lista para categorias, productos, QR y publicacion.',
-        brandRoute: '/panel/menu/identidad',
+          'Borrador con guardado local, previsualización y publicación preparada.',
+        brandRoute: '/panel/menu/negocio',
         brandSubtitle: 'Panel del negocio',
       },
     },
@@ -82,40 +81,92 @@ export const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'menu/identidad',
+        redirectTo: 'menu/negocio',
       },
       {
         path: 'dashboard',
         pathMatch: 'full',
-        redirectTo: 'menu/identidad',
+        redirectTo: 'menu/negocio',
       },
       {
         path: 'menu',
         pathMatch: 'full',
-        redirectTo: 'menu/identidad',
+        redirectTo: 'menu/negocio',
       },
       {
         path: 'menu/identidad',
-        component: DashboardPageComponent,
-        title: 'MenuGo | Creacion de menu',
+        pathMatch: 'full',
+        redirectTo: 'menu/negocio',
+      },
+      {
+        path: 'menu/estilo',
+        pathMatch: 'full',
+        redirectTo: 'menu/diseno',
+      },
+      {
+        path: 'menu/negocio',
+        loadComponent: () =>
+          import('@pages/dashboard/dashboard-page.component').then(
+            (component) => component.DashboardPageComponent,
+          ),
+        title: 'MenuGo | Tu negocio',
         data: {
           step: 1,
         },
       },
       {
-        path: 'menu/estilo',
-        component: DashboardPageComponent,
-        title: 'MenuGo | Estilo visual',
+        path: 'menu/categorias',
+        loadComponent: () =>
+          import('@pages/dashboard/dashboard-page.component').then(
+            (component) => component.DashboardPageComponent,
+          ),
+        title: 'MenuGo | Categorías',
         data: {
           step: 2,
         },
       },
       {
         path: 'menu/productos',
-        component: DashboardPageComponent,
+        loadComponent: () =>
+          import('@pages/dashboard/dashboard-page.component').then(
+            (component) => component.DashboardPageComponent,
+          ),
         title: 'MenuGo | Productos',
         data: {
           step: 3,
+        },
+      },
+      {
+        path: 'menu/diseno',
+        loadComponent: () =>
+          import('@pages/dashboard/dashboard-page.component').then(
+            (component) => component.DashboardPageComponent,
+          ),
+        title: 'MenuGo | Diseño',
+        data: {
+          step: 4,
+        },
+      },
+      {
+        path: 'menu/revision',
+        loadComponent: () =>
+          import('@pages/dashboard/dashboard-page.component').then(
+            (component) => component.DashboardPageComponent,
+          ),
+        title: 'MenuGo | Revisión',
+        data: {
+          step: 5,
+        },
+      },
+      {
+        path: 'menu/publicar',
+        loadComponent: () =>
+          import('@pages/dashboard/dashboard-page.component').then(
+            (component) => component.DashboardPageComponent,
+          ),
+        title: 'MenuGo | Publicar',
+        data: {
+          step: 6,
         },
       },
     ],

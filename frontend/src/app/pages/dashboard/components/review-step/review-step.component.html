@@ -1,0 +1,82 @@
+<section class="builder-step">
+  <header class="builder-step__header">
+    <span class="builder-step__eyebrow">
+      <mat-icon aria-hidden="true">{{ stepConfig.icon }}</mat-icon>
+      {{ stepConfig.label }}
+    </span>
+    <h2>{{ stepConfig.title }}</h2>
+    <p>{{ stepConfig.description }}</p>
+  </header>
+
+  <div class="builder-panel">
+    <div class="builder-panel__heading">
+      <div>
+        <h3>Checklist de publicación</h3>
+        <p class="builder-meta">
+          Los errores bloquean la publicación. Las recomendaciones ayudan a mejorar el menú.
+        </p>
+      </div>
+      @if (hasBlockingErrors()) {
+        <span class="builder-badge builder-badge--error">Hay errores por corregir</span>
+      } @else {
+        <span class="builder-badge">Listo para publicar</span>
+      }
+    </div>
+
+    <div class="builder-checklist">
+      @for (item of reviewItems(); track item.label) {
+        <article
+          class="builder-check"
+          [class.builder-check--warning]="item.status === 'warning'"
+          [class.builder-check--error]="item.status === 'error'"
+        >
+          <mat-icon aria-hidden="true">{{ iconFor(item.status) }}</mat-icon>
+          <div>
+            <strong>{{ item.label }}</strong>
+            <p class="builder-meta">{{ item.detail }}</p>
+          </div>
+          @if (item.status !== 'ok') {
+            <button mat-button type="button" (click)="stepRequested.emit(item.targetStep)">
+              Corregir
+            </button>
+          }
+        </article>
+      }
+    </div>
+  </div>
+
+  <div class="builder-panel">
+    <div class="builder-panel__heading">
+      <div>
+        <h3>Resumen</h3>
+        <p class="builder-meta">
+          {{ draft().categories.length }} categorías y {{ productsCount() }}
+          productos en el borrador.
+        </p>
+      </div>
+      <button mat-stroked-button type="button" (click)="stepRequested.emit(3)">
+        Revisar productos
+      </button>
+    </div>
+  </div>
+
+  <div class="builder-actions">
+    <button
+      mat-button
+      class="builder-nav-button builder-nav-button--back"
+      type="button"
+      (click)="backRequested.emit()"
+    >
+      Atrás
+    </button>
+    <button
+      mat-flat-button
+      class="builder-nav-button builder-nav-button--next"
+      type="button"
+      [disabled]="hasBlockingErrors()"
+      (click)="continueRequested.emit()"
+    >
+      Continuar a publicación
+    </button>
+  </div>
+</section>

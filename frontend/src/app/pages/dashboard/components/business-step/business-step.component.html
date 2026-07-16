@@ -1,0 +1,89 @@
+<section class="builder-step">
+  <header class="builder-step__header">
+    <span class="builder-step__eyebrow">
+      <mat-icon aria-hidden="true">{{ stepConfig.icon }}</mat-icon>
+      {{ stepConfig.label }}
+    </span>
+    <h2>{{ stepConfig.title }}</h2>
+    <p>{{ stepConfig.description }}</p>
+  </header>
+
+  <div class="builder-logo-row">
+    <div class="builder-image-preview">
+      @if (draft().logoDataUrl) {
+        <img [src]="draft().logoDataUrl" alt="Logo del negocio" />
+      } @else {
+        <span>{{ previewInitial() }}</span>
+      }
+    </div>
+
+    <div class="builder-upload-actions">
+      <input
+        #logoInput
+        class="builder-hidden-input"
+        type="file"
+        accept="image/*"
+        (change)="handleLogoSelection($event)"
+      />
+      <button mat-stroked-button type="button" (click)="logoInput.click()">
+        <mat-icon aria-hidden="true">upload</mat-icon>
+        {{ draft().logoDataUrl ? 'Reemplazar logo' : 'Cargar logo' }}
+      </button>
+      @if (draft().logoDataUrl) {
+        <button mat-button type="button" (click)="removeLogo()">
+          Eliminar logo
+        </button>
+      }
+      <small>Imagen hasta 2 MB. Puedes continuar sin logo.</small>
+      @if (logoError()) {
+        <p class="builder-error">{{ logoError() }}</p>
+      }
+    </div>
+  </div>
+
+  <div class="builder-grid">
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre del negocio</mat-label>
+      <input
+        matInput
+        [value]="draft().businessTitle"
+        (input)="updateBusinessTitle($any($event.target).value)"
+        placeholder="Ej: Bar Central"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Tipo de negocio</mat-label>
+      <mat-select
+        [value]="draft().businessType"
+        (valueChange)="updateBusinessType($event)"
+      >
+        @for (type of businessTypes; track type.value) {
+          <mat-option [value]="type.value">{{ type.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Descripción breve</mat-label>
+    <textarea
+      matInput
+      rows="3"
+      [value]="draft().businessDescription"
+      (input)="updateBusinessDescription($any($event.target).value)"
+      placeholder="Ej: Cocina casera, coctelería y terraza"
+    ></textarea>
+  </mat-form-field>
+
+  <div class="builder-actions">
+    <button
+      mat-flat-button
+      class="builder-nav-button builder-nav-button--next"
+      type="button"
+      (click)="continueRequested.emit()"
+    >
+      Guardar y continuar
+    </button>
+  </div>
+</section>

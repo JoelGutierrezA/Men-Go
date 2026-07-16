@@ -2,23 +2,38 @@ import { NavigationItem } from '@models/navigation-item.model';
 
 export const userNavigation: NavigationItem[] = [
   {
-    label: 'Creacion de menu',
+    label: 'Creación del menú',
     icon: 'restaurant_menu',
     children: [
       {
-        label: 'Identidad',
-        route: '/panel/menu/identidad',
-        icon: 'looks_one',
+        label: 'Tu negocio',
+        route: '/panel/menu/negocio',
+        icon: 'storefront',
       },
       {
-        label: 'Estilo',
-        route: '/panel/menu/estilo',
-        icon: 'looks_two',
+        label: 'Categorías',
+        route: '/panel/menu/categorias',
+        icon: 'account_tree',
       },
       {
         label: 'Productos',
         route: '/panel/menu/productos',
-        icon: 'looks_3',
+        icon: 'restaurant',
+      },
+      {
+        label: 'Diseño',
+        route: '/panel/menu/diseno',
+        icon: 'palette',
+      },
+      {
+        label: 'Revisión',
+        route: '/panel/menu/revision',
+        icon: 'fact_check',
+      },
+      {
+        label: 'Publicar',
+        route: '/panel/menu/publicar',
+        icon: 'rocket_launch',
       },
     ],
   },

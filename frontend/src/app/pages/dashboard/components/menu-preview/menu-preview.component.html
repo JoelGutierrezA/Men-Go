@@ -1,0 +1,120 @@
+<div class="menu-preview__phone-frame" aria-label="Vista previa móvil del menú">
+  <div class="menu-preview__phone-notch"></div>
+  <div class="menu-preview__phone-screen">
+    <div
+      class="menu-preview__menu"
+      [style.background]="draft().theme.backgroundColor"
+      [style.color]="draft().theme.textColor"
+      [style.font-family]="draft().theme.fontFamily"
+      [style.font-size.px]="draft().theme.bodyFontSize"
+    >
+      <div class="menu-preview__header">
+        <div class="menu-preview__logo">
+          @if (draft().logoDataUrl) {
+            <img [src]="draft().logoDataUrl" alt="Logo cargado" />
+          } @else {
+            <span>{{ previewInitial() }}</span>
+          }
+        </div>
+
+        <div class="menu-preview__copy">
+          <h2
+            [style.color]="draft().theme.titleColor"
+            [style.font-size.px]="draft().theme.titleFontSize"
+            [style.font-weight]="draft().theme.titleBold ? 700 : 500"
+            [style.font-style]="draft().theme.titleItalic ? 'italic' : 'normal'"
+          >
+            {{ draft().businessTitle || 'Nombre del negocio' }}
+          </h2>
+          @if (draft().businessDescription) {
+            <p>{{ draft().businessDescription }}</p>
+          } @else {
+            <p>{{ categoriesSummary() }}</p>
+          }
+        </div>
+      </div>
+
+      @if (visibleCategories().length > 0) {
+        <div class="menu-preview__sections">
+          @for (category of visibleCategories(); track category.id) {
+            <article class="menu-preview__section">
+              <div
+                class="menu-preview__category"
+                [style.background]="draft().theme.categoryColor"
+                [style.color]="categoryTextColor()"
+              >
+                {{ category.name }}
+              </div>
+
+              <div class="menu-preview__products">
+                @if (category.products.length > 0) {
+                  @for (product of category.products; track product.id) {
+                    @if (product.visible) {
+                      <article
+                        class="menu-preview__product"
+                        [style.border-radius.px]="draft().theme.productCardRadius"
+                        [style.gap.px]="draft().theme.productCardSpacing"
+                      >
+                        <div
+                          class="menu-preview__product-image"
+                          [class.menu-preview__product-image--square]="draft().theme.productImageStyle === 'square'"
+                        >
+                          @if (product.imageDataUrl) {
+                            <img [src]="product.imageDataUrl" alt="Producto del menú" />
+                          } @else {
+                            <mat-icon aria-hidden="true">restaurant</mat-icon>
+                          }
+                        </div>
+
+                        <div
+                          class="menu-preview__product-copy"
+                          [style.font-family]="draft().theme.productFontFamily"
+                        >
+                          <div class="menu-preview__product-heading">
+                            <h3
+                              [style.color]="draft().theme.productNameColor"
+                              [style.font-size.px]="draft().theme.productFontSize"
+                              [style.font-weight]="draft().theme.productNameBold ? 700 : 500"
+                              [style.font-style]="draft().theme.productNameItalic ? 'italic' : 'normal'"
+                            >
+                              {{ product.name }}
+                            </h3>
+                            <strong
+                              [style.color]="draft().theme.productPriceColor"
+                              [style.font-size.px]="draft().theme.productFontSize"
+                            >
+                              {{ formatPrice(product.price) }}
+                            </strong>
+                          </div>
+
+                          @if (product.description) {
+                            <p
+                              [style.color]="draft().theme.productDescriptionColor"
+                              [style.font-size.px]="draft().theme.productFontSize - 2"
+                            >
+                              {{ product.description }}
+                            </p>
+                          }
+
+                          @if (!product.available) {
+                            <span class="menu-preview__unavailable">No disponible</span>
+                          }
+                        </div>
+                      </article>
+                    }
+                  }
+                } @else {
+                  <p class="menu-preview__empty">Esta categoría aún no tiene productos.</p>
+                }
+              </div>
+            </article>
+          }
+        </div>
+      } @else {
+        <p class="menu-preview__empty">
+          Todavía no hay categorías visibles para construir el menú.
+        </p>
+      }
+    </div>
+  </div>
+</div>

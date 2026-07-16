@@ -1,0 +1,265 @@
+<section class="builder-step">
+  <header class="builder-step__header">
+    <span class="builder-step__eyebrow">
+      <mat-icon aria-hidden="true">{{ stepConfig.icon }}</mat-icon>
+      {{ stepConfig.label }}
+    </span>
+    <h2>{{ stepConfig.title }}</h2>
+    <p>{{ stepConfig.description }}</p>
+  </header>
+
+  @if (draft().categories.length > 0) {
+    <div class="builder-panel">
+      <div class="builder-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Categoría</mat-label>
+          <mat-select
+            [value]="selectedCategoryId()"
+            (valueChange)="updateSelectedCategory($event)"
+          >
+            @for (category of draft().categories; track category.id) {
+              <mat-option [value]="category.id">{{ category.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre del producto</mat-label>
+          <input
+            matInput
+            [value]="productName()"
+            (input)="updateProductName($any($event.target).value)"
+            placeholder="Ej: Pizza margarita"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="builder-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Precio en pesos chilenos</mat-label>
+          <input
+            matInput
+            type="number"
+            min="0"
+            inputmode="numeric"
+            [value]="productPrice()"
+            (input)="updateProductPrice($any($event.target).value)"
+            placeholder="Ej: 8990"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Descripción</mat-label>
+          <input
+            matInput
+            [value]="productDescription()"
+            (input)="updateProductDescription($any($event.target).value)"
+            placeholder="Ingredientes o detalle relevante"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="builder-logo-row">
+        <div class="builder-image-preview">
+          @if (productImageDataUrl()) {
+            <img [src]="productImageDataUrl()" alt="Imagen del producto" />
+          } @else {
+            <mat-icon aria-hidden="true">add_photo_alternate</mat-icon>
+          }
+        </div>
+
+        <div class="builder-upload-actions">
+          <input
+            #productImageInput
+            class="builder-hidden-input"
+            type="file"
+            accept="image/*"
+            (change)="handleProductImageSelection($event)"
+          />
+          <button mat-stroked-button type="button" (click)="productImageInput.click()">
+            <mat-icon aria-hidden="true">upload</mat-icon>
+            Adjuntar imagen
+          </button>
+          @if (productImageDataUrl()) {
+            <button mat-button type="button" (click)="removePendingProductImage()">
+              Quitar imagen
+            </button>
+          }
+          <small>Imagen opcional hasta 2 MB.</small>
+          @if (productImageError()) {
+            <p class="builder-error">{{ productImageError() }}</p>
+          }
+        </div>
+      </div>
+
+      @if (productError()) {
+        <p class="builder-error">{{ productError() }}</p>
+      }
+
+      <button mat-flat-button type="button" (click)="addProduct()">
+        Agregar producto
+      </button>
+    </div>
+  } @else {
+    <div class="builder-panel">
+      <p class="builder-empty">
+        Crea al menos una categoría antes de agregar productos.
+      </p>
+    </div>
+  }
+
+  <div class="builder-list">
+    @for (category of draft().categories; track category.id) {
+      <article class="builder-panel">
+        <div class="builder-panel__heading">
+          <div>
+            <h3>{{ category.name }}</h3>
+            <p class="builder-meta">
+              {{ category.products.length }}
+              {{ category.products.length === 1 ? 'producto' : 'productos' }}
+            </p>
+          </div>
+          @if (!category.visible) {
+            <span class="builder-badge builder-badge--warning">Categoría oculta</span>
+          }
+        </div>
+
+        <div class="builder-list">
+          @if (category.products.length > 0) {
+            @for (product of category.products; track product.id) {
+              <article
+                class="builder-item"
+                [class.builder-item--muted]="!product.visible || !product.available"
+              >
+                @if (editingProductId() === product.id) {
+                  <div class="builder-grid">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Categoría</mat-label>
+                      <mat-select
+                        [value]="editingCategoryId()"
+                        (valueChange)="updateEditingCategory($event)"
+                      >
+                        @for (option of draft().categories; track option.id) {
+                          <mat-option [value]="option.id">{{ option.name }}</mat-option>
+                        }
+                      </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Nombre</mat-label>
+                      <input
+                        matInput
+                        [value]="editingProductName()"
+                        (input)="updateEditingProductName($any($event.target).value)"
+                      />
+                    </mat-form-field>
+                  </div>
+
+                  <div class="builder-grid">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Precio en pesos chilenos</mat-label>
+                      <input
+                        matInput
+                        type="number"
+                        min="0"
+                        [value]="editingProductPrice()"
+                        (input)="updateEditingProductPrice($any($event.target).value)"
+                      />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Descripción</mat-label>
+                      <input
+                        matInput
+                        [value]="editingProductDescription()"
+                        (input)="updateEditingProductDescription($any($event.target).value)"
+                      />
+                    </mat-form-field>
+                  </div>
+
+                  <div class="builder-inline-actions">
+                    <button mat-flat-button type="button" (click)="saveEditing()">
+                      Guardar
+                    </button>
+                    <button mat-button type="button" (click)="cancelEditing()">
+                      Cancelar
+                    </button>
+                  </div>
+                } @else {
+                  <div class="builder-item__heading">
+                    <div class="builder-row">
+                      <div class="builder-image-preview">
+                        @if (product.imageDataUrl) {
+                          <img [src]="product.imageDataUrl" alt="Imagen de producto" />
+                        } @else {
+                          <mat-icon aria-hidden="true">restaurant</mat-icon>
+                        }
+                      </div>
+                      <div class="builder-item__copy">
+                        <h3>{{ product.name }}</h3>
+                        <p class="builder-meta">
+                          {{ product.description || 'Sin descripción' }}
+                        </p>
+                      </div>
+                    </div>
+
+                    <strong>{{ formatPrice(product.price) }}</strong>
+                  </div>
+
+                  <div class="builder-inline-actions">
+                    <span class="builder-badge">
+                      {{ product.visible ? 'Visible' : 'Oculto' }}
+                    </span>
+                    <span class="builder-badge">
+                      {{ product.available ? 'Disponible' : 'No disponible' }}
+                    </span>
+                    <button
+                      mat-button
+                      type="button"
+                      (click)="startEditing(category.id, product.id, product.name, product.description, product.price)"
+                    >
+                      Editar
+                    </button>
+                    <button mat-button type="button" (click)="duplicateProduct(category.id, product.id)">
+                      Duplicar
+                    </button>
+                    <button mat-button type="button" (click)="toggleProductVisibility(category.id, product.id)">
+                      {{ product.visible ? 'Ocultar' : 'Mostrar' }}
+                    </button>
+                    <button mat-button type="button" (click)="toggleProductAvailability(category.id, product.id)">
+                      {{ product.available ? 'Marcar no disponible' : 'Marcar disponible' }}
+                    </button>
+                    <button mat-button type="button" (click)="removeProduct(category.id, product.id)">
+                      Eliminar
+                    </button>
+                  </div>
+                }
+              </article>
+            }
+          } @else {
+            <p class="builder-empty">Esta categoría todavía no tiene productos.</p>
+          }
+        </div>
+      </article>
+    }
+  </div>
+
+  <div class="builder-actions">
+    <button
+      mat-button
+      class="builder-nav-button builder-nav-button--back"
+      type="button"
+      (click)="backRequested.emit()"
+    >
+      Atrás
+    </button>
+    <button
+      mat-flat-button
+      class="builder-nav-button builder-nav-button--next"
+      type="button"
+      (click)="continueRequested.emit()"
+    >
+      Guardar y continuar
+    </button>
+  </div>
+</section>

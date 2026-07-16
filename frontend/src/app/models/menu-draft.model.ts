@@ -1,18 +1,37 @@
+export type MenuBuilderStep = 1 | 2 | 3 | 4 | 5 | 6;
+
+export type MenuBusinessType =
+  | 'restaurante'
+  | 'bar'
+  | 'pub'
+  | 'cafeteria'
+  | 'food-truck'
+  | 'otro';
+
+export type MenuPublicationStatus = 'draft' | 'published';
+
+export type MenuTemplate = 'moderno' | 'minimalista' | 'elegante' | 'rustico';
+
 export interface MenuProductDraft {
   id: string;
   name: string;
   description: string;
-  price: string;
+  price: number | null;
   imageDataUrl: string | null;
+  visible: boolean;
+  available: boolean;
 }
 
 export interface MenuCategoryDraft {
   id: string;
   name: string;
+  visible: boolean;
   products: MenuProductDraft[];
 }
 
 export interface MenuThemeDraft {
+  template: MenuTemplate;
+  primaryColor: string;
   backgroundColor: string;
   categoryColor: string;
   titleColor: string;
@@ -29,16 +48,38 @@ export interface MenuThemeDraft {
   productPriceColor: string;
   productNameBold: boolean;
   productNameItalic: boolean;
+  productImageStyle: 'rounded' | 'square';
+  productCardRadius: number;
+  productCardSpacing: number;
+}
+
+export interface MenuPublicationDraft {
+  status: MenuPublicationStatus;
+  slug: string;
+  publicUrl: string;
+  publishedAt: string | null;
 }
 
 export interface MenuDraft {
   businessTitle: string;
+  businessType: MenuBusinessType;
+  businessDescription: string;
   logoDataUrl: string | null;
   categories: MenuCategoryDraft[];
   theme: MenuThemeDraft;
+  publication: MenuPublicationDraft;
 }
 
+export const defaultMenuPublication = (): MenuPublicationDraft => ({
+  status: 'draft',
+  slug: '',
+  publicUrl: '',
+  publishedAt: null,
+});
+
 export const createDefaultMenuTheme = (): MenuThemeDraft => ({
+  template: 'moderno',
+  primaryColor: '#2bb673',
   backgroundColor: '#f6fbf8',
   categoryColor: '#2bb673',
   titleColor: '#1c1c1c',
@@ -55,11 +96,17 @@ export const createDefaultMenuTheme = (): MenuThemeDraft => ({
   productPriceColor: '#138a55',
   productNameBold: true,
   productNameItalic: false,
+  productImageStyle: 'rounded',
+  productCardRadius: 14,
+  productCardSpacing: 12,
 });
 
 export const createEmptyMenuDraft = (): MenuDraft => ({
   businessTitle: '',
+  businessType: 'restaurante',
+  businessDescription: '',
   logoDataUrl: null,
   categories: [],
   theme: createDefaultMenuTheme(),
+  publication: defaultMenuPublication(),
 });

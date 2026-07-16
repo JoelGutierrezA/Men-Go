@@ -1,0 +1,224 @@
+<section class="builder-step">
+  <header class="builder-step__header">
+    <span class="builder-step__eyebrow">
+      <mat-icon aria-hidden="true">{{ stepConfig.icon }}</mat-icon>
+      {{ stepConfig.label }}
+    </span>
+    <h2>{{ stepConfig.title }}</h2>
+    <p>{{ stepConfig.description }}</p>
+  </header>
+
+  <section class="builder-panel">
+    <div class="builder-panel__heading">
+      <div>
+        <h3>Plantilla</h3>
+        <p class="builder-meta">Elige una base visual para partir.</p>
+      </div>
+    </div>
+
+    <mat-button-toggle-group
+      [value]="draft().theme.template"
+      (valueChange)="updateTemplate($event)"
+      aria-label="Plantilla del menú"
+    >
+      @for (template of templates; track template.value) {
+        <mat-button-toggle [value]="template.value">{{ template.label }}</mat-button-toggle>
+      }
+    </mat-button-toggle-group>
+  </section>
+
+  <section class="builder-panel">
+    <div class="builder-panel__heading">
+      <div>
+        <h3>Colores</h3>
+        <p class="builder-meta">Cada color muestra muestra, selector y valor hexadecimal.</p>
+      </div>
+    </div>
+
+    <div class="builder-color-grid">
+      @for (field of colorFields; track field.key) {
+        <label class="builder-color-field">
+          <span>
+            <strong>{{ field.label }}</strong>
+            <code>{{ colorValue(field.key) }}</code>
+          </span>
+          <input
+            type="color"
+            [value]="colorValue(field.key)"
+            (input)="updateColor(field.key, $any($event.target).value)"
+          />
+          <button
+            mat-button
+            type="button"
+            (click)="resetColor(field.key)"
+          >
+            Restaurar
+          </button>
+        </label>
+      }
+    </div>
+  </section>
+
+  <section class="builder-panel">
+    <div class="builder-panel__heading">
+      <div>
+        <h3>Tipografía</h3>
+        <p class="builder-meta">Configura estilos globales para todo el menú.</p>
+      </div>
+    </div>
+
+    <div class="builder-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Fuente principal</mat-label>
+        <mat-select
+          [value]="draft().theme.fontFamily"
+          (valueChange)="updateFontFamily($event)"
+        >
+          @for (option of fontOptions; track option.value) {
+            <mat-option [value]="option.value">{{ option.label }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Tamaño simple</mat-label>
+        <mat-select>
+          @for (size of textSizes; track size.label) {
+            <mat-option
+              [value]="size.label"
+              (click)="applyTextSize(size.title, size.body, size.product)"
+            >
+              {{ size.label }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="builder-inline-actions">
+      <button
+        mat-stroked-button
+        type="button"
+        [class.builder-badge]="draft().theme.titleBold"
+        (click)="toggleTitleBold()"
+      >
+        Negrita
+      </button>
+
+      <button
+        mat-stroked-button
+        type="button"
+        [class.builder-badge]="draft().theme.titleItalic"
+        (click)="toggleTitleItalic()"
+      >
+        Cursiva
+      </button>
+    </div>
+
+    <details class="builder-panel builder-panel--dense">
+      <summary>Personalización avanzada</summary>
+      <div class="builder-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Tamaño del título</mat-label>
+          <input
+            matInput
+            type="number"
+            min="24"
+            max="56"
+            [value]="draft().theme.titleFontSize"
+            (input)="updateNumber('titleFontSize', $any($event.target).value)"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Tamaño del texto</mat-label>
+          <input
+            matInput
+            type="number"
+            min="14"
+            max="24"
+            [value]="draft().theme.bodyFontSize"
+            (input)="updateNumber('bodyFontSize', $any($event.target).value)"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Tamaño de productos</mat-label>
+          <input
+            matInput
+            type="number"
+            min="13"
+            max="24"
+            [value]="draft().theme.productFontSize"
+            (input)="updateNumber('productFontSize', $any($event.target).value)"
+          />
+        </mat-form-field>
+      </div>
+    </details>
+  </section>
+
+  <section class="builder-panel">
+    <div class="builder-panel__heading">
+      <div>
+        <h3>Productos y tarjetas</h3>
+        <p class="builder-meta">Define la apariencia global de las tarjetas de productos.</p>
+      </div>
+    </div>
+
+    <div class="builder-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Estilo de imagen</mat-label>
+        <mat-select
+          [value]="draft().theme.productImageStyle"
+          (valueChange)="updateImageStyle($event)"
+        >
+          <mat-option value="rounded">Redondeada</mat-option>
+          <mat-option value="square">Cuadrada</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Bordes de tarjeta</mat-label>
+        <input
+          matInput
+          type="number"
+          min="0"
+          max="28"
+          [value]="draft().theme.productCardRadius"
+          (input)="updateNumber('productCardRadius', $any($event.target).value)"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Separación</mat-label>
+        <input
+          matInput
+          type="number"
+          min="6"
+          max="24"
+          [value]="draft().theme.productCardSpacing"
+          (input)="updateNumber('productCardSpacing', $any($event.target).value)"
+        />
+      </mat-form-field>
+    </div>
+  </section>
+
+  <div class="builder-actions">
+    <button
+      mat-button
+      class="builder-nav-button builder-nav-button--back"
+      type="button"
+      (click)="backRequested.emit()"
+    >
+      Atrás
+    </button>
+    <button
+      mat-flat-button
+      class="builder-nav-button builder-nav-button--next"
+      type="button"
+      (click)="continueRequested.emit()"
+    >
+      Guardar y continuar
+    </button>
+  </div>
+</section>

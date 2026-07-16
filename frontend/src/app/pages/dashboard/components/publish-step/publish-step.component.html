@@ -1,0 +1,112 @@
+@if (draft().publication.status === 'published') {
+  <section class="builder-step">
+    <header class="builder-step__header">
+      <span class="builder-step__eyebrow">
+        <mat-icon aria-hidden="true">check_circle</mat-icon>
+        Menú publicado
+      </span>
+      <h2>Tu menú ya está en línea</h2>
+      <p>
+        Coloca este código QR en tus mesas, vitrinas o redes sociales para que
+        tus clientes accedan al menú.
+      </p>
+    </header>
+
+    <div class="builder-panel">
+      <div class="builder-qr" aria-label="Código QR del menú publicado">
+        <mat-icon aria-hidden="true">qr_code_2</mat-icon>
+      </div>
+      <p class="builder-meta">{{ publicUrl() }}</p>
+
+      <div class="builder-inline-actions">
+        <button mat-flat-button type="button" (click)="copyLink()">
+          Copiar enlace
+        </button>
+        <button mat-stroked-button type="button" (click)="openMenu()">
+          Abrir menú
+        </button>
+        <button mat-stroked-button type="button" (click)="downloadQr()">
+          Descargar QR
+        </button>
+        <button mat-stroked-button type="button" (click)="printQr()">
+          Imprimir QR
+        </button>
+        <button mat-button type="button" (click)="panelRequested.emit()">
+          Volver al panel
+        </button>
+      </div>
+
+      @if (copyStatus()) {
+        <span class="builder-badge">{{ copyStatus() }}</span>
+      }
+    </div>
+  </section>
+} @else {
+  <section class="builder-step">
+    <header class="builder-step__header">
+      <span class="builder-step__eyebrow">
+        <mat-icon aria-hidden="true">{{ stepConfig.icon }}</mat-icon>
+        {{ stepConfig.label }}
+      </span>
+      <h2>{{ stepConfig.title }}</h2>
+      <p>{{ stepConfig.description }}</p>
+    </header>
+
+    <div class="builder-panel">
+      <div class="builder-panel__heading">
+        <div>
+          <h3>Estado del menú</h3>
+          <p class="builder-meta">Borrador listo para generar una URL pública.</p>
+        </div>
+        <span class="builder-badge builder-badge--warning">Borrador</span>
+      </div>
+
+      <mat-form-field appearance="outline">
+        <mat-label>URL pública</mat-label>
+        <span matTextPrefix>menugo.cl/menu/</span>
+        <input
+          matInput
+          [value]="draft().publication.slug"
+          (input)="updateSlug($any($event.target).value)"
+          placeholder="nombre-del-negocio"
+        />
+      </mat-form-field>
+
+      @if (publicUrl()) {
+        <p class="builder-meta">{{ publicUrl() }}</p>
+      }
+
+      @if (publishError()) {
+        <p class="builder-error">{{ publishError() }}</p>
+      }
+    </div>
+
+    <div class="builder-panel">
+      <h3>Resumen previo</h3>
+      <p class="builder-meta">{{ draft().businessTitle || 'Negocio sin nombre' }}</p>
+      <p class="builder-meta">
+        {{ draft().categories.length }} categorías,
+        {{ draft().categories.length ? 'productos cargados en el menú' : 'sin categorías todavía' }}.
+      </p>
+    </div>
+
+    <div class="builder-actions">
+      <button
+        mat-button
+        class="builder-nav-button builder-nav-button--back"
+        type="button"
+        (click)="backRequested.emit()"
+      >
+        Atrás
+      </button>
+      <button
+        mat-flat-button
+        class="builder-nav-button builder-nav-button--next"
+        type="button"
+        (click)="publishMenu()"
+      >
+        Publicar menú
+      </button>
+    </div>
+  </section>
+}

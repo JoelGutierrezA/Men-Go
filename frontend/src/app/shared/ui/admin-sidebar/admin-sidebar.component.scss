@@ -119,6 +119,14 @@
   background: var(--mg-accent);
 }
 
+.sidebar__child-link--complete mat-icon {
+  background: var(--mg-primary);
+}
+
+.sidebar__child-link--error mat-icon {
+  background: #b42318;
+}
+
 .sidebar__nav [mat-list-item] {
   margin-bottom: 0.35rem;
   border-radius: 0.9rem;
