@@ -1,0 +1,26 @@
+<section class="page-shell dashboard-page">
+  <div class="dashboard-page__workspace">
+    <mat-card class="dashboard-page__card dashboard-page__card--editor">
+      <mat-card-content class="dashboard-page__editor">
+        <app-business-step (continueRequested)="confirmSaved()" />
+
+        @if (savedMessage()) {
+          <span class="dashboard-page__saved-badge">{{ savedMessage() }}</span>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="dashboard-page__card dashboard-page__card--preview">
+      <mat-card-header class="dashboard-page__preview-header">
+        <div>
+          <mat-card-title>Previsualización</mat-card-title>
+          <p>Cómo se verá la identidad del negocio en el menú</p>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content class="dashboard-page__preview">
+        <app-menu-preview />
+      </mat-card-content>
+    </mat-card>
+  </div>
+</section>

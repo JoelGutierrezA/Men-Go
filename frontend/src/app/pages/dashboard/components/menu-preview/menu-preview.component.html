@@ -31,6 +31,9 @@
           } @else {
             <p>{{ categoriesSummary() }}</p>
           }
+          @if (branchSummary()) {
+            <p class="menu-preview__location">{{ branchSummary() }}</p>
+          }
         </div>
       </div>
 

@@ -1,7 +1,7 @@
 {
-  "name": "menugo-frontend",
+  "name": "noren-frontend",
   "version": "0.0.0",
-  "description": "MenuGo frontend base built with Angular.",
+  "description": "Noren frontend base built with Angular.",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

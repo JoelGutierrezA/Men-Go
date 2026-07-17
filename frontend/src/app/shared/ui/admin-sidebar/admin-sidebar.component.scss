@@ -9,21 +9,16 @@
 }
 
 .sidebar__header {
-  display: grid;
-  gap: 0.45rem;
-  padding: 0.25rem 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  min-height: 3.15rem;
+  padding: 0.15rem 0.5rem 1rem;
 }
 
-.sidebar__eyebrow {
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--mg-accent);
-}
-
-.sidebar__header h2 {
-  font-size: 1.35rem;
+.sidebar__brand-logo {
+  width: min(11.5rem, 100%);
+  height: auto;
+  object-fit: contain;
 }
 
 .sidebar__nav {

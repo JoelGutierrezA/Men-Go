@@ -108,7 +108,6 @@
   gap: 0.8rem;
 }
 
-.platform-page__builder-brand span,
 .platform-page__builder-menu-logo {
   display: grid;
   place-items: center;
@@ -119,9 +118,10 @@
   font-weight: 700;
 }
 
-.platform-page__builder-brand span {
-  width: 2.8rem;
-  height: 2.8rem;
+.platform-page__builder-logo {
+  width: 4.4rem;
+  max-width: 100%;
+  object-fit: contain;
 }
 
 .platform-page__builder-brand div {

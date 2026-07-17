@@ -5,11 +5,13 @@ import { MenuBuilderStep } from '@models/menu-draft.model';
 import { MenuDraftService } from '@services/menu-draft.service';
 import { getMenuBuilderStep } from '../../menu-builder.config';
 
+type ReviewTarget = MenuBuilderStep | 'business';
+
 interface ReviewItem {
   label: string;
   detail: string;
   status: 'ok' | 'warning' | 'error';
-  targetStep: MenuBuilderStep;
+  targetStep: ReviewTarget;
 }
 
 @Component({
@@ -24,7 +26,7 @@ export class ReviewStepComponent {
 
   readonly backRequested = output<void>();
   readonly continueRequested = output<void>();
-  readonly stepRequested = output<MenuBuilderStep>();
+  readonly stepRequested = output<ReviewTarget>();
 
   protected readonly draft = this.menuDraftService.draft;
   protected readonly productsCount = this.menuDraftService.productsCount;
@@ -48,7 +50,7 @@ export class ReviewStepComponent {
           ? draft.businessTitle
           : 'Debes agregar el nombre del negocio.',
         status: draft.businessTitle.trim() ? 'ok' : 'error',
-        targetStep: 1,
+        targetStep: 'business',
       },
       {
         label: 'Logo agregado',
@@ -56,7 +58,15 @@ export class ReviewStepComponent {
           ? 'El menú tiene logo.'
           : 'Agrega un logo para fortalecer la identidad.',
         status: draft.logoDataUrl ? 'ok' : 'warning',
-        targetStep: 1,
+        targetStep: 'business',
+      },
+      {
+        label: 'Ubicacion principal',
+        detail: draft.headquartersAddress.trim()
+          ? `${draft.branchCount} sucursal${draft.branchCount === 1 ? '' : 'es'} configurada${draft.branchCount === 1 ? '' : 's'}.`
+          : 'Agrega la casa matriz o direccion principal para orientar a tus clientes.',
+        status: draft.headquartersAddress.trim() ? 'ok' : 'warning',
+        targetStep: 'business',
       },
       {
         label: 'Al menos una categoría creada',

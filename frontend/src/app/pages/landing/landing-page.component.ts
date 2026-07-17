@@ -65,7 +65,7 @@ export class LandingPageComponent {
       description: 'Administra tu restaurante desde cualquier dispositivo.',
       ctaLabel: 'Plataforma',
       ctaTarget: 'plataforma',
-      imageAlt: 'Panel administrativo de MenuGo mostrando productos y estados',
+      imageAlt: 'Panel administrativo de Noren mostrando productos y estados',
       mockType: 'dashboard',
     },
   ];
@@ -115,7 +115,7 @@ export class LandingPageComponent {
       price: '15 dias',
       period: 'sin costo',
       description:
-        'Empieza con una prueba real para explorar MenuGo antes de elegir un plan.',
+        'Empieza con una prueba real para explorar Noren antes de elegir un plan.',
       ctaLabel: 'Probar gratis',
       tone: 'trial',
       badge: 'Nuevo',

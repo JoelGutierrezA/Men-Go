@@ -32,8 +32,8 @@ export class AdminSidebarComponent {
   private readonly router = inject(Router);
   private readonly menuDraftService = inject(MenuDraftService);
   private readonly expandedGroups = signal<Record<string, boolean>>({});
+  private readonly businessRoute = '/panel/negocio/datos';
   private readonly builderRouteSteps: Record<string, number> = {
-    '/panel/menu/negocio': 1,
     '/panel/menu/categorias': 2,
     '/panel/menu/productos': 3,
     '/panel/menu/diseno': 4,
@@ -42,11 +42,6 @@ export class AdminSidebarComponent {
   };
 
   readonly items = input.required<NavigationItem[]>();
-  readonly eyebrow = input('Administracion');
-  readonly title = input('Base del panel');
-  readonly description = input(
-    'Estructura preparada para crecer por modulos sin mezclar UI, acceso y dominio.',
-  );
   readonly footerLabel = input('Fase 1');
   readonly footerText = input('Sin persistencia ni logica de negocio aun.');
   readonly navigate = output<void>();
@@ -78,6 +73,14 @@ export class AdminSidebarComponent {
   }
 
   protected childStatus(child: NavigationItem): SidebarStepStatus {
+    if (child.route === this.businessRoute) {
+      if (this.router.url === child.route || this.router.url.startsWith(`${child.route}?`)) {
+        return 'current';
+      }
+
+      return this.menuDraftService.draft().businessTitle.trim() ? 'complete' : 'error';
+    }
+
     if (!child.route || !(child.route in this.builderRouteSteps)) {
       return this.router.url === child.route ? 'current' : 'pending';
     }
@@ -88,10 +91,6 @@ export class AdminSidebarComponent {
 
     const step = this.builderRouteSteps[child.route];
     const draft = this.menuDraftService.draft();
-
-    if (step === 1) {
-      return draft.businessTitle.trim() ? 'complete' : 'error';
-    }
 
     if (step === 2) {
       return draft.categories.length > 0 ? 'complete' : 'pending';

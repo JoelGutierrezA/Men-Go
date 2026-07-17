@@ -45,6 +45,18 @@
   flex: 1 1 18rem;
 }
 
+.builder-choice {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.2rem 0;
+}
+
+.builder-choice .mat-mdc-checkbox {
+  width: fit-content;
+  color: var(--mg-text);
+  font-weight: 800;
+}
+
 .builder-grid--compact {
   gap: 0.65rem;
 }
@@ -74,6 +86,27 @@
 .builder-panel__heading,
 .builder-item__heading {
   justify-content: space-between;
+}
+
+.builder-item__actions {
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  align-items: center;
+  justify-content: flex-end;
+  margin-left: auto;
+}
+
+.builder-item__actions .mat-mdc-icon-button {
+  width: 2.35rem;
+  height: 2.35rem;
+  padding: 0.35rem;
+  color: var(--mg-accent);
+}
+
+.builder-item__actions .builder-icon-button--danger {
+  color: #b42318;
 }
 
 .builder-item {

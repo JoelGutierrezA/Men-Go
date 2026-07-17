@@ -5,6 +5,7 @@ import { authGuard } from '@guards/auth.guard';
 import { MainLayoutComponent } from '@layouts/main-layout/main-layout.component';
 import { AdminUsersPageComponent } from '@pages/admin-users/admin-users-page.component';
 import { DataProtectionPageComponent } from '@pages/data-protection/data-protection-page.component';
+import { BusinessAdminPageComponent } from '@pages/dashboard/business-admin-page.component';
 import { FeaturesPageComponent } from '@pages/features/features-page.component';
 import { LandingPageComponent } from '@pages/landing/landing-page.component';
 import { LoginPageComponent } from '@pages/login/login-page.component';
@@ -17,17 +18,17 @@ export const routes: Routes = [
   {
     path: '',
     component: LandingPageComponent,
-    title: 'MenuGo | Menus digitales QR',
+    title: 'Noren | Menus digitales QR',
   },
   {
     path: 'funciones',
     component: FeaturesPageComponent,
-    title: 'MenuGo | Funciones',
+    title: 'Noren | Funciones',
   },
   {
     path: 'planes',
     component: ValuesPageComponent,
-    title: 'MenuGo | Planes',
+    title: 'Noren | Planes',
   },
   {
     path: 'valores',
@@ -36,27 +37,27 @@ export const routes: Routes = [
   {
     path: 'plataforma',
     component: PlatformPageComponent,
-    title: 'MenuGo | Plataforma',
+    title: 'Noren | Plataforma',
   },
   {
     path: 'politica-de-privacidad',
     component: PrivacyPageComponent,
-    title: 'MenuGo | Politica de privacidad',
+    title: 'Noren | Politica de privacidad',
   },
   {
     path: 'proteccion-de-datos',
     component: DataProtectionPageComponent,
-    title: 'MenuGo | Proteccion de datos',
+    title: 'Noren | Proteccion de datos',
   },
   {
     path: 'login',
     component: LoginPageComponent,
-    title: 'MenuGo | Acceso',
+    title: 'Noren | Acceso',
   },
   {
     path: 'register',
     component: RegisterPageComponent,
-    title: 'MenuGo | Registro',
+    title: 'Noren | Registro',
   },
   {
     path: 'panel',
@@ -66,37 +67,37 @@ export const routes: Routes = [
       roles: ['user'],
       layoutConfig: {
         navigationItems: userNavigation,
-        sidebarEyebrow: 'Tu plataforma',
-        sidebarTitle: 'Creación del menú',
-        sidebarDescription:
-          'Asistente para crear, revisar y publicar el menú digital del negocio.',
         footerLabel: 'Acceso usuario',
         footerText:
           'Borrador con guardado local, previsualización y publicación preparada.',
-        brandRoute: '/panel/menu/negocio',
-        brandSubtitle: 'Panel del negocio',
+        brandRoute: '/panel/negocio/datos',
       },
     },
     children: [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'menu/negocio',
+        redirectTo: 'negocio/datos',
       },
       {
         path: 'dashboard',
         pathMatch: 'full',
-        redirectTo: 'menu/negocio',
+        redirectTo: 'negocio/datos',
       },
       {
         path: 'menu',
         pathMatch: 'full',
-        redirectTo: 'menu/negocio',
+        redirectTo: 'menu/categorias',
+      },
+      {
+        path: 'promociones',
+        pathMatch: 'full',
+        redirectTo: 'promociones/horarios',
       },
       {
         path: 'menu/identidad',
         pathMatch: 'full',
-        redirectTo: 'menu/negocio',
+        redirectTo: 'negocio/datos',
       },
       {
         path: 'menu/estilo',
@@ -105,14 +106,13 @@ export const routes: Routes = [
       },
       {
         path: 'menu/negocio',
-        loadComponent: () =>
-          import('@pages/dashboard/dashboard-page.component').then(
-            (component) => component.DashboardPageComponent,
-          ),
-        title: 'MenuGo | Tu negocio',
-        data: {
-          step: 1,
-        },
+        pathMatch: 'full',
+        redirectTo: 'negocio/datos',
+      },
+      {
+        path: 'negocio/datos',
+        component: BusinessAdminPageComponent,
+        title: 'Noren | Tu negocio',
       },
       {
         path: 'menu/categorias',
@@ -120,7 +120,7 @@ export const routes: Routes = [
           import('@pages/dashboard/dashboard-page.component').then(
             (component) => component.DashboardPageComponent,
           ),
-        title: 'MenuGo | Categorías',
+        title: 'Noren | Categorías',
         data: {
           step: 2,
         },
@@ -131,7 +131,7 @@ export const routes: Routes = [
           import('@pages/dashboard/dashboard-page.component').then(
             (component) => component.DashboardPageComponent,
           ),
-        title: 'MenuGo | Productos',
+        title: 'Noren | Productos',
         data: {
           step: 3,
         },
@@ -142,7 +142,7 @@ export const routes: Routes = [
           import('@pages/dashboard/dashboard-page.component').then(
             (component) => component.DashboardPageComponent,
           ),
-        title: 'MenuGo | Diseño',
+        title: 'Noren | Diseño',
         data: {
           step: 4,
         },
@@ -153,7 +153,7 @@ export const routes: Routes = [
           import('@pages/dashboard/dashboard-page.component').then(
             (component) => component.DashboardPageComponent,
           ),
-        title: 'MenuGo | Revisión',
+        title: 'Noren | Revisión',
         data: {
           step: 5,
         },
@@ -164,10 +164,18 @@ export const routes: Routes = [
           import('@pages/dashboard/dashboard-page.component').then(
             (component) => component.DashboardPageComponent,
           ),
-        title: 'MenuGo | Publicar',
+        title: 'Noren | Publicar',
         data: {
           step: 6,
         },
+      },
+      {
+        path: 'promociones/horarios',
+        loadComponent: () =>
+          import('@pages/dashboard/promotions-page.component').then(
+            (component) => component.PromotionsPageComponent,
+          ),
+        title: 'Noren | Promociones',
       },
     ],
   },
@@ -179,10 +187,6 @@ export const routes: Routes = [
       roles: ['admin'],
       layoutConfig: {
         navigationItems: adminNavigation,
-        sidebarEyebrow: 'Administracion',
-        sidebarTitle: 'Usuarios inscritos',
-        sidebarDescription:
-          'Interfaz temporal para revisar quienes ya tienen acceso a MenuGo en esta fase inicial.',
         footerLabel: 'Acceso admin',
         footerText: 'Solo se muestra la lista de usuarios definidos para prueba.',
         brandRoute: '/admin/users',
@@ -203,7 +207,7 @@ export const routes: Routes = [
       {
         path: 'users',
         component: AdminUsersPageComponent,
-        title: 'MenuGo | Usuarios inscritos',
+        title: 'Noren | Usuarios inscritos',
       },
     ],
   },

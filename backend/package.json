@@ -1,7 +1,7 @@
 {
-  "name": "menugo-backend",
+  "name": "noren-backend",
   "version": "0.0.1",
-  "description": "MenúGo backend API base built with NestJS.",
+  "description": "Noren backend API base built with NestJS.",
   "author": "",
   "private": true,
   "license": "UNLICENSED",

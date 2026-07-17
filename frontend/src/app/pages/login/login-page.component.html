@@ -1,8 +1,11 @@
 <section class="page-shell login-page">
   <mat-card appearance="outlined" class="login-page__card">
     <div class="login-page__intro">
+      <a class="login-page__brand" routerLink="/" aria-label="Volver al inicio de Noren">
+        <img src="assets/Noren Logo sin Fondo.png" alt="Noren" />
+      </a>
       <span>Acceso temporal activo</span>
-      <h1>Ingresa a MenuGo segun el perfil disponible.</h1>
+      <h1>Ingresa a Noren segun el perfil disponible.</h1>
       <p>
         En esta fase dejamos dos accesos temporales para probar la separacion
         entre la plataforma de usuario y la interfaz admin.
@@ -10,7 +13,7 @@
       <div class="login-page__credentials">
         <strong>Usuarios disponibles</strong>
         <p><span>Usuario:</span> jgutiale@gmail.com / admin123</p>
-        <p><span>Admin:</span> admin@menugo.com / admin123</p>
+        <p><span>Admin:</span> admin@noren.com / admin123</p>
       </div>
       <a mat-button routerLink="/">Volver a la landing</a>
     </div>
@@ -59,6 +62,13 @@
       }
 
       <button mat-flat-button type="submit">Ingresar a la plataforma</button>
+
+      <div class="login-page__form-links">
+        <a routerLink="/politica-de-privacidad">Politicas de privacidad</a>
+        <a href="mailto:soporte@noren.com?subject=Recuperar%20contrasena">
+          Olvidaste tu contrasena?
+        </a>
+      </div>
     </form>
   </mat-card>
 </section>

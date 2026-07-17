@@ -24,7 +24,7 @@ export class NavbarComponent {
 
   readonly showMenuButton = input(false);
   readonly brandRoute = input('/');
-  readonly brandSubtitle = input('Panel MenuGo');
+  readonly brandSubtitle = input('Panel Noren');
   readonly homeRoute = input('/');
   readonly homeLabel = input('Landing');
   readonly sessionEmail = input<string | null>(null);

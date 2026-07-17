@@ -1,6 +1,6 @@
-# Men-Go
+# Noren
 
-Repositorio del proyecto **MenúGo**, una plataforma SaaS para restaurantes,
+Repositorio del proyecto **Noren**, una plataforma SaaS para restaurantes,
 bares, pubs y cafeterías orientada a la creación y administración de menús
 digitales con códigos QR.
 

@@ -16,7 +16,6 @@
   box-shadow: none;
 }
 
-.dashboard-page__header,
 .dashboard-page__preview-header {
   display: flex;
   flex-wrap: wrap;
@@ -25,11 +24,6 @@
   justify-content: space-between;
 }
 
-.dashboard-page__header mat-icon {
-  color: var(--mg-accent);
-}
-
-.dashboard-page__header p,
 .dashboard-page__preview-header p {
   margin-top: 0.25rem;
   font-size: 0.9rem;
@@ -62,6 +56,17 @@
 .dashboard-page__error {
   color: #b42318;
   font-weight: 700;
+}
+
+.dashboard-page__saved-badge {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  color: var(--mg-accent);
+  background: rgba(43, 182, 115, 0.12);
+  font-size: 0.85rem;
+  font-weight: 800;
 }
 
 .dashboard-page__preview-modal {

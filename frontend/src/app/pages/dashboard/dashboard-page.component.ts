@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   effect,
   inject,
   signal,
@@ -13,7 +12,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuBuilderStep } from '@models/menu-draft.model';
 import { MenuDraftService } from '@services/menu-draft.service';
-import { BusinessStepComponent } from './components/business-step/business-step.component';
 import { CategoriesStepComponent } from './components/categories-step/categories-step.component';
 import { DesignStepComponent } from './components/design-step/design-step.component';
 import { MenuPreviewComponent } from './components/menu-preview/menu-preview.component';
@@ -25,7 +23,6 @@ import { getMenuBuilderStep, menuBuilderSteps } from './menu-builder.config';
 @Component({
   selector: 'app-dashboard-page',
   imports: [
-    BusinessStepComponent,
     CategoriesStepComponent,
     DesignStepComponent,
     MatButtonModule,
@@ -49,29 +46,30 @@ export class DashboardPageComponent {
   });
 
   protected readonly draft = this.menuDraftService.draft;
-  protected readonly currentStep = signal<MenuBuilderStep>(1);
+  protected readonly currentStep = signal<MenuBuilderStep>(2);
   protected readonly previewCollapsed = signal(false);
   protected readonly previewExpanded = signal(false);
   protected readonly validationError = signal('');
   protected readonly steps = menuBuilderSteps;
-  protected readonly currentStepConfig = computed(() =>
-    getMenuBuilderStep(this.currentStep()),
-  );
-  protected readonly progressLabel = computed(
-    () => `${this.currentStep()} de ${this.steps.length}`,
-  );
-
   constructor() {
     effect(() => {
-      const routeStep = (this.routeData()['step'] as MenuBuilderStep | undefined) ?? 1;
+      const routeStep =
+        (this.routeData()['step'] as MenuBuilderStep | undefined) ??
+        this.steps[0].step;
       this.currentStep.set(routeStep);
       this.validationError.set('');
     });
   }
 
   protected goBack(): void {
-    const previousStep = Math.max(1, this.currentStep() - 1) as MenuBuilderStep;
-    this.goToStep(previousStep);
+    const currentIndex = this.currentStepIndex();
+
+    if (currentIndex <= 0) {
+      void this.router.navigate(['/panel/negocio/datos']);
+      return;
+    }
+
+    this.goToStep(this.steps[currentIndex - 1].step);
   }
 
   protected goNext(): void {
@@ -79,7 +77,10 @@ export class DashboardPageComponent {
       return;
     }
 
-    const nextStep = Math.min(this.steps.length, this.currentStep() + 1) as MenuBuilderStep;
+    const currentIndex = this.currentStepIndex();
+    const nextStep =
+      this.steps[Math.min(this.steps.length - 1, currentIndex + 1)].step;
+
     this.goToStep(nextStep);
   }
 
@@ -87,6 +88,15 @@ export class DashboardPageComponent {
     const stepConfig = getMenuBuilderStep(step);
     this.validationError.set('');
     void this.router.navigate([stepConfig.route]);
+  }
+
+  protected goToReviewTarget(target: MenuBuilderStep | 'business'): void {
+    if (target === 'business') {
+      void this.router.navigate(['/panel/negocio/datos']);
+      return;
+    }
+
+    this.goToStep(target);
   }
 
   protected togglePreview(): void {
@@ -104,17 +114,19 @@ export class DashboardPageComponent {
   private validateCurrentStep(): boolean {
     const draft = this.draft();
 
-    if (this.currentStep() === 1 && !draft.businessTitle.trim()) {
-      this.validationError.set('Ingresa el nombre del negocio para continuar.');
-      return false;
-    }
-
     if (this.currentStep() === 2 && draft.categories.length === 0) {
-      this.validationError.set('Crea al menos una categoría para continuar.');
+      this.validationError.set('Crea al menos una categoria para continuar.');
       return false;
     }
 
     this.validationError.set('');
     return true;
+  }
+
+  private currentStepIndex(): number {
+    return Math.max(
+      0,
+      this.steps.findIndex((stepConfig) => stepConfig.step === this.currentStep()),
+    );
   }
 }

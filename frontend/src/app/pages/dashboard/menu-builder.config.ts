@@ -9,16 +9,16 @@ export interface MenuBuilderStepConfig {
   icon: string;
 }
 
+export const businessAdminConfig = {
+  label: 'Tu negocio',
+  title: 'Administra tu negocio',
+  description:
+    'Gestiona el nombre, tipo, logo y direcciones que identifican a tu negocio.',
+  route: '/panel/negocio/datos',
+  icon: 'storefront',
+};
+
 export const menuBuilderSteps: MenuBuilderStepConfig[] = [
-  {
-    step: 1,
-    label: 'Tu negocio',
-    title: 'Presenta tu negocio',
-    description:
-      'Agrega la información principal que tus clientes verán al ingresar al menú.',
-    route: '/panel/menu/negocio',
-    icon: 'storefront',
-  },
   {
     step: 2,
     label: 'Categorías',

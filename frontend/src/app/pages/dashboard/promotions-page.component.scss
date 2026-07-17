@@ -1,0 +1,14 @@
+.dashboard-page__workspace--single {
+  max-width: 58rem;
+}
+
+.promotion-days {
+  display: grid;
+  gap: 0.35rem 0.8rem;
+}
+
+@media (min-width: 720px) {
+  .promotion-days {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

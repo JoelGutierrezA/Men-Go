@@ -2,7 +2,7 @@
 
 @include mat.core();
 
-$menugo-theme: mat.define-theme(
+$noren-theme: mat.define-theme(
   (
     color: (
       theme-type: light,
@@ -31,7 +31,7 @@ $menugo-theme: mat.define-theme(
 
 html {
   color-scheme: light;
-  @include mat.all-component-themes($menugo-theme);
+  @include mat.all-component-themes($noren-theme);
 }
 
 * {

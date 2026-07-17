@@ -1,19 +1,9 @@
 <section class="page-shell dashboard-page">
   <div class="dashboard-page__workspace">
     <mat-card class="dashboard-page__card dashboard-page__card--editor">
-      <mat-card-header class="dashboard-page__header">
-        <div>
-          <mat-card-title>{{ currentStepConfig().label }}</mat-card-title>
-          <p>{{ progressLabel() }} · Cambios guardados</p>
-        </div>
-        <mat-icon aria-hidden="true">{{ currentStepConfig().icon }}</mat-icon>
-      </mat-card-header>
 
       <mat-card-content class="dashboard-page__editor">
         @switch (currentStep()) {
-          @case (1) {
-            <app-business-step (continueRequested)="goNext()" />
-          }
           @case (2) {
             <app-categories-step
               (backRequested)="goBack()"
@@ -36,13 +26,13 @@
             <app-review-step
               (backRequested)="goBack()"
               (continueRequested)="goNext()"
-              (stepRequested)="goToStep($event)"
+              (stepRequested)="goToReviewTarget($event)"
             />
           }
           @case (6) {
             <app-publish-step
               (backRequested)="goBack()"
-              (panelRequested)="goToStep(1)"
+              (panelRequested)="goToStep(2)"
             />
           }
         }

@@ -1,0 +1,170 @@
+<section class="page-shell dashboard-page">
+  <div class="dashboard-page__workspace dashboard-page__workspace--single">
+    <section class="builder-step">
+      <header class="builder-step__header">
+        <span class="builder-step__eyebrow">
+          <mat-icon aria-hidden="true">sell</mat-icon>
+          Promociones
+        </span>
+        <h2>Promociones por horario</h2>
+        <p>
+          Crea descuentos temporales para una o más categorías, definiendo días y horarios.
+        </p>
+      </header>
+
+      <div class="builder-panel builder-panel--dense">
+        <div class="builder-panel__heading">
+          <div>
+            <h3>Nueva promoción</h3>
+            <p class="builder-meta">
+              Ejemplo: 10% de descuento en Bebidas de lunes a viernes entre 17:00 y 19:00.
+            </p>
+          </div>
+          <span class="builder-badge">
+            {{ activePromotionsCount() }} activas
+          </span>
+        </div>
+
+        @if (!hasCategories()) {
+          <p class="builder-empty">
+            Crea categorías antes de configurar promociones por horario.
+          </p>
+        } @else {
+          <div class="builder-grid">
+            <mat-form-field appearance="outline">
+              <mat-label>Nombre de la promoción</mat-label>
+              <input
+                matInput
+                [value]="promotionName()"
+                (input)="updatePromotionName($any($event.target).value)"
+                placeholder="Ej: Happy hour bebidas"
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Categorías con descuento</mat-label>
+              <mat-select
+                multiple
+                [value]="selectedCategoryIds()"
+                (valueChange)="updateSelectedCategories($event)"
+              >
+                @for (category of draft().categories; track category.id) {
+                  <mat-option [value]="category.id">{{ category.name }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="builder-grid builder-grid--compact">
+            <mat-form-field appearance="outline">
+              <mat-label>Descuento</mat-label>
+              <input
+                matInput
+                type="number"
+                min="1"
+                max="100"
+                [value]="discountPercent()"
+                (input)="updateDiscountPercent($any($event.target).value)"
+              />
+              <span matTextSuffix>%</span>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Hora de inicio</mat-label>
+              <input
+                matInput
+                type="time"
+                [value]="startTime()"
+                (input)="updateStartTime($any($event.target).value)"
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Hora de término</mat-label>
+              <input
+                matInput
+                type="time"
+                [value]="endTime()"
+                (input)="updateEndTime($any($event.target).value)"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="promotion-days" aria-label="Días de la promoción">
+            @for (day of dayOptions; track day.value) {
+              <mat-checkbox
+                [checked]="selectedDays().includes(day.value)"
+                (change)="toggleDay(day.value, $event.checked)"
+              >
+                {{ day.label }}
+              </mat-checkbox>
+            }
+          </div>
+
+          @if (promotionError()) {
+            <p class="builder-error">{{ promotionError() }}</p>
+          }
+
+          <div class="builder-actions">
+            <button mat-flat-button type="button" (click)="addPromotion()">
+              Crear promoción
+            </button>
+          </div>
+        }
+      </div>
+
+      <div class="builder-list">
+        @if (draft().promotions.length > 0) {
+          @for (promotion of draft().promotions; track promotion.id) {
+            <article class="builder-item" [class.builder-item--muted]="!promotion.active">
+              <div class="builder-item__heading">
+                <div class="builder-item__copy">
+                  <h3>{{ promotion.name }}</h3>
+                  <p class="builder-meta">
+                    {{ promotion.discountPercent }}% en
+                    {{ categoryNames(promotion.categoryIds) }}
+                  </p>
+                  <p class="builder-meta">
+                    {{ daysSummary(promotion.days) }} · {{ promotion.startTime }} a
+                    {{ promotion.endTime }}
+                  </p>
+                </div>
+
+                <div class="builder-item__actions">
+                  <span class="builder-badge">
+                    {{ promotion.active ? 'Activa' : 'Pausada' }}
+                  </span>
+                  <button
+                    mat-icon-button
+                    type="button"
+                    [attr.aria-label]="promotion.active ? 'Pausar promoción' : 'Activar promoción'"
+                    [title]="promotion.active ? 'Pausar promoción' : 'Activar promoción'"
+                    (click)="togglePromotionActive(promotion.id)"
+                  >
+                    <mat-icon aria-hidden="true">
+                      {{ promotion.active ? 'pause_circle' : 'play_circle' }}
+                    </mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    class="builder-icon-button--danger"
+                    type="button"
+                    aria-label="Eliminar promoción"
+                    title="Eliminar promoción"
+                    (click)="removePromotion(promotion.id)"
+                  >
+                    <mat-icon aria-hidden="true">delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </article>
+          }
+        } @else {
+          <p class="builder-empty">
+            Aún no hay promociones creadas.
+          </p>
+        }
+      </div>
+    </section>
+  </div>
+</section>

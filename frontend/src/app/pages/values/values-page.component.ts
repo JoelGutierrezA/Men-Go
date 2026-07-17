@@ -38,7 +38,7 @@ export class ValuesPageComponent {
       price: '15 dias',
       period: 'sin costo',
       description:
-        'Empieza con una prueba real para explorar MenuGo antes de elegir un plan.',
+        'Empieza con una prueba real para explorar Noren antes de elegir un plan.',
       ctaLabel: 'Probar gratis',
       tone: 'trial',
       badge: 'Nuevo',

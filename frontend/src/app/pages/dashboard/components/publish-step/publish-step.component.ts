@@ -92,13 +92,13 @@ export class PublishStepComponent {
           <rect x="230" y="284" width="28" height="56"/>
           <rect x="306" y="306" width="36" height="36"/>
         </g>
-        <text x="210" y="430" text-anchor="middle" font-family="Arial" font-size="20" font-weight="700" fill="#123c2b">MenuGo</text>
+        <text x="210" y="430" text-anchor="middle" font-family="Arial" font-size="20" font-weight="700" fill="#123c2b">Noren</text>
         <text x="210" y="462" text-anchor="middle" font-family="Arial" font-size="14" fill="#4d5b68">${url}</text>
       </svg>
     `);
     const link = document.createElement('a');
     link.href = `data:image/svg+xml;charset=utf-8,${svg}`;
-    link.download = 'menugo-qr.svg';
+    link.download = 'noren-qr.svg';
     link.click();
   }
 

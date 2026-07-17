@@ -26,6 +26,20 @@ export class MenuPreviewComponent {
       ? 'Sin categorías visibles'
       : `${total} ${total === 1 ? 'categoría visible' : 'categorías visibles'}`;
   });
+  protected readonly branchSummary = computed(() => {
+    const draft = this.draft();
+
+    if (!draft.headquartersAddress.trim()) {
+      return '';
+    }
+
+    const suffix =
+      draft.branchCount > 1
+        ? ` · ${draft.branchCount} sucursales`
+        : ' · Casa matriz';
+
+    return `${draft.headquartersAddress}${suffix}`;
+  });
   protected readonly categoryTextColor = computed(() =>
     this.getReadableTextColor(this.draft().theme.categoryColor),
   );

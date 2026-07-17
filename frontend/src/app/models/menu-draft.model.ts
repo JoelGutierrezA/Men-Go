@@ -1,4 +1,4 @@
-export type MenuBuilderStep = 1 | 2 | 3 | 4 | 5 | 6;
+export type MenuBuilderStep = 2 | 3 | 4 | 5 | 6;
 
 export type MenuBusinessType =
   | 'restaurante'
@@ -11,6 +11,15 @@ export type MenuBusinessType =
 export type MenuPublicationStatus = 'draft' | 'published';
 
 export type MenuTemplate = 'moderno' | 'minimalista' | 'elegante' | 'rustico';
+
+export type MenuPromotionDay =
+  | 'monday'
+  | 'tuesday'
+  | 'wednesday'
+  | 'thursday'
+  | 'friday'
+  | 'saturday'
+  | 'sunday';
 
 export interface MenuProductDraft {
   id: string;
@@ -60,12 +69,27 @@ export interface MenuPublicationDraft {
   publishedAt: string | null;
 }
 
+export interface MenuPromotionDraft {
+  id: string;
+  name: string;
+  categoryIds: string[];
+  discountPercent: number;
+  days: MenuPromotionDay[];
+  startTime: string;
+  endTime: string;
+  active: boolean;
+}
+
 export interface MenuDraft {
   businessTitle: string;
   businessType: MenuBusinessType;
   businessDescription: string;
   logoDataUrl: string | null;
+  branchCount: number;
+  headquartersAddress: string;
+  branchAddresses: string[];
   categories: MenuCategoryDraft[];
+  promotions: MenuPromotionDraft[];
   theme: MenuThemeDraft;
   publication: MenuPublicationDraft;
 }
@@ -106,7 +130,11 @@ export const createEmptyMenuDraft = (): MenuDraft => ({
   businessType: 'restaurante',
   businessDescription: '',
   logoDataUrl: null,
+  branchCount: 1,
+  headquartersAddress: '',
+  branchAddresses: [],
   categories: [],
+  promotions: [],
   theme: createDefaultMenuTheme(),
   publication: defaultMenuPublication(),
 });

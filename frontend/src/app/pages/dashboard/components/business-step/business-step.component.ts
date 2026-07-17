@@ -1,17 +1,19 @@
 import { ChangeDetectionStrategy, Component, computed, inject, output, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MenuBusinessType } from '@models/menu-draft.model';
 import { MenuDraftService } from '@services/menu-draft.service';
-import { getMenuBuilderStep } from '../../menu-builder.config';
+import { businessAdminConfig } from '../../menu-builder.config';
 
 @Component({
   selector: 'app-business-step',
   imports: [
     MatButtonModule,
+    MatCheckboxModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
@@ -27,8 +29,12 @@ export class BusinessStepComponent {
   readonly continueRequested = output<void>();
 
   protected readonly draft = this.menuDraftService.draft;
-  protected readonly stepConfig = getMenuBuilderStep(1);
+  protected readonly stepConfig = businessAdminConfig;
   protected readonly logoError = signal('');
+  protected readonly additionalBranchAddresses = computed(() =>
+    this.draft().branchAddresses.slice(0, Math.max(0, this.draft().branchCount - 1)),
+  );
+  protected readonly hasMultipleBranches = computed(() => this.draft().branchCount > 1);
   protected readonly previewInitial = computed(() => {
     const title = this.draft().businessTitle.trim();
     return title ? title.charAt(0).toUpperCase() : 'M';
@@ -52,6 +58,22 @@ export class BusinessStepComponent {
 
   protected updateBusinessDescription(value: string): void {
     this.menuDraftService.updateBusiness({ businessDescription: value });
+  }
+
+  protected updateBranchCount(value: string): void {
+    this.menuDraftService.updateBranchCount(Number(value));
+  }
+
+  protected updateMultipleBranches(hasMultipleBranches: boolean): void {
+    this.menuDraftService.updateBranchCount(hasMultipleBranches ? 2 : 1);
+  }
+
+  protected updateHeadquartersAddress(value: string): void {
+    this.menuDraftService.updateHeadquartersAddress(value);
+  }
+
+  protected updateBranchAddress(index: number, value: string): void {
+    this.menuDraftService.updateBranchAddress(index, value);
   }
 
   protected removeLogo(): void {

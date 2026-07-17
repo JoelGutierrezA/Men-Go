@@ -13,18 +13,16 @@ import { map } from 'rxjs';
 import { adminNavigation } from '@core/navigation/admin-navigation';
 import { NavigationItem } from '@models/navigation-item.model';
 import { AuthService } from '@services/auth.service';
+import { MenuDraftService } from '@services/menu-draft.service';
 import { AdminSidebarComponent } from '@shared/ui/admin-sidebar/admin-sidebar.component';
 import { NavbarComponent } from '@shared/ui/navbar/navbar.component';
 
 interface LayoutConfig {
   navigationItems: NavigationItem[];
-  sidebarEyebrow: string;
-  sidebarTitle: string;
-  sidebarDescription: string;
   footerLabel: string;
   footerText: string;
   brandRoute: string;
-  brandSubtitle: string;
+  brandSubtitle?: string;
 }
 
 @Component({
@@ -43,27 +41,28 @@ export class MainLayoutComponent {
   private readonly breakpointObserver = inject(BreakpointObserver);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly authService = inject(AuthService);
+  private readonly menuDraftService = inject(MenuDraftService);
   private readonly mobileSidebarOpened = signal(false);
   private readonly layoutConfig = this.activatedRoute.snapshot.data[
     'layoutConfig'
   ] as LayoutConfig | undefined;
+  private readonly usesBusinessHeader =
+    this.layoutConfig?.brandRoute?.startsWith('/panel') ?? false;
 
   protected readonly navigationItems =
     this.layoutConfig?.navigationItems ?? adminNavigation;
-  protected readonly sidebarEyebrow =
-    this.layoutConfig?.sidebarEyebrow ?? 'Administracion';
-  protected readonly sidebarTitle =
-    this.layoutConfig?.sidebarTitle ?? 'Base del panel';
-  protected readonly sidebarDescription =
-    this.layoutConfig?.sidebarDescription ??
-    'Estructura preparada para crecer por modulos sin mezclar UI, acceso y dominio.';
   protected readonly footerLabel = this.layoutConfig?.footerLabel ?? 'Fase 1';
   protected readonly footerText =
     this.layoutConfig?.footerText ?? 'Sin persistencia ni logica de negocio aun.';
   protected readonly brandRoute =
     this.layoutConfig?.brandRoute ?? '/admin/users';
-  protected readonly brandSubtitle =
-    this.layoutConfig?.brandSubtitle ?? 'Panel interno';
+  protected readonly brandSubtitle = computed(() => {
+    if (!this.usesBusinessHeader) {
+      return this.layoutConfig?.brandSubtitle ?? 'Panel interno';
+    }
+
+    return this.menuDraftService.draft().businessTitle.trim() || 'Nombre del negocio';
+  });
   protected readonly currentUser = this.authService.currentUser;
   protected readonly isMobile = toSignal(
     this.breakpointObserver

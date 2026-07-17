@@ -46,6 +46,7 @@
                 type="button"
                 cdkDragHandle
                 aria-label="Reordenar categoría"
+                title="Reordenar categoría"
               >
                 <mat-icon aria-hidden="true">drag_indicator</mat-icon>
               </button>
@@ -70,35 +71,66 @@
               </div>
             </div>
 
-            <div class="builder-inline-actions">
+            <div class="builder-item__actions">
               @if (category.products.length === 0) {
                 <span class="builder-badge builder-badge--warning">Vacía</span>
               }
               <span class="builder-badge">
                 {{ category.visible ? 'Visible' : 'Oculta' }}
               </span>
-            </div>
-          </div>
 
-          <div class="builder-inline-actions">
-            @if (editingCategoryId() === category.id) {
-              <button mat-flat-button type="button" (click)="saveEditing(category.id)">
-                Guardar
-              </button>
-              <button mat-button type="button" (click)="cancelEditing()">
-                Cancelar
-              </button>
-            } @else {
-              <button mat-button type="button" (click)="startEditing(category.id, category.name)">
-                Editar
-              </button>
-              <button mat-button type="button" (click)="toggleVisibility(category.id)">
-                {{ category.visible ? 'Ocultar' : 'Mostrar' }}
-              </button>
-              <button mat-button type="button" (click)="removeCategory(category.id)">
-                Eliminar
-              </button>
-            }
+              @if (editingCategoryId() === category.id) {
+                <button
+                  mat-icon-button
+                  type="button"
+                  [attr.aria-label]="'Guardar ' + category.name"
+                  [title]="'Guardar ' + category.name"
+                  (click)="saveEditing(category.id)"
+                >
+                  <mat-icon aria-hidden="true">check</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  type="button"
+                  aria-label="Cancelar edición"
+                  title="Cancelar edición"
+                  (click)="cancelEditing()"
+                >
+                  <mat-icon aria-hidden="true">close</mat-icon>
+                </button>
+              } @else {
+                <button
+                  mat-icon-button
+                  type="button"
+                  [attr.aria-label]="'Editar ' + category.name"
+                  [title]="'Editar ' + category.name"
+                  (click)="startEditing(category.id, category.name)"
+                >
+                  <mat-icon aria-hidden="true">edit</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  type="button"
+                  [attr.aria-label]="category.visible ? 'Ocultar ' + category.name : 'Mostrar ' + category.name"
+                  [title]="category.visible ? 'Ocultar ' + category.name : 'Mostrar ' + category.name"
+                  (click)="toggleVisibility(category.id)"
+                >
+                  <mat-icon aria-hidden="true">
+                    {{ category.visible ? 'visibility_off' : 'visibility' }}
+                  </mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  class="builder-icon-button--danger"
+                  type="button"
+                  [attr.aria-label]="'Eliminar ' + category.name"
+                  [title]="'Eliminar ' + category.name"
+                  (click)="removeCategory(category.id)"
+                >
+                  <mat-icon aria-hidden="true">delete</mat-icon>
+                </button>
+              }
+            </div>
           </div>
         </article>
       }

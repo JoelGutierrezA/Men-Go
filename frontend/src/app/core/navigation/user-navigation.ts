@@ -2,14 +2,20 @@ import { NavigationItem } from '@models/navigation-item.model';
 
 export const userNavigation: NavigationItem[] = [
   {
-    label: 'Creación del menú',
-    icon: 'restaurant_menu',
+    label: 'Tu Negocio',
+    icon: 'storefront',
     children: [
       {
-        label: 'Tu negocio',
-        route: '/panel/menu/negocio',
-        icon: 'storefront',
+        label: 'Datos del negocio',
+        route: '/panel/negocio/datos',
+        icon: 'badge',
       },
+    ],
+  },
+  {
+    label: 'Crea tu Menú',
+    icon: 'restaurant_menu',
+    children: [
       {
         label: 'Categorías',
         route: '/panel/menu/categorias',
@@ -34,6 +40,17 @@ export const userNavigation: NavigationItem[] = [
         label: 'Publicar',
         route: '/panel/menu/publicar',
         icon: 'rocket_launch',
+      },
+    ],
+  },
+  {
+    label: 'Promociones',
+    icon: 'sell',
+    children: [
+      {
+        label: 'Por horarios',
+        route: '/panel/promociones/horarios',
+        icon: 'schedule',
       },
     ],
   },

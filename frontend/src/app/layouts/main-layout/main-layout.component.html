@@ -7,9 +7,6 @@
   >
     <app-admin-sidebar
       [items]="navigationItems"
-      [eyebrow]="sidebarEyebrow"
-      [title]="sidebarTitle"
-      [description]="sidebarDescription"
       [footerLabel]="footerLabel"
       [footerText]="footerText"
       (navigate)="closeSidebar()"
@@ -20,7 +17,7 @@
     <app-navbar
       [showMenuButton]="isMobile()"
       [brandRoute]="brandRoute"
-      [brandSubtitle]="brandSubtitle"
+      [brandSubtitle]="brandSubtitle()"
       [homeRoute]="landingRoute"
       [homeLabel]="'Landing'"
       [sessionEmail]="currentUser()?.email ?? null"

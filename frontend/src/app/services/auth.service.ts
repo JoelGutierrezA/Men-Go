@@ -8,7 +8,8 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private static readonly sessionStorageKey = 'menugo-auth-session';
+  private static readonly sessionStorageKey = 'noren-auth-session';
+  private static readonly legacySessionStorageKey = 'menugo-auth-session';
 
   private readonly seedUsers: SeedUser[] = [
     {
@@ -17,7 +18,7 @@ export class AuthService {
       role: 'user',
     },
     {
-      email: 'admin@menugo.com',
+      email: 'admin@noren.com',
       password: 'admin123',
       role: 'admin',
     },
@@ -68,10 +69,11 @@ export class AuthService {
   logout(): void {
     this.session.set(null);
     localStorage.removeItem(AuthService.sessionStorageKey);
+    localStorage.removeItem(AuthService.legacySessionStorageKey);
   }
 
   getDefaultRouteForRole(role: AppRole): string {
-    return role === 'admin' ? '/admin/users' : '/panel/menu';
+    return role === 'admin' ? '/admin/users' : '/panel/negocio/datos';
   }
 
   getCurrentHomeRoute(): string {
@@ -84,7 +86,9 @@ export class AuthService {
   }
 
   private restoreSession(): AuthSession | null {
-    const storedSession = localStorage.getItem(AuthService.sessionStorageKey);
+    const storedSession =
+      localStorage.getItem(AuthService.sessionStorageKey) ??
+      localStorage.getItem(AuthService.legacySessionStorageKey);
 
     if (!storedSession) {
       return null;
@@ -92,12 +96,19 @@ export class AuthService {
 
     try {
       const parsedSession = JSON.parse(storedSession) as AuthSession;
+      const normalizedSession: AuthSession = {
+        ...parsedSession,
+        email:
+          parsedSession.email === 'admin@menugo.com'
+            ? 'admin@noren.com'
+            : parsedSession.email,
+      };
       const userExists = this.seedUsers.some(
         (user) =>
-          user.email === parsedSession.email && user.role === parsedSession.role,
+          user.email === normalizedSession.email && user.role === normalizedSession.role,
       );
 
-      return userExists ? parsedSession : null;
+      return userExists ? normalizedSession : null;
     } catch {
       return null;
     }

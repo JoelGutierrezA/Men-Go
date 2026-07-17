@@ -23,34 +23,13 @@
 .marketing-header__brand {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
   min-width: 0;
 }
 
-.marketing-header__brand-mark {
-  display: grid;
-  place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 0.85rem;
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 700;
-  color: #ffffff;
-  background: linear-gradient(135deg, var(--mg-primary), #62d89c);
-}
-
-.marketing-header__brand-copy {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.05;
-}
-
-.marketing-header__brand-copy strong {
-  font-size: 0.98rem;
-}
-
-.marketing-header__brand-copy small {
-  color: var(--mg-muted);
+.marketing-header__brand-logo {
+  display: block;
+  width: clamp(7.8rem, 12vw, 10.5rem);
+  height: auto;
 }
 
 .marketing-header__nav {

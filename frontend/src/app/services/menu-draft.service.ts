@@ -14,6 +14,8 @@ import {
   MenuCategoryDraft,
   MenuDraft,
   MenuProductDraft,
+  MenuPromotionDay,
+  MenuPromotionDraft,
   MenuPublicationDraft,
   MenuThemeDraft,
 } from '@models/menu-draft.model';
@@ -27,8 +29,11 @@ type StoredCategoryDraft = Partial<Omit<MenuCategoryDraft, 'products'>> & {
   products?: StoredProductDraft[];
 };
 
+type StoredPromotionDraft = Partial<MenuPromotionDraft>;
+
 type StoredMenuDraft = Partial<Omit<MenuDraft, 'categories' | 'theme' | 'publication'>> & {
   categories?: StoredCategoryDraft[];
+  promotions?: StoredPromotionDraft[];
   theme?: Partial<MenuThemeDraft>;
   publication?: Partial<MenuPublicationDraft>;
 };
@@ -39,8 +44,9 @@ type MenuProductPatch = Partial<Omit<MenuProductDraft, 'id'>> & {
 
 @Injectable({ providedIn: 'root' })
 export class MenuDraftService {
-  private static readonly storagePrefix = 'menugo-menu-draft';
-  private static readonly publicMenuBaseUrl = 'https://menugo.cl/menu';
+  private static readonly storagePrefix = 'noren-menu-draft';
+  private static readonly legacyStoragePrefix = 'menugo-menu-draft';
+  private static readonly publicMenuBaseUrl = 'https://noren.cl/menu';
 
   private readonly authService = inject(AuthService);
   private readonly draftState = signal<MenuDraft>(createEmptyMenuDraft());
@@ -49,6 +55,17 @@ export class MenuDraftService {
     return currentUser
       ? `${MenuDraftService.storagePrefix}:${currentUser.email.toLowerCase()}`
       : null;
+  });
+  private readonly legacyStorageKey = computed(() => {
+    const currentUser = this.authService.currentUser();
+
+    if (!currentUser) {
+      return null;
+    }
+
+    const email = currentUser.email.toLowerCase();
+    const legacyEmail = email === 'admin@noren.com' ? 'admin@menugo.com' : email;
+    return `${MenuDraftService.legacyStoragePrefix}:${legacyEmail}`;
   });
 
   readonly draft = this.draftState.asReadonly();
@@ -62,13 +79,17 @@ export class MenuDraftService {
       0,
     ),
   );
+  readonly activePromotionsCount = computed(
+    () => this.draftState().promotions.filter((promotion) => promotion.active).length,
+  );
 
   constructor() {
     effect(() => {
       const key = this.storageKey();
+      const legacyKey = this.legacyStorageKey();
 
       untracked(() => {
-        this.draftState.set(key ? this.restoreDraft(key) : createEmptyMenuDraft());
+        this.draftState.set(key ? this.restoreDraft(key, legacyKey) : createEmptyMenuDraft());
       });
     });
 
@@ -114,6 +135,50 @@ export class MenuDraftService {
 
   updateBusinessType(businessType: MenuBusinessType): void {
     this.updateBusiness({ businessType });
+  }
+
+  updateBranchCount(value: number): void {
+    const branchCount = this.clampBranchCount(value);
+
+    this.draftState.update((draft) => ({
+      ...draft,
+      branchCount,
+      branchAddresses: this.resizeBranchAddresses(
+        draft.branchAddresses,
+        branchCount,
+      ),
+    }));
+  }
+
+  updateHeadquartersAddress(headquartersAddress: string): void {
+    this.draftState.update((draft) => ({
+      ...draft,
+      headquartersAddress,
+    }));
+  }
+
+  updateBranchAddress(index: number, address: string): void {
+    if (index < 0) {
+      return;
+    }
+
+    this.draftState.update((draft) => {
+      const branchAddresses = this.resizeBranchAddresses(
+        draft.branchAddresses,
+        draft.branchCount,
+      );
+
+      if (index >= branchAddresses.length) {
+        return draft;
+      }
+
+      branchAddresses[index] = address;
+
+      return {
+        ...draft,
+        branchAddresses,
+      };
+    });
   }
 
   setLogo(logoDataUrl: string): void {
@@ -381,6 +446,60 @@ export class MenuDraftService {
     }));
   }
 
+  addPromotion(
+    promotion: Omit<MenuPromotionDraft, 'id'>,
+  ): { success: boolean; reason?: 'name' | 'category' | 'discount' | 'schedule' } {
+    const normalizedName = promotion.name.trim();
+
+    if (!normalizedName) {
+      return { success: false, reason: 'name' };
+    }
+
+    if (promotion.categoryIds.length === 0) {
+      return { success: false, reason: 'category' };
+    }
+
+    if (promotion.discountPercent < 1 || promotion.discountPercent > 100) {
+      return { success: false, reason: 'discount' };
+    }
+
+    if (!promotion.startTime || !promotion.endTime || promotion.days.length === 0) {
+      return { success: false, reason: 'schedule' };
+    }
+
+    this.draftState.update((draft) => ({
+      ...draft,
+      promotions: [
+        ...draft.promotions,
+        {
+          ...promotion,
+          id: this.createPromotionId(),
+          name: normalizedName,
+        },
+      ],
+    }));
+
+    return { success: true };
+  }
+
+  togglePromotionActive(promotionId: string): void {
+    this.draftState.update((draft) => ({
+      ...draft,
+      promotions: draft.promotions.map((promotion) =>
+        promotion.id === promotionId
+          ? { ...promotion, active: !promotion.active }
+          : promotion,
+      ),
+    }));
+  }
+
+  removePromotion(promotionId: string): void {
+    this.draftState.update((draft) => ({
+      ...draft,
+      promotions: draft.promotions.filter((promotion) => promotion.id !== promotionId),
+    }));
+  }
+
   updateTheme(patch: Partial<MenuThemeDraft>): void {
     this.draftState.update((draft) => ({
       ...draft,
@@ -451,8 +570,10 @@ export class MenuDraftService {
     }).format(price);
   }
 
-  private restoreDraft(storageKey: string): MenuDraft {
-    const storedDraft = localStorage.getItem(storageKey);
+  private restoreDraft(storageKey: string, legacyStorageKey: string | null): MenuDraft {
+    const storedDraft =
+      localStorage.getItem(storageKey) ??
+      (legacyStorageKey ? localStorage.getItem(legacyStorageKey) : null);
 
     if (!storedDraft) {
       return createEmptyMenuDraft();
@@ -465,13 +586,24 @@ export class MenuDraftService {
       const restoredSlug =
         parsedDraft.publication?.slug ??
         this.createSlug(parsedDraft.businessTitle ?? '');
+      const branchCount = this.restoreBranchCount(
+        parsedDraft.branchCount,
+        parsedDraft.branchAddresses,
+      );
 
       return {
         businessTitle: parsedDraft.businessTitle ?? '',
         businessType: this.restoreBusinessType(parsedDraft.businessType),
         businessDescription: parsedDraft.businessDescription ?? '',
         logoDataUrl: parsedDraft.logoDataUrl ?? null,
+        branchCount,
+        headquartersAddress: parsedDraft.headquartersAddress ?? '',
+        branchAddresses: this.restoreBranchAddresses(
+          parsedDraft.branchAddresses,
+          branchCount,
+        ),
         categories: this.restoreCategories(parsedDraft.categories),
+        promotions: this.restorePromotions(parsedDraft.promotions),
         theme: {
           ...defaultTheme,
           ...(parsedDraft.theme ?? {}),
@@ -523,6 +655,31 @@ export class MenuDraftService {
       }));
   }
 
+  private restorePromotions(
+    promotions: StoredPromotionDraft[] | undefined,
+  ): MenuPromotionDraft[] {
+    if (!Array.isArray(promotions)) {
+      return [];
+    }
+
+    return promotions
+      .filter((promotion) => Boolean(promotion?.id) && Boolean(promotion?.name))
+      .map((promotion) => ({
+        id: promotion.id ?? this.createPromotionId(),
+        name: promotion.name ?? '',
+        categoryIds: Array.isArray(promotion.categoryIds)
+          ? promotion.categoryIds.filter(
+              (categoryId): categoryId is string => typeof categoryId === 'string',
+            )
+          : [],
+        discountPercent: this.clampDiscountPercent(promotion.discountPercent),
+        days: this.restorePromotionDays(promotion.days),
+        startTime: promotion.startTime ?? '17:00',
+        endTime: promotion.endTime ?? '19:00',
+        active: promotion.active ?? true,
+      }));
+  }
+
   private restoreBusinessType(value: unknown): MenuBusinessType {
     const validTypes: MenuBusinessType[] = [
       'restaurante',
@@ -551,6 +708,89 @@ export class MenuDraftService {
     const parsedPrice = Number(onlyDigits);
 
     return Number.isFinite(parsedPrice) ? parsedPrice : null;
+  }
+
+  private restoreBranchCount(
+    branchCount: unknown,
+    branchAddresses: unknown,
+  ): number {
+    if (typeof branchCount === 'number') {
+      return this.clampBranchCount(branchCount);
+    }
+
+    if (typeof branchCount === 'string') {
+      return this.clampBranchCount(Number(branchCount));
+    }
+
+    return Array.isArray(branchAddresses) ? branchAddresses.length + 1 : 1;
+  }
+
+  private restoreBranchAddresses(
+    branchAddresses: unknown,
+    branchCount: number,
+  ): string[] {
+    const addresses = Array.isArray(branchAddresses)
+      ? branchAddresses.filter((address): address is string => typeof address === 'string')
+      : [];
+
+    return this.resizeBranchAddresses(addresses, branchCount);
+  }
+
+  private resizeBranchAddresses(
+    branchAddresses: string[],
+    branchCount: number,
+  ): string[] {
+    const additionalBranches = Math.max(0, this.clampBranchCount(branchCount) - 1);
+    const resizedAddresses = branchAddresses.slice(0, additionalBranches);
+
+    while (resizedAddresses.length < additionalBranches) {
+      resizedAddresses.push('');
+    }
+
+    return resizedAddresses;
+  }
+
+  private clampBranchCount(value: number): number {
+    if (!Number.isFinite(value)) {
+      return 1;
+    }
+
+    return Math.min(20, Math.max(1, Math.round(value)));
+  }
+
+  private restorePromotionDays(days: unknown): MenuPromotionDay[] {
+    const validDays: MenuPromotionDay[] = [
+      'monday',
+      'tuesday',
+      'wednesday',
+      'thursday',
+      'friday',
+      'saturday',
+      'sunday',
+    ];
+
+    if (!Array.isArray(days)) {
+      return [];
+    }
+
+    return days.filter((day): day is MenuPromotionDay =>
+      validDays.includes(day as MenuPromotionDay),
+    );
+  }
+
+  private clampDiscountPercent(value: unknown): number {
+    const numericValue =
+      typeof value === 'number'
+        ? value
+        : typeof value === 'string'
+          ? Number(value)
+          : 10;
+
+    if (!Number.isFinite(numericValue)) {
+      return 10;
+    }
+
+    return Math.min(100, Math.max(1, Math.round(numericValue)));
   }
 
   private hasCategory(categoryId: string): boolean {
@@ -628,6 +868,10 @@ export class MenuDraftService {
 
   private createProductId(): string {
     return `prod-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  }
+
+  private createPromotionId(): string {
+    return `promo-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   }
 }
 
