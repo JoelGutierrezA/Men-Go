@@ -34,6 +34,42 @@
   font-size: 1rem;
 }
 
+.dashboard-page__preview-header--centered {
+  justify-content: center;
+  padding-bottom: 0.2rem;
+}
+
+.dashboard-page__preview-heading {
+  width: min(100%, 20rem);
+  text-align: center;
+}
+
+.dashboard-page__preview-header--centered mat-card-title,
+.dashboard-page__preview-header--with-actions mat-card-title {
+  display: block;
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.dashboard-page__preview-header--with-actions {
+  display: grid;
+  grid-template-columns: minmax(5.2rem, 1fr) minmax(0, 20rem) minmax(5.2rem, 1fr);
+  gap: 0.5rem;
+  align-items: center;
+  padding-bottom: 0.2rem;
+}
+
+.dashboard-page__preview-header--with-actions .dashboard-page__preview-heading {
+  grid-column: 2;
+  width: 100%;
+}
+
+.dashboard-page__preview-header--with-actions .dashboard-page__preview-actions {
+  grid-column: 3;
+  justify-self: end;
+}
+
 .dashboard-page__editor {
   display: grid;
   gap: 1rem;

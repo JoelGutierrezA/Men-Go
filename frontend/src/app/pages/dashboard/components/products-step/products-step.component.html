@@ -203,35 +203,68 @@
                       </div>
                     </div>
 
-                    <strong>{{ formatPrice(product.price) }}</strong>
-                  </div>
+                    <div class="builder-product-summary">
+                      <strong class="builder-product-price">{{ formatPrice(product.price) }}</strong>
 
-                  <div class="builder-inline-actions">
-                    <span class="builder-badge">
-                      {{ product.visible ? 'Visible' : 'Oculto' }}
-                    </span>
-                    <span class="builder-badge">
-                      {{ product.available ? 'Disponible' : 'No disponible' }}
-                    </span>
-                    <button
-                      mat-button
-                      type="button"
-                      (click)="startEditing(category.id, product.id, product.name, product.description, product.price)"
-                    >
-                      Editar
-                    </button>
-                    <button mat-button type="button" (click)="duplicateProduct(category.id, product.id)">
-                      Duplicar
-                    </button>
-                    <button mat-button type="button" (click)="toggleProductVisibility(category.id, product.id)">
-                      {{ product.visible ? 'Ocultar' : 'Mostrar' }}
-                    </button>
-                    <button mat-button type="button" (click)="toggleProductAvailability(category.id, product.id)">
-                      {{ product.available ? 'Marcar no disponible' : 'Marcar disponible' }}
-                    </button>
-                    <button mat-button type="button" (click)="removeProduct(category.id, product.id)">
-                      Eliminar
-                    </button>
+                      <div class="builder-item__actions builder-item__actions--product">
+                        <span class="builder-badge">
+                          {{ product.visible ? 'Visible' : 'Oculto' }}
+                        </span>
+                        <span class="builder-badge">
+                          {{ product.available ? 'Disponible' : 'No disponible' }}
+                        </span>
+                        <button
+                          mat-icon-button
+                          type="button"
+                          [attr.aria-label]="'Editar ' + product.name"
+                          [title]="'Editar ' + product.name"
+                          (click)="startEditing(category.id, product.id, product.name, product.description, product.price)"
+                        >
+                          <mat-icon aria-hidden="true">edit</mat-icon>
+                        </button>
+                        <button
+                          mat-icon-button
+                          type="button"
+                          [attr.aria-label]="'Duplicar ' + product.name"
+                          [title]="'Duplicar ' + product.name"
+                          (click)="duplicateProduct(category.id, product.id)"
+                        >
+                          <mat-icon aria-hidden="true">content_copy</mat-icon>
+                        </button>
+                        <button
+                          mat-icon-button
+                          type="button"
+                          [attr.aria-label]="product.visible ? 'Ocultar ' + product.name : 'Mostrar ' + product.name"
+                          [title]="product.visible ? 'Ocultar ' + product.name : 'Mostrar ' + product.name"
+                          (click)="toggleProductVisibility(category.id, product.id)"
+                        >
+                          <mat-icon aria-hidden="true">
+                            {{ product.visible ? 'visibility_off' : 'visibility' }}
+                          </mat-icon>
+                        </button>
+                        <button
+                          mat-icon-button
+                          type="button"
+                          [attr.aria-label]="product.available ? 'Marcar no disponible ' + product.name : 'Marcar disponible ' + product.name"
+                          [title]="product.available ? 'Marcar no disponible ' + product.name : 'Marcar disponible ' + product.name"
+                          (click)="toggleProductAvailability(category.id, product.id)"
+                        >
+                          <mat-icon aria-hidden="true">
+                            {{ product.available ? 'block' : 'check_circle' }}
+                          </mat-icon>
+                        </button>
+                        <button
+                          mat-icon-button
+                          class="builder-icon-button--danger"
+                          type="button"
+                          [attr.aria-label]="'Eliminar ' + product.name"
+                          [title]="'Eliminar ' + product.name"
+                          (click)="removeProduct(category.id, product.id)"
+                        >
+                          <mat-icon aria-hidden="true">delete</mat-icon>
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 }
               </article>
