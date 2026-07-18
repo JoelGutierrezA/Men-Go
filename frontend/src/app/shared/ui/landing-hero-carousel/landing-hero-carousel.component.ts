@@ -5,38 +5,38 @@ import {
   afterNextRender,
   inject,
   input,
-  output,
   signal,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
 
 export interface LandingHeroSlide {
   readonly eyebrow: string;
   readonly title: string;
   readonly description: string;
   readonly ctaLabel: string;
-  readonly ctaTarget: string;
+  readonly ctaRoute: string;
   readonly imageAlt: string;
   readonly imageUrl?: string;
-  readonly mockType: 'menu' | 'qr' | 'dashboard';
+  readonly mockType: 'promotions' | 'plans' | 'dashboard';
+  readonly badge?: string;
 }
 
 @Component({
   selector: 'app-landing-hero-carousel',
-  imports: [MatButtonModule, MatIconModule],
+  imports: [MatButtonModule, MatIconModule, RouterLink],
   templateUrl: './landing-hero-carousel.component.html',
   styleUrl: './landing-hero-carousel.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LandingHeroCarouselComponent {
   private readonly destroyRef = inject(DestroyRef);
-  private readonly autoplayDelayMs = 5000;
+  private readonly autoplayDelayMs = 7500;
   private autoplayHandle: number | null = null;
   private paused = false;
 
   readonly slides = input.required<readonly LandingHeroSlide[]>();
-  readonly sectionRequested = output<string>();
 
   protected readonly activeIndex = signal(0);
 
@@ -69,11 +69,6 @@ export class LandingHeroCarouselComponent {
     this.restartAutoplay();
   }
 
-  protected requestSection(sectionId: string): void {
-    this.sectionRequested.emit(sectionId);
-    this.restartAutoplay();
-  }
-
   protected pauseAutoplay(): void {
     this.paused = true;
     this.stopAutoplay();
@@ -99,6 +94,11 @@ export class LandingHeroCarouselComponent {
     this.resumeAutoplay();
   }
 
+  protected handleArrowKey(event: KeyboardEvent, step: number): void {
+    event.preventDefault();
+    this.advanceBy(step);
+  }
+
   private advanceBy(step: number): void {
     const totalSlides = this.slides().length;
 
@@ -111,7 +111,12 @@ export class LandingHeroCarouselComponent {
   }
 
   private startAutoplay(): void {
-    if (this.paused || this.autoplayHandle !== null || this.slides().length < 2) {
+    if (
+      this.paused ||
+      this.autoplayHandle !== null ||
+      this.slides().length < 2 ||
+      this.prefersReducedMotion()
+    ) {
       return;
     }
 
@@ -138,5 +143,9 @@ export class LandingHeroCarouselComponent {
   private restartAutoplay(): void {
     this.stopAutoplay();
     this.startAutoplay();
+  }
+
+  private prefersReducedMotion(): boolean {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }
 }

@@ -2,6 +2,8 @@
   class="hero-carousel"
   aria-label="Beneficios principales de Noren"
   aria-roledescription="carousel"
+  (keydown.arrowleft)="handleArrowKey($event, -1)"
+  (keydown.arrowright)="handleArrowKey($event, 1)"
   (mouseenter)="pauseAutoplay()"
   (mouseleave)="resumeAutoplay()"
   (focusin)="pauseAutoplay()"
@@ -23,44 +25,58 @@
             />
           } @else {
             @switch (slide.mockType) {
-              @case ('menu') {
-                <div class="hero-carousel__mock hero-carousel__mock--menu" aria-hidden="true">
-                  <div class="hero-carousel__phone">
-                    <div class="hero-carousel__phone-top"></div>
-                    <div class="hero-carousel__phone-lines">
-                      <span></span>
-                      <span></span>
+              @case ('promotions') {
+                <div class="hero-carousel__mock hero-carousel__mock--promotions" aria-hidden="true">
+                  <div class="hero-carousel__calendar">
+                    <div class="hero-carousel__calendar-top">
+                      <span>Happy hour</span>
+                      <strong>10%</strong>
                     </div>
-                    <div class="hero-carousel__phone-tags">
-                      <span></span>
-                      <span></span>
-                      <span></span>
+                    <div class="hero-carousel__calendar-grid">
+                      <span>Lun</span>
+                      <span>Mar</span>
+                      <span>Mié</span>
+                      <span>Jue</span>
+                      <span>Vie</span>
                     </div>
-                    <div class="hero-carousel__phone-card hero-carousel__phone-card--primary"></div>
-                    <div class="hero-carousel__phone-card"></div>
-                    <div class="hero-carousel__phone-card"></div>
+                    <div class="hero-carousel__schedule-card">
+                      <span>18:00 - 20:00</span>
+                      <strong>Bebidas seleccionadas</strong>
+                      <small>Activación automática</small>
+                    </div>
                   </div>
 
-                  <div class="hero-carousel__floating hero-carousel__floating--menu">
-                    <span></span>
-                    <strong></strong>
-                    <small></small>
+                  <div class="hero-carousel__floating hero-carousel__floating--campaign">
+                    <span>Campaña activa</span>
+                    <strong>Vie 18:00</strong>
+                    <small>Se desactiva sola</small>
                   </div>
                 </div>
               }
-              @case ('qr') {
-                <div class="hero-carousel__mock hero-carousel__mock--qr" aria-hidden="true">
-                  <div class="hero-carousel__scene">
-                    <div class="hero-carousel__scene-surface"></div>
-                    <div class="hero-carousel__scene-person"></div>
-                    <div class="hero-carousel__scene-phone"></div>
-                    <div class="hero-carousel__scene-qr"></div>
+              @case ('plans') {
+                <div class="hero-carousel__mock hero-carousel__mock--plans" aria-hidden="true">
+                  <div class="hero-carousel__plan-stack">
+                    <div class="hero-carousel__plan hero-carousel__plan--trial">
+                      <span>Prueba</span>
+                      <strong>15 días</strong>
+                      <small>sin costo</small>
+                    </div>
+                    <div class="hero-carousel__plan">
+                      <span>Emprende</span>
+                      <strong>$9.990</strong>
+                      <small>al mes</small>
+                    </div>
+                    <div class="hero-carousel__plan hero-carousel__plan--featured">
+                      <span>Crece</span>
+                      <strong>$16.990</strong>
+                      <small>al mes</small>
+                    </div>
                   </div>
 
-                  <div class="hero-carousel__floating hero-carousel__floating--qr">
-                    <span></span>
-                    <strong></strong>
-                    <small></small>
+                  <div class="hero-carousel__floating hero-carousel__floating--plans">
+                    <span>QR incluido</span>
+                    <strong>Gratis para partir</strong>
+                    <small>Elige plan después</small>
                   </div>
                 </div>
               }
@@ -110,18 +126,28 @@
           }
         </div>
 
+        <a
+          class="hero-carousel__card-link"
+          [routerLink]="slide.ctaRoute"
+          [attr.aria-label]="slide.title + ' ' + slide.ctaLabel"
+          [attr.tabindex]="index === activeIndex() ? 0 : -1"
+        ></a>
+
         <div class="hero-carousel__content">
           <span class="hero-carousel__eyebrow">{{ slide.eyebrow }}</span>
+          @if (slide.badge) {
+            <span class="hero-carousel__badge">{{ slide.badge }}</span>
+          }
           <h3>{{ slide.title }}</h3>
           <p>{{ slide.description }}</p>
-          <button
+          <a
             mat-stroked-button
-            type="button"
             class="hero-carousel__cta"
-            (click)="requestSection(slide.ctaTarget)"
+            [routerLink]="slide.ctaRoute"
+            [attr.tabindex]="index === activeIndex() ? 0 : -1"
           >
             {{ slide.ctaLabel }}
-          </button>
+          </a>
         </div>
       </article>
     }
@@ -134,7 +160,7 @@
           type="button"
           class="hero-carousel__indicator"
           [class.hero-carousel__indicator--active]="index === activeIndex()"
-          [attr.aria-label]="'Ir al slide ' + (index + 1)"
+          [attr.aria-label]="'Mostrar ' + slide.title"
           [attr.aria-current]="index === activeIndex() ? 'true' : null"
           (click)="showSlide(index)"
         ></button>

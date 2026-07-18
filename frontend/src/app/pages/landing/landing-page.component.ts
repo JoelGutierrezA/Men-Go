@@ -1,5 +1,4 @@
-import { DOCUMENT } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -38,33 +37,37 @@ interface HomePlan {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LandingPageComponent {
-  private readonly document = inject(DOCUMENT);
+  private readonly scheduledPromotionsBadge: string | null = null;
 
   protected readonly heroSlides: readonly LandingHeroSlide[] = [
     {
-      eyebrow: 'Experiencia visual',
-      title: 'Crea tu carta digital',
-      description: 'Organiza categorias, productos e imagenes facilmente.',
-      ctaLabel: 'Funciones',
-      ctaTarget: 'funciones',
-      imageAlt: 'Mockup de una carta digital en un telefono',
-      mockType: 'menu',
+      eyebrow: 'Promociones programadas',
+      title: 'Configura una vez. Noren se encarga del resto.',
+      description:
+        'Programa ofertas por día, horario o temporada. Activa happy hours, promociones de fin de semana y campañas especiales automáticamente.',
+      ctaLabel: 'Descubrir funciones',
+      ctaRoute: '/funciones',
+      imageAlt: 'Representación de una campaña promocional programada en Noren',
+      mockType: 'promotions',
+      badge: this.scheduledPromotionsBadge ?? undefined,
     },
     {
-      eyebrow: 'Marca propia',
-      title: 'Refleja la identidad de tu negocio',
-      description: 'Personaliza colores, logotipo y apariencia del menu.',
-      ctaLabel: 'Planes',
-      ctaTarget: 'planes',
-      imageAlt: 'Escena de un cliente escaneando un codigo QR en un restaurante',
-      mockType: 'qr',
+      eyebrow: 'Planes flexibles',
+      title: 'Empieza gratis y crece a tu ritmo.',
+      description:
+        'Prueba Noren durante 15 días y elige el plan que mejor se adapte a las necesidades de tu negocio.',
+      ctaLabel: 'Ver planes',
+      ctaRoute: '/planes',
+      imageAlt: 'Comparación simplificada de planes de Noren',
+      mockType: 'plans',
     },
     {
-      eyebrow: 'Gestion centralizada',
-      title: 'Todo desde una plataforma',
-      description: 'Administra tu restaurante desde cualquier dispositivo.',
-      ctaLabel: 'Plataforma',
-      ctaTarget: 'plataforma',
+      eyebrow: 'Gestión centralizada',
+      title: 'Todo tu menú, bajo control.',
+      description:
+        'Administra categorías, productos, precios, diseño y promociones desde cualquier dispositivo.',
+      ctaLabel: 'Conocer la plataforma',
+      ctaRoute: '/plataforma',
       imageAlt: 'Panel administrativo de Noren mostrando productos y estados',
       mockType: 'dashboard',
     },
@@ -175,20 +178,4 @@ export class LandingPageComponent {
     },
   ];
 
-  protected scrollToSection(sectionId: string): void {
-    const targetElement = this.document.getElementById(sectionId);
-    const windowRef = this.document.defaultView;
-
-    if (!targetElement || !windowRef) {
-      return;
-    }
-
-    const headerOffset = 96;
-    const top = targetElement.getBoundingClientRect().top + windowRef.scrollY - headerOffset;
-
-    windowRef.scrollTo({
-      top,
-      behavior: 'smooth',
-    });
-  }
 }

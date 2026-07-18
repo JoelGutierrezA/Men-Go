@@ -80,6 +80,14 @@
             <mat-icon aria-hidden="true">upload</mat-icon>
             Adjuntar imagen
           </button>
+          <button
+            mat-flat-button
+            class="builder-add-product-button"
+            type="button"
+            (click)="addProduct()"
+          >
+            Agregar producto
+          </button>
           @if (productImageDataUrl()) {
             <button mat-button type="button" (click)="removePendingProductImage()">
               Quitar imagen
@@ -95,10 +103,6 @@
       @if (productError()) {
         <p class="builder-error">{{ productError() }}</p>
       }
-
-      <button mat-flat-button type="button" (click)="addProduct()">
-        Agregar producto
-      </button>
     </div>
   } @else {
     <div class="builder-panel">

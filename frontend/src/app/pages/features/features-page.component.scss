@@ -1,3 +1,293 @@
-.features-page__journey {
-  align-items: stretch;
+.features-page {
+  gap: clamp(1.35rem, 3vw, 2.25rem);
+  padding-bottom: 0;
+}
+
+.features-page__hero {
+  gap: 1rem;
+  padding-block: clamp(2rem, 5vw, 3.4rem) clamp(1.25rem, 3vw, 2rem);
+  background: transparent;
+}
+
+.features-page__hero h1 {
+  max-width: 21ch;
+  font-size: clamp(2.35rem, 5.3vw, 4rem);
+}
+
+.features-page__hero p,
+.features-page__section-header p,
+.features-page__campaign-copy p {
+  max-width: 54rem;
+  color: #52606c;
+  line-height: 1.65;
+}
+
+.features-page__hero p {
+  max-width: 70rem;
+  font-size: clamp(1rem, 1.35vw, 1.12rem);
+}
+
+.features-page__hero-actions {
+  padding-top: 0.25rem;
+}
+
+.features-page__section-header {
+  max-width: 58rem;
+}
+
+.features-page__section-header h2 {
+  max-width: 16ch;
+}
+
+.features-page__feature-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.features-page__feature-card {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(51, 51, 51, 0.06);
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 14px 34px rgba(26, 41, 34, 0.04);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.features-page__feature-card:hover {
+  transform: translateY(-0.16rem);
+  border-color: rgba(43, 182, 115, 0.18);
+  box-shadow: 0 22px 46px rgba(26, 41, 34, 0.08);
+}
+
+.features-page__feature-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 0.24rem;
+  background: rgba(43, 182, 115, 0.12);
+}
+
+.features-page__feature-card--highlight {
+  border-color: rgba(43, 182, 115, 0.36);
+  background:
+    radial-gradient(circle at top right, rgba(43, 182, 115, 0.2), transparent 38%),
+    linear-gradient(180deg, rgba(237, 252, 244, 0.98), rgba(255, 255, 255, 0.92));
+  box-shadow: 0 22px 52px rgba(43, 182, 115, 0.12);
+}
+
+.features-page__feature-card--highlight::before {
+  background: linear-gradient(90deg, var(--mg-primary), #79d6a5);
+}
+
+.features-page__feature-icon {
+  box-shadow: inset 0 0 0 1px rgba(43, 182, 115, 0.08);
+}
+
+.features-page__feature-heading {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.features-page__feature-heading mat-card-title {
+  line-height: 1.08;
+}
+
+.features-page__badge {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  padding: 0.32rem 0.62rem;
+  border-radius: 999px;
+  color: var(--mg-accent);
+  background: rgba(43, 182, 115, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(43, 182, 115, 0.12);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.features-page__note {
+  display: block;
+  margin-top: 0.85rem;
+  color: #123c2b;
+  font-size: 0.94rem;
+}
+
+.features-page__mini-list,
+.features-page__campaign-benefits,
+.features-page__campaign-card ul {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.features-page__mini-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 0.9rem;
+}
+
+.features-page__mini-list li,
+.features-page__campaign-benefits li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.45rem;
+  align-items: start;
+  color: var(--mg-text);
+  font-size: 0.92rem;
+}
+
+.features-page__mini-list mat-icon,
+.features-page__campaign-benefits mat-icon {
+  width: 1.05rem;
+  height: 1.05rem;
+  color: var(--mg-primary);
+  font-size: 1.05rem;
+}
+
+.features-page__campaigns {
+  display: grid;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  gap: clamp(1rem, 3vw, 1.8rem);
+  margin-bottom: -2rem;
+  padding: clamp(1.35rem, 4vw, 2.4rem) var(--mg-shell-gutter) clamp(2.8rem, 5vw, 4.2rem);
+  border-top: 1px solid rgba(43, 182, 115, 0.12);
+  border-bottom: 0;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(43, 182, 115, 0.18), transparent 28%),
+    linear-gradient(180deg, rgba(231, 247, 238, 0.98) 0%, rgba(237, 248, 242, 0.96) 100%);
+}
+
+.features-page__campaign-copy {
+  display: grid;
+  gap: 0.9rem;
+  align-content: center;
+}
+
+.features-page__campaign-copy > span,
+.features-page__section-header span {
+  color: var(--mg-accent);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.features-page__campaign-copy h2 {
+  max-width: 13ch;
+  font-size: clamp(1.75rem, 4vw, 3rem);
+  line-height: 0.98;
+}
+
+.features-page__campaign-benefits {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 0.2rem 0;
+}
+
+.features-page__campaign-close {
+  color: #123c2b;
+  font-weight: 800;
+}
+
+.features-page__campaign-board {
+  display: grid;
+  gap: 0.85rem;
+  align-content: center;
+}
+
+.features-page__campaign-card {
+  display: grid;
+  gap: 0.8rem;
+  padding: 1rem;
+  border: 1px solid rgba(43, 182, 115, 0.12);
+  border-radius: 1.2rem;
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: 0 14px 32px rgba(26, 44, 36, 0.05);
+}
+
+.features-page__campaign-card h3 {
+  margin-top: 0.4rem;
+  font-size: 1.2rem;
+  line-height: 1.05;
+}
+
+.features-page__campaign-card li {
+  color: #52606c;
+  font-size: 0.92rem;
+}
+
+.features-page__campaign-card li::before {
+  content: '- ';
+  color: var(--mg-accent);
+  font-weight: 800;
+}
+
+.features-page__campaign-status {
+  display: inline-flex;
+  padding: 0.3rem 0.62rem;
+  border-radius: 999px;
+  color: #123c2b;
+  background: rgba(43, 182, 115, 0.12);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.features-page :is(.mat-mdc-unelevated-button, .mat-mdc-outlined-button, .mat-mdc-button):focus-visible {
+  outline: 3px solid rgba(43, 182, 115, 0.34);
+  outline-offset: 3px;
+}
+
+:host + app-marketing-footer {
+  margin-top: 0;
+}
+
+@media (min-width: 900px) {
+  .features-page__feature-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .features-page__campaigns {
+    grid-template-columns: minmax(0, 1.1fr) minmax(18rem, 0.9fr);
+    align-items: center;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 899px) {
+  .features-page__feature-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .features-page__campaign-benefits,
+  .features-page__mini-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .features-page__hero h1,
+  .features-page__section-header h2,
+  .features-page__campaign-copy h2 {
+    max-width: 100%;
+  }
+
+  .features-page__hero-actions,
+  .features-page .public-page__actions {
+    width: 100%;
+  }
+
+  .features-page__hero-actions a,
+  .features-page .public-page__actions a {
+    width: 100%;
+  }
 }

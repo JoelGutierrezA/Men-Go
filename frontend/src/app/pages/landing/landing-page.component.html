@@ -3,32 +3,35 @@
 
   <div class="landing-page__hero">
     <div class="landing-page__copy">
-      <span class="landing-page__eyebrow">Noren</span>
-      <h1>Men&uacute;s digitales que potencian la experiencia de tus clientes.</h1>
+      <span class="landing-page__eyebrow">NOREN &middot; MEN&Uacute;S DIGITALES PARA GASTRONOM&Iacute;A</span>
+      <h1>Tu carta cambia al ritmo de tu negocio.</h1>
       <p>
-        Crea cartas digitales profesionales, personaliza tu marca y administra
-        tus productos desde una sola plataforma.
+        Crea tu men&uacute; digital, actualiza productos sin cambiar el QR y programa
+        promociones por d&iacute;a, horario o temporada. Noren las activa
+        autom&aacute;ticamente para que tu carta est&eacute; siempre al d&iacute;a.
       </p>
 
       <div class="landing-page__actions">
-        <a mat-flat-button routerLink="/register">Comenzar ahora</a>
-        <button mat-stroked-button type="button" (click)="scrollToSection('funciones')">
-          Conocer funciones
-        </button>
+        <a mat-flat-button routerLink="/register">Crear mi men&uacute; gratis</a>
+        <a mat-stroked-button routerLink="/funciones">Ver c&oacute;mo funciona</a>
       </div>
+
+      <p class="landing-page__trust">
+        15 d&iacute;as gratis &middot; C&oacute;digo QR incluido &middot; Configuraci&oacute;n guiada
+      </p>
 
       <div class="landing-page__badges" aria-label="Pilares del hero">
         <span class="landing-page__badge">
           <span aria-hidden="true">&#10003;</span>
-          C&oacute;digo QR
+          Actualiza sin cambiar el QR
         </span>
         <span class="landing-page__badge">
           <span aria-hidden="true">&#10003;</span>
-          Administraci&oacute;n Web
+          Programa promociones
         </span>
         <span class="landing-page__badge">
           <span aria-hidden="true">&#10003;</span>
-          Personalizaci&oacute;n
+          Personaliza tu marca
         </span>
       </div>
     </div>
@@ -36,7 +39,6 @@
     <app-landing-hero-carousel
       class="landing-page__carousel"
       [slides]="heroSlides"
-      (sectionRequested)="scrollToSection($event)"
     />
   </div>
 

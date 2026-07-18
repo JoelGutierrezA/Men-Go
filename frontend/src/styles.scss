@@ -16,14 +16,26 @@ $noren-theme: mat.define-theme(
 );
 
 :root {
+  --color-brand-dark: #075e57;
+  --color-brand-primary: #29b978;
+  --color-brand-soft: #dff3e9;
+  --color-accent-coral: #d96b4c;
+  --color-accent-coral-dark: #a9422d;
+  --color-accent-coral-soft: #fff0e9;
   --mg-bg: #ffffff;
   --mg-surface: rgba(255, 255, 255, 0.88);
   --mg-surface-strong: #f4f6f8;
   --mg-border: rgba(51, 51, 51, 0.08);
   --mg-text: #333333;
   --mg-muted: #667085;
-  --mg-primary: #2bb673;
+  --mg-primary: var(--color-brand-primary);
   --mg-accent: #1f8f5a;
+  --mg-brand-dark: var(--color-brand-dark);
+  --mg-brand-soft: var(--color-brand-soft);
+  --mg-commercial: var(--color-accent-coral);
+  --mg-commercial-dark: var(--color-accent-coral-dark);
+  --mg-commercial-soft: var(--color-accent-coral-soft);
+  --mg-commercial-border: rgba(217, 107, 76, 0.22);
   --mg-shadow: 0 20px 48px rgba(33, 54, 45, 0.08);
   --mg-shell-width: min(1120px, calc(100vw - 2rem));
   --mg-shell-gutter: max(1rem, calc((100vw - var(--mg-shell-width)) / 2));
@@ -572,6 +584,193 @@ app-landing-hero-carousel {
     bottom: 20%;
   }
 
+  .hero-carousel__mock--promotions,
+  .hero-carousel__mock--plans {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+  }
+
+  .hero-carousel__calendar {
+    position: absolute;
+    top: 9%;
+    left: 10%;
+    display: grid;
+    gap: 0.9rem;
+    width: min(70%, 24rem);
+    padding: 1rem;
+    border: 1px solid rgba(31, 143, 90, 0.12);
+    border-radius: 1.6rem;
+    color: #123c2b;
+    background: rgba(255, 255, 255, 0.86);
+    box-shadow: 0 22px 48px rgba(22, 38, 31, 0.08);
+    backdrop-filter: blur(18px);
+  }
+
+  .hero-carousel__calendar-top,
+  .hero-carousel__schedule-card,
+  .hero-carousel__plan {
+    border-radius: 1.05rem;
+    background: rgba(237, 250, 243, 0.92);
+    box-shadow: inset 0 0 0 1px rgba(43, 182, 115, 0.08);
+  }
+
+  .hero-carousel__calendar-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.8rem;
+    padding: 0.85rem;
+    font-weight: 800;
+  }
+
+  .hero-carousel__calendar-top strong {
+    color: var(--mg-accent);
+  }
+
+  .hero-carousel__mock--promotions .hero-carousel__calendar {
+    border-color: var(--mg-commercial-border);
+    color: #35231e;
+    background: rgba(255, 250, 247, 0.9);
+    box-shadow: 0 22px 48px rgba(88, 42, 30, 0.09);
+  }
+
+  .hero-carousel__mock--promotions .hero-carousel__calendar-top,
+  .hero-carousel__mock--promotions .hero-carousel__schedule-card {
+    background: rgba(255, 240, 233, 0.92);
+    box-shadow: inset 0 0 0 1px rgba(217, 107, 76, 0.1);
+  }
+
+  .hero-carousel__mock--promotions .hero-carousel__calendar-top strong {
+    color: var(--mg-commercial-dark);
+  }
+
+  .hero-carousel__calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.45rem;
+  }
+
+  .hero-carousel__calendar-grid span {
+    display: grid;
+    place-items: center;
+    min-height: 2.25rem;
+    border-radius: 0.8rem;
+    color: var(--mg-accent);
+    background: rgba(43, 182, 115, 0.12);
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+
+  .hero-carousel__mock--promotions .hero-carousel__calendar-grid span {
+    color: var(--mg-commercial-dark);
+    background: rgba(217, 107, 76, 0.13);
+  }
+
+  .hero-carousel__schedule-card {
+    display: grid;
+    gap: 0.35rem;
+    padding: 0.9rem;
+  }
+
+  .hero-carousel__schedule-card span,
+  .hero-carousel__schedule-card small,
+  .hero-carousel__plan span,
+  .hero-carousel__plan small,
+  .hero-carousel__floating small {
+    color: #667085;
+  }
+
+  .hero-carousel__schedule-card strong,
+  .hero-carousel__plan strong {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.15rem;
+    line-height: 1;
+  }
+
+  .hero-carousel__floating--campaign {
+    right: 8%;
+    bottom: 25%;
+  }
+
+  .hero-carousel__floating.hero-carousel__floating--campaign span,
+  .hero-carousel__floating.hero-carousel__floating--campaign strong,
+  .hero-carousel__floating.hero-carousel__floating--campaign small,
+  .hero-carousel__floating.hero-carousel__floating--plans span,
+  .hero-carousel__floating.hero-carousel__floating--plans strong,
+  .hero-carousel__floating.hero-carousel__floating--plans small {
+    width: auto;
+    height: auto;
+    background: transparent;
+  }
+
+  .hero-carousel__floating.hero-carousel__floating--campaign span,
+  .hero-carousel__floating.hero-carousel__floating--plans span {
+    color: var(--mg-accent);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .hero-carousel__floating.hero-carousel__floating--campaign {
+    border-color: var(--mg-commercial-border);
+    background: rgba(255, 250, 247, 0.88);
+    box-shadow: 0 20px 44px rgba(88, 42, 30, 0.09);
+  }
+
+  .hero-carousel__floating.hero-carousel__floating--campaign span {
+    color: var(--mg-commercial-dark);
+  }
+
+  .hero-carousel__floating.hero-carousel__floating--campaign strong,
+  .hero-carousel__floating.hero-carousel__floating--plans strong {
+    color: #123c2b;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem;
+  }
+
+  .hero-carousel__plan-stack {
+    position: absolute;
+    top: 11%;
+    left: 9%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+    width: min(82%, 28rem);
+  }
+
+  .hero-carousel__plan {
+    display: grid;
+    gap: 0.35rem;
+    min-height: 9rem;
+    padding: 0.9rem;
+    align-content: center;
+    color: #123c2b;
+    background: rgba(255, 255, 255, 0.86);
+  }
+
+  .hero-carousel__plan--trial {
+    background:
+      radial-gradient(circle at top right, rgba(43, 182, 115, 0.2), transparent 42%),
+      rgba(237, 250, 243, 0.96);
+  }
+
+  .hero-carousel__plan--featured {
+    color: #ffffff;
+    background:
+      radial-gradient(circle at top right, rgba(113, 225, 162, 0.24), transparent 44%),
+      linear-gradient(155deg, #1f8f5a, #123c2b);
+  }
+
+  .hero-carousel__plan--featured small {
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .hero-carousel__floating--plans {
+    right: 9%;
+    bottom: 24%;
+  }
+
   @media (max-width: 640px) {
     .hero-carousel__phone {
       top: 10%;
@@ -601,6 +800,29 @@ app-landing-hero-carousel {
 
     .hero-carousel__browser-body {
       grid-template-columns: 4.6rem 1fr;
+    }
+
+    .hero-carousel__calendar {
+      top: 8%;
+      left: 7%;
+      width: 82%;
+      padding: 0.85rem;
+    }
+
+    .hero-carousel__calendar-grid span {
+      min-height: 2rem;
+      font-size: 0.72rem;
+    }
+
+    .hero-carousel__plan-stack {
+      left: 7%;
+      width: 86%;
+      grid-template-columns: 1fr;
+    }
+
+    .hero-carousel__plan {
+      min-height: auto;
+      padding: 0.75rem;
     }
   }
 }

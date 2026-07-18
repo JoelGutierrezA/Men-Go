@@ -1,79 +1,120 @@
-<section class="page-shell page-shell--marketing public-page">
+<section class="page-shell page-shell--marketing public-page features-page">
   <app-marketing-header />
 
-  <div class="public-page__hero public-page__hero--compact public-page__hero--wide">
-    <span>Funciones</span>
-    <h1>Funciones pensadas para mostrar, administrar y hacer crecer tu menu digital.</h1>
+  <div class="public-page__hero public-page__hero--compact public-page__hero--wide features-page__hero">
+    <span>FUNCIONES DE NOREN</span>
+    <h1>Mucho más que un menú conectado a un código QR.</h1>
     <p>
-      Noren se esta construyendo para resolver la operacion diaria del negocio
-      y la experiencia del cliente desde una misma plataforma.
+      Crea una carta digital profesional, actualízala sin reemplazar el QR y
+      programa promociones para que se activen automáticamente según el día, el
+      horario o la temporada.
     </p>
+
+    <div class="public-page__actions features-page__hero-actions">
+      <a mat-flat-button routerLink="/register">Crear mi menú gratis</a>
+      <a mat-stroked-button routerLink="/planes">Ver planes</a>
+    </div>
   </div>
 
   <section class="public-page__section">
-    <div class="public-page__grid public-page__grid--3">
+    <div class="public-page__section-header features-page__section-header">
+      <span>FUNCIONES PRINCIPALES</span>
+      <h2>Administra tu carta sin depender de archivos estáticos.</h2>
+      <p>
+        Reemplaza el PDF por una experiencia editable, visual y preparada para
+        mantener tu menú siempre al día.
+      </p>
+    </div>
+
+    <div class="features-page__feature-grid">
       @for (feature of featureCards; track feature.title) {
-        <mat-card class="public-page__card">
+        <mat-card
+          class="public-page__card features-page__feature-card"
+          [class.features-page__feature-card--highlight]="feature.highlight"
+        >
           <mat-card-header>
-            <div mat-card-avatar class="public-page__icon">
-              <mat-icon>{{ feature.icon }}</mat-icon>
+            <div mat-card-avatar class="public-page__icon features-page__feature-icon">
+              <mat-icon aria-hidden="true">{{ feature.icon }}</mat-icon>
             </div>
-            <mat-card-title>{{ feature.title }}</mat-card-title>
+
+            <div class="features-page__feature-heading">
+              @if (feature.badge) {
+                <span class="features-page__badge">{{ feature.badge }}</span>
+              }
+              <mat-card-title>{{ feature.title }}</mat-card-title>
+            </div>
           </mat-card-header>
+
           <mat-card-content>
             <p>{{ feature.description }}</p>
+
+            @if (feature.note) {
+              <strong class="features-page__note">{{ feature.note }}</strong>
+            }
+
+            @if (feature.benefits?.length) {
+              <ul class="features-page__mini-list">
+                @for (benefit of feature.benefits; track benefit) {
+                  <li>
+                    <mat-icon aria-hidden="true">check_circle</mat-icon>
+                    <span>{{ benefit }}</span>
+                  </li>
+                }
+              </ul>
+            }
           </mat-card-content>
         </mat-card>
       }
     </div>
   </section>
 
-  <section class="public-page__section">
-    <div class="public-page__section-header">
-      <span>Recorridos</span>
-      <h2>Una experiencia para el negocio y otra para quien escanea el menu.</h2>
+  <section class="features-page__campaigns" aria-labelledby="campaigns-title">
+    <div class="features-page__campaign-copy">
+      <span>CAMPAÑAS AUTOMÁTICAS · PRÓXIMAMENTE</span>
+      <h2 id="campaigns-title">Configura una vez. Noren se encarga de activarlo cada vez.</h2>
+      <p>
+        Programa qué productos, precios y promociones se mostrarán según la
+        fecha, el día de la semana o el horario. Cuando termine la campaña,
+        Noren restaura automáticamente tu carta habitual.
+      </p>
+
+      <ul class="features-page__campaign-benefits">
+        @for (benefit of campaignBenefits; track benefit) {
+          <li>
+            <mat-icon aria-hidden="true">check_circle</mat-icon>
+            <span>{{ benefit }}</span>
+          </li>
+        }
+      </ul>
+
+      <p class="features-page__campaign-close">
+        Deja preparadas tus promociones de fin de semana, menús ejecutivos y
+        campañas estacionales sin entrar a editar la carta cada vez.
+      </p>
+
+      <div class="public-page__actions">
+        <a mat-flat-button routerLink="/register">Crear mi menú gratis</a>
+        <a mat-button routerLink="/planes">Ver planes</a>
+      </div>
     </div>
 
-    <div class="public-page__split features-page__journey">
-      <mat-card class="public-page__card">
-        <mat-card-header>
-          <mat-card-title>Para el negocio</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ul class="public-page__list">
-            @for (item of businessFlow; track item) {
-              <li>{{ item }}</li>
-            }
-          </ul>
-        </mat-card-content>
-      </mat-card>
+    <div class="features-page__campaign-board" aria-label="Ejemplos de campañas programadas">
+      @for (campaign of campaignExamples; track campaign.name) {
+        <article class="features-page__campaign-card">
+          <div>
+            <span class="features-page__campaign-status">{{ campaign.status }}</span>
+            <h3>{{ campaign.name }}</h3>
+          </div>
 
-      <mat-card class="public-page__card">
-        <mat-card-header>
-          <mat-card-title>Para el cliente</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ul class="public-page__list">
-            @for (item of guestFlow; track item) {
-              <li>{{ item }}</li>
+          <ul>
+            @for (detail of campaign.details; track detail) {
+              <li>{{ detail }}</li>
             }
           </ul>
-        </mat-card-content>
-      </mat-card>
+        </article>
+      }
     </div>
   </section>
-
-  <div class="public-page__cta">
-    <span>Proxima etapa</span>
-    <p>
-      Estas funciones describen la direccion del producto mientras avanzamos en
-      autenticacion real, gestion de contenido y persistencia.
-    </p>
-    <div class="public-page__actions">
-      <a mat-flat-button routerLink="/register">Quiero registrarme</a>
-      <a mat-button routerLink="/">Volver al home</a>
-    </div>
-  </div>
 </section>
 
 <app-marketing-footer />
